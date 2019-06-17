@@ -25,7 +25,6 @@ import android.view.inputmethod.InputMethodManager
 import java.util.Timer
 import java.util.TimerTask
 
-
 /**
  * Created by Ruby(aka gazlaws) on 13/02/2016.
  * Kotlinized by Tuan Chau (aka tuanchauict)
@@ -48,6 +47,8 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     private var mSize: Int = 0
     private var timerLongPress: Timer? = null
     private var switchedKeyboard = false
+
+    private val uiHandler = Handler(Looper.getMainLooper())
 
     private fun onKeyCtrl(code: Int, ic: InputConnection?) {
         val codeChar = code.toChar().toUpperCase()
@@ -306,54 +307,24 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             keypressSoundPlayer.setOnCompletionListener { mp -> mp.release() }
         }
         if (isVibratorOn) {
-
             val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             @Suppress("DEPRECATION")
             vibrator.vibrate(20)
         }
-        if (timerLongPress != null)
-            timerLongPress!!.cancel()
 
-        timerLongPress = Timer()
+        timerLongPress?.cancel()
 
-        timerLongPress!!.schedule(object : TimerTask() {
-
-            override fun run() {
-
-                try {
-
-                    val uiHandler = Handler(Looper.getMainLooper())
-
-                    val runnable = Runnable {
-                        try {
-
-                            this@CodeBoardIME.onKeyLongPress(primaryCode)
-
-                        } catch (e: Exception) {
-                            Log.e(
-                                CodeBoardIME::class.java.simpleName,
-                                "uiHandler.run: " + e.message,
-                                e
-                            )
-                        }
-                    }
-
-                    uiHandler.post(runnable)
-
-                } catch (e: Exception) {
-                    Log.e(CodeBoardIME::class.java.simpleName, "Timer.run: " + e.message, e)
-                }
-
-            }
-
-        }, ViewConfiguration.getLongPressTimeout().toLong())
-
+        timerLongPress = Timer().apply {
+            schedule(
+                LongKeyPressTimerTask(primaryCode),
+                ViewConfiguration.getLongPressTimeout().toLong()
+            )
+        }
     }
 
     override fun onRelease(primaryCode: Int) {
-        if (timerLongPress != null)
-            timerLongPress!!.cancel()
-
+        timerLongPress?.cancel()
+        timerLongPress = null
     }
 
     @Suppress("DEPRECATION")
@@ -575,6 +546,18 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     private fun EditorInfo.isDroidEdit(): Boolean = imeOptions == DROID_EDIT_IME_OPTIONS
+
+    private inner class LongKeyPressTimerTask(private val primaryCode: Int) : TimerTask() {
+        override fun run() {
+            uiHandler.post {
+                try {
+                    onKeyLongPress(primaryCode)
+                } catch (e: Exception) {
+                    Log.e("CodeBoardIME", "uiHandler.run: " + e.message, e)
+                }
+            }
+        }
+    }
 
     companion object {
         private const val SHARED_PREF_FILE = "MY_SHARED_PREF"

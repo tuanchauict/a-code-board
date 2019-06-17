@@ -46,16 +46,34 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<CheckBox>(R.id.check_preview).apply {
             isChecked = preferences.isPreviewEnabled
+            setOnClickListener {
+                preferences.isPreviewEnabled = isChecked
+                closeKeyboard(it)
+            }
         }
 
         findViewById<CheckBox>(R.id.check_sound).apply {
             isChecked = preferences.isSoundOn
+            setOnClickListener {
+                preferences.isSoundOn = isChecked
+                closeKeyboard(it)
+            }
         }
+
         findViewById<CheckBox>(R.id.check_vibrator).apply {
             isChecked = preferences.isVibrateOn
+            setOnClickListener {
+                preferences.isVibrateOn = isChecked
+                closeKeyboard(it)
+            }
         }
+
         findViewById<CheckBox>(R.id.check_no_arrow).apply {
             isChecked = preferences.isDpadOn
+            setOnClickListener {
+                preferences.isDpadOn = isChecked
+                closeKeyboard(it)
+            }
         }
     }
 
@@ -69,13 +87,6 @@ class MainActivity : AppCompatActivity() {
 
         //  Launch app intro
         Intent(this, IntroActivity::class.java).also(::startActivity)
-    }
-
-    private fun savePreferences(key: String, value: Int) {
-        val sharedPreferences = getSharedPreferences("MY_SHARED_PREF", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putInt(key, value)
-        editor.apply()
     }
 
     fun changeButton(v: View) {
@@ -99,47 +110,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun previewToggle(v: View) {
-        val preview = findViewById<View>(R.id.check_preview) as CheckBox
-        if (preview.isChecked) {
-            savePreferences("PREVIEW", 1)
-        } else
-            savePreferences("PREVIEW", 0)
-        closeKeyboard(v)
-
-    }
-
-    fun soundToggle(v: View) {
-        val preview = findViewById<View>(R.id.check_sound) as CheckBox
-        if (preview.isChecked) {
-            savePreferences("SOUND", 1)
-        } else
-            savePreferences("SOUND", 0)
-        closeKeyboard(v)
-    }
-
-    fun vibratorToggle(v: View) {
-        val preview = findViewById<View>(R.id.check_vibrator) as CheckBox
-        if (preview.isChecked) {
-            savePreferences("VIBRATE", 1)
-        } else
-            savePreferences("VIBRATE", 0)
-        closeKeyboard(v)
-    }
-
-    fun arrowToggle(v: View) {
-        val preview = findViewById<View>(R.id.check_no_arrow) as CheckBox
-        if (preview.isChecked) {
-            savePreferences("ARROW_ROW", 0)
-        } else
-            savePreferences("ARROW_ROW", 1)
-        closeKeyboard(v)
-    }
-
     fun closeKeyboard(v: View) {
-
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
         imm.hideSoftInputFromWindow(v.windowToken, 0)
     }
 

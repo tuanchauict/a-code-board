@@ -75,6 +75,13 @@ class MainActivity : AppCompatActivity() {
                 closeKeyboard(it)
             }
         }
+
+        findViewById<View>(R.id.change_keyboard).apply {
+            setOnClickListener {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.showInputMethodPicker()
+            }
+        }
     }
 
     private fun onFirstOpenApp() {
@@ -83,31 +90,10 @@ class MainActivity : AppCompatActivity() {
         }
         preferences.isFirstTimeAppOpen = false
 
-        findViewById<View>(R.id.change_button).visibility = View.GONE
+        findViewById<View>(R.id.change_keyboard).visibility = View.GONE
 
         //  Launch app intro
         Intent(this, IntroActivity::class.java).also(::startActivity)
-    }
-
-    fun changeButton(v: View) {
-
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showInputMethodPicker()
-
-        //        Button enable = (Button) findViewById(R.id.enable_button);
-        //        enable.setText("Change Keyboard");
-        //
-        //        String id = Settings.Secure.getString(
-        //                getContentResolver(),
-        //                Settings.Secure.DEFAULT_INPUT_METHOD
-        //        );
-        //
-        //        if(!(id.equals("com.gazlaws.codeboard/.CodeBoardIME"))){
-        //            InputMethodManager imm = (InputMethodManager)
-        //                    getSystemService(Context.INPUT_METHOD_SERVICE);
-        //            imm.showInputMethodPicker();
-        //        }
-
     }
 
     fun closeKeyboard(v: View) {

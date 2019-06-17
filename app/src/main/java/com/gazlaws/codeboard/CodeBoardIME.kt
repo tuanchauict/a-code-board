@@ -33,8 +33,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     private var keyboardView: KeyboardView? = null
     private var keyboard: Keyboard? = null
     private lateinit var sEditorInfo: EditorInfo
-    private var isVibratorOn: Boolean = false
-    private var isSoundOn: Boolean = false
     private var shiftLock = false
     private var isShiftOn = false
     private var isCtrlOn = false
@@ -49,6 +47,8 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     private var switchedKeyboard = false
 
     private val uiHandler = Handler(Looper.getMainLooper())
+
+    private val preferences: Preferences = Preferences(applicationContext)
 
     private fun onKeyCtrl(code: Int, ic: InputConnection?) {
         val codeChar = code.toChar().toUpperCase()
@@ -264,12 +264,12 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     override fun onPress(primaryCode: Int) {
-        if (isSoundOn) {
+        if (preferences.isSoundOn) {
             val keypressSoundPlayer = MediaPlayer.create(this, R.raw.keypress_sound)
             keypressSoundPlayer.start()
             keypressSoundPlayer.setOnCompletionListener { mp -> mp.release() }
         }
-        if (isVibratorOn) {
+        if (preferences.isVibrateOn) {
             val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             @Suppress("DEPRECATION")
             vibrator.vibrate(20)
@@ -360,30 +360,22 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     override fun onCreateInputView(): View? {
-        val preferences = getSharedPreferences(SHARED_PREF_FILE, Context.MODE_PRIVATE)
-        val radioColorIndex = preferences.getInt(KEY_RADIO_INDEX_COLOUR, 0)
+        val localPreferences = getSharedPreferences(SHARED_PREF_FILE, Context.MODE_PRIVATE)
         @LayoutRes
         val keyboardLayoutRes =
-            KEYBOARD_LAYOUT_RESES.getOrElse(radioColorIndex) { R.layout.keyboard }
+            KEYBOARD_LAYOUT_RESES.getOrElse(preferences.selectedKeyboardColorIndex) { R.layout.keyboard }
         val keyboardView =
             layoutInflater.inflate(keyboardLayoutRes, null) as? KeyboardView ?: return null
         this.keyboardView = keyboardView
 
-        // TODO: Change this preference to Boolean
-        keyboardView.isPreviewEnabled = preferences.getInt(KEY_PREVIEW, 0) == 1
-
-        // TODO: Change this preference to Boolean
-        isSoundOn = preferences.getInt(KEY_SOUND, 1) == 1
-
-        // TODO: Change this preference to Boolean
-        isVibratorOn = preferences.getInt(KEY_VIBRATE, 1) == 1
+        keyboardView.isPreviewEnabled = preferences.isPreviewEnabled
 
         isShiftOn = false
         isCtrlOn = false
 
-        mLayout = preferences.getInt(KEY_RADIO_INDEX_LAYOUT, 0)
-        mSize = preferences.getInt(KEY_SIZE, 2)
-        mToprow = preferences.getInt(KEY_ARROW_ROW, 1)
+        mLayout = localPreferences.getInt(KEY_RADIO_INDEX_LAYOUT, 0)
+        mSize = localPreferences.getInt(KEY_SIZE, 2)
+        mToprow = localPreferences.getInt(KEY_ARROW_ROW, 1)
         mKeyboardState = R.integer.keyboard_normal
         //reset to normal
 
@@ -524,10 +516,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     companion object {
         private const val SHARED_PREF_FILE = "MY_SHARED_PREF"
-        private const val KEY_RADIO_INDEX_COLOUR = "RADIO_INDEX_COLOUR"
-        private const val KEY_PREVIEW = "PREVIEW"
-        private const val KEY_SOUND = "SOUND"
-        private const val KEY_VIBRATE = "VIBRATE"
         private const val KEY_RADIO_INDEX_LAYOUT = "RADIO_INDEX_LAYOUT"
         private const val KEY_SIZE = "SIZE"
         private const val KEY_ARROW_ROW = "ARROW_ROW"

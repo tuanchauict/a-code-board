@@ -99,7 +99,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             metaState,
             System.currentTimeMillis() + 1
         )
-        if (codeChar == 'Z'  && isShiftOn) {
+        if (codeChar == 'Z' && isShiftOn) {
             isShiftOn = false
             ic?.sendKeyEventOnce(
                 KeyEvent.ACTION_UP,
@@ -123,22 +123,16 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             53740 -> currentInputConnection.performContextMenuAction(android.R.id.paste)
             53741 -> currentInputConnection.performContextMenuAction(android.R.id.undo)
             53742 -> currentInputConnection.performContextMenuAction(android.R.id.redo)
-            Keyboard.KEYCODE_DELETE -> sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
 
+            Keyboard.KEYCODE_DELETE -> sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
             Keyboard.KEYCODE_DONE -> sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
 
             27 -> {
-                //Escape
-                val now = System.currentTimeMillis()
-                ic.sendKeyEvent(
-                    KeyEvent(
-                        now,
-                        now,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_ESCAPE,
-                        0,
-                        META_CTRL_ON or KeyEvent.META_CTRL_LEFT_ON
-                    )
+                // Escape
+                ic.sendKeyEventOnce(
+                    KeyEvent.ACTION_DOWN,
+                    KeyEvent.KEYCODE_ESCAPE,
+                    META_CTRL_ON or KeyEvent.META_CTRL_LEFT_ON
                 )
             }
 
@@ -169,29 +163,18 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             }
 
             17 -> {
-                //              isCtrlOn key
-                val nowCtrl = System.currentTimeMillis()
+                // Ctrl key
                 if (isCtrlOn)
-                    ic.sendKeyEvent(
-                        KeyEvent(
-                            nowCtrl,
-                            nowCtrl,
-                            KeyEvent.ACTION_UP,
-                            KEYCODE_CTRL_LEFT,
-                            0,
-                            META_CTRL_ON
-                        )
+                    ic.sendKeyEventOnce(
+                        KeyEvent.ACTION_UP,
+                        KEYCODE_CTRL_LEFT,
+                        META_CTRL_ON
                     )
                 else
-                    ic.sendKeyEvent(
-                        KeyEvent(
-                            nowCtrl,
-                            nowCtrl,
-                            KeyEvent.ACTION_DOWN,
-                            KEYCODE_CTRL_LEFT,
-                            0,
-                            META_CTRL_ON
-                        )
+                    ic.sendKeyEventOnce(
+                        KeyEvent.ACTION_DOWN,
+                        KEYCODE_CTRL_LEFT,
+                        META_CTRL_ON
                     )
 
                 isCtrlOn = !isCtrlOn
@@ -201,29 +184,19 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             16 -> {
                 // Log.e("CodeBoardIME", "onKey" + Boolean.toString(shiftLock));
                 //Shift - runs after long press, so shiftlock may have just been activated
-                val nowShift = System.currentTimeMillis()
                 if (isShiftOn)
-                    ic.sendKeyEvent(
-                        KeyEvent(
-                            nowShift,
-                            nowShift,
-                            KeyEvent.ACTION_UP,
-                            KEYCODE_SHIFT_LEFT,
-                            0,
-                            META_SHIFT_ON
-                        )
+                    ic.sendKeyEventOnce(
+                        KeyEvent.ACTION_UP,
+                        KEYCODE_SHIFT_LEFT,
+                        META_SHIFT_ON
                     )
-                else
-                    ic.sendKeyEvent(
-                        KeyEvent(
-                            nowShift,
-                            nowShift,
-                            KeyEvent.ACTION_DOWN,
-                            KEYCODE_SHIFT_LEFT,
-                            0,
-                            META_SHIFT_ON
-                        )
+                else {
+                    ic.sendKeyEventOnce(
+                        KeyEvent.ACTION_DOWN,
+                        KEYCODE_SHIFT_LEFT,
+                        META_SHIFT_ON
                     )
+                }
 
                 if (shiftLock) {
                     isShiftOn = true
@@ -245,54 +218,45 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             5003 -> handleArrow(KeyEvent.KEYCODE_DPAD_RIGHT)
 
             else -> {
-                var code = primaryCode.toChar()
-                if (isCtrlOn) {
-                    onKeyCtrl(code.toInt(), ic)
-                    if (!shiftLock) {
-                        val nowS = System.currentTimeMillis()
-                        isShiftOn = false
-                        ic.sendKeyEvent(
-                            KeyEvent(
-                                nowS,
-                                nowS,
+                val code = primaryCode.toChar()
+                when {
+                    isCtrlOn -> {
+                        onKeyCtrl(primaryCode, ic)
+                        if (!shiftLock) {
+                            isShiftOn = false
+                            ic.sendKeyEventOnce(
                                 KeyEvent.ACTION_UP,
                                 KEYCODE_SHIFT_LEFT,
-                                0,
                                 META_SHIFT_ON
                             )
-                        )
+
+                            shiftKeyUpdateView()
+                        }
+                        isCtrlOn = false
+                        controlKeyUpdateView()
+                    }
+                    code.isLetter() && isShiftOn -> {
+                        ic.commitText("${code.toUpperCase()}", 1)
+                        if (!shiftLock) {
+
+                            isShiftOn = false
+                            ic.sendKeyEventOnce(
+                                KeyEvent.ACTION_UP,
+                                KEYCODE_SHIFT_LEFT,
+                                META_SHIFT_ON
+                            )
+
+                            //Log.e("CodeboardIME", "Unshifted b/c no lock");
+                        }
 
                         shiftKeyUpdateView()
                     }
-                    isCtrlOn = false
-                    controlKeyUpdateView()
-                } else if (Character.isLetter(code) && isShiftOn) {
-                    code = Character.toUpperCase(code)
-                    ic.commitText(code.toString(), 1)
-                    if (!shiftLock) {
-
-                        val nowS = System.currentTimeMillis()
-                        isShiftOn = false
-                        ic.sendKeyEvent(
-                            KeyEvent(
-                                nowS,
-                                nowS,
-                                KeyEvent.ACTION_UP,
-                                KEYCODE_SHIFT_LEFT,
-                                0,
-                                META_SHIFT_ON
-                            )
-                        )
-
-                        //Log.e("CodeboardIME", "Unshifted b/c no lock");
+                    else -> {
+                        if (!switchedKeyboard) {
+                            ic.commitText("$code", 1)
+                        }
+                        switchedKeyboard = false
                     }
-
-                    shiftKeyUpdateView()
-                } else {
-                    if (!switchedKeyboard) {
-                        ic.commitText(code.toString(), 1)
-                    }
-                    switchedKeyboard = false
                 }
             }
         }
@@ -300,7 +264,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     override fun onPress(primaryCode: Int) {
-
         if (isSoundOn) {
             val keypressSoundPlayer = MediaPlayer.create(this, R.raw.keypress_sound)
             keypressSoundPlayer.start()

@@ -1,39 +1,38 @@
 package com.gazlaws.codeboard
 
+
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import android.inputmethodservice.InputMethodService
 import android.inputmethodservice.Keyboard
 import android.inputmethodservice.KeyboardView
+import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import android.os.Vibrator
 import android.util.Log
 import android.view.KeyEvent
+import android.view.KeyEvent.KEYCODE_CTRL_LEFT
+import android.view.KeyEvent.KEYCODE_SHIFT_LEFT
+import android.view.KeyEvent.META_CTRL_ON
+import android.view.KeyEvent.META_SHIFT_ON
 import android.view.View
 import android.view.ViewConfiguration
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import android.view.inputmethod.InputMethodManager
-import android.media.MediaPlayer // for keypress sound
 import java.util.Timer
 import java.util.TimerTask
 
 
-import android.view.KeyEvent.KEYCODE_CTRL_LEFT
-import android.view.KeyEvent.KEYCODE_SHIFT_LEFT
-import android.view.KeyEvent.META_CTRL_ON
-import android.view.KeyEvent.META_SHIFT_ON
-
-
-/*Created by Ruby(aka gazlaws) on 13/02/2016.
+/**
+ * Created by Ruby(aka gazlaws) on 13/02/2016.
+ * Kotlinized by Tuan Chau (aka tuanchauict)
  */
-
-
 class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener {
     private var kv: KeyboardView? = null
     private var keyboard: Keyboard? = null
-    internal var sEditorInfo: EditorInfo
+    private lateinit var sEditorInfo: EditorInfo
     private var vibratorOn: Boolean = false
     private var soundOn: Boolean = false
     private var shiftLock = false
@@ -47,10 +46,10 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     private var switchedKeyboard = false
 
 
-    fun onKeyCtrl(code: Int, ic: InputConnection?) {
-        var code = code
+    private fun onKeyCtrl(code: Int, ic: InputConnection?) {
+        var codeChar = code.toChar()
         val now2 = System.currentTimeMillis()
-        when (code) {
+        when (codeChar) {
             'a', 'A' -> if (sEditorInfo.imeOptions == 1342177286)
             //fix for DroidEdit
             {
@@ -136,7 +135,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                             nowS,
                             nowS,
                             KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_SHIFT_LEFT,
+                            KEYCODE_SHIFT_LEFT,
                             0,
                             META_SHIFT_ON
                         )
@@ -325,9 +324,9 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 )
             )
 
-            else -> if (Character.isLetter(code) && shift) {
-                code = Character.toUpperCase(code)
-                ic!!.commitText(code.toString(), 1)
+            else -> if (Character.isLetter(codeChar) && shift) {
+                codeChar = Character.toUpperCase(codeChar)
+                ic!!.commitText(codeChar.toString(), 1)
                 if (!shiftLock) {
                     val nowS = System.currentTimeMillis()
                     shift = false
@@ -336,7 +335,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                             nowS,
                             nowS,
                             KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_SHIFT_LEFT,
+                            KEYCODE_SHIFT_LEFT,
                             0,
                             META_SHIFT_ON
                         )
@@ -377,14 +376,14 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                         KeyEvent.ACTION_DOWN,
                         KeyEvent.KEYCODE_ESCAPE,
                         0,
-                        KeyEvent.META_CTRL_ON or KeyEvent.META_CTRL_LEFT_ON
+                        META_CTRL_ON or KeyEvent.META_CTRL_LEFT_ON
                     )
                 )
             }
 
             -13 -> {
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm?.showInputMethodPicker()
+                imm.showInputMethodPicker()
             }
             -15 -> if (kv != null) {
                 if (mKeyboardState == R.integer.keyboard_normal) {
@@ -416,7 +415,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                             nowCtrl,
                             nowCtrl,
                             KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_CTRL_LEFT,
+                            KEYCODE_CTRL_LEFT,
                             0,
                             META_CTRL_ON
                         )
@@ -427,7 +426,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                             nowCtrl,
                             nowCtrl,
                             KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_CTRL_LEFT,
+                            KEYCODE_CTRL_LEFT,
                             0,
                             META_CTRL_ON
                         )
@@ -447,7 +446,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                             nowShift,
                             nowShift,
                             KeyEvent.ACTION_UP,
-                            KeyEvent.KEYCODE_SHIFT_LEFT,
+                            KEYCODE_SHIFT_LEFT,
                             0,
                             META_SHIFT_ON
                         )
@@ -458,7 +457,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                             nowShift,
                             nowShift,
                             KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_SHIFT_LEFT,
+                            KEYCODE_SHIFT_LEFT,
                             0,
                             META_SHIFT_ON
                         )
@@ -495,7 +494,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                                 nowS,
                                 nowS,
                                 KeyEvent.ACTION_UP,
-                                KeyEvent.KEYCODE_SHIFT_LEFT,
+                                KEYCODE_SHIFT_LEFT,
                                 0,
                                 META_SHIFT_ON
                             )
@@ -517,7 +516,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                                 nowS,
                                 nowS,
                                 KeyEvent.ACTION_UP,
-                                KeyEvent.KEYCODE_SHIFT_LEFT,
+                                KEYCODE_SHIFT_LEFT,
                                 0,
                                 META_SHIFT_ON
                             )
@@ -548,7 +547,8 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         if (vibratorOn) {
 
             val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-            vibrator?.vibrate(20)
+            @Suppress("DEPRECATION")
+            vibrator.vibrate(20)
         }
         if (timerLongPress != null)
             timerLongPress!!.cancel()
@@ -570,7 +570,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
                         } catch (e: Exception) {
                             Log.e(
-                                CodeBoardIME::class.java!!.getSimpleName(),
+                                CodeBoardIME::class.java.simpleName,
                                 "uiHandler.run: " + e.message,
                                 e
                             )
@@ -580,7 +580,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                     uiHandler.post(runnable)
 
                 } catch (e: Exception) {
-                    Log.e(CodeBoardIME::class.java!!.getSimpleName(), "Timer.run: " + e.message, e)
+                    Log.e(CodeBoardIME::class.java.simpleName, "Timer.run: " + e.message, e)
                 }
 
             }
@@ -595,6 +595,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     }
 
+    @Suppress("DEPRECATION")
     fun onKeyLongPress(keyCode: Int) {
         // Process long-click here
         if (keyCode == 16) {
@@ -606,11 +607,11 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         if (keyCode == 32) {
             switchedKeyboard = true
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm?.showInputMethodPicker()
+            imm.showInputMethodPicker()
         }
 
         val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        vibrator?.vibrate(50)
+        vibrator.vibrate(50)
     }
 
     override fun onText(text: CharSequence) {
@@ -648,86 +649,64 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     }
 
-    fun chooseKB(layout: Int, toprow: Int, size: Int, mode: Int): Keyboard {
+    private fun chooseKB(layout: Int, toprow: Int, size: Int, mode: Int): Keyboard {
         val keyboard: Keyboard
         if (layout == 0) {
-
-            if (toprow == 1) {
-
-                if (size == 0) {
-                    keyboard = Keyboard(this, R.xml.qwerty0r, mode)
-                } else if (size == 1) {
-                    keyboard = Keyboard(this, R.xml.qwerty1r, mode)
-                } else if (size == 2) {
-                    keyboard = Keyboard(this, R.xml.qwerty2r, mode)
-                } else
-                    keyboard = Keyboard(this, R.xml.qwerty3r, mode)
+            keyboard = if (toprow == 1) {
+                when (size) {
+                    0 -> Keyboard(this, R.xml.qwerty0r, mode)
+                    1 -> Keyboard(this, R.xml.qwerty1r, mode)
+                    2 -> Keyboard(this, R.xml.qwerty2r, mode)
+                    else -> Keyboard(this, R.xml.qwerty3r, mode)
+                }
             } else {
-
-                if (size == 0) {
-                    keyboard = Keyboard(this, R.xml.qwerty0e, mode)
-                } else if (size == 1) {
-                    keyboard = Keyboard(this, R.xml.qwerty1e, mode)
-                } else if (size == 2) {
-                    keyboard = Keyboard(this, R.xml.qwerty2e, mode)
-                } else
-                    keyboard = Keyboard(this, R.xml.qwerty3e, mode)
+                when (size) {
+                    0 -> Keyboard(this, R.xml.qwerty0e, mode)
+                    1 -> Keyboard(this, R.xml.qwerty1e, mode)
+                    2 -> Keyboard(this, R.xml.qwerty2e, mode)
+                    else -> Keyboard(this, R.xml.qwerty3e, mode)
+                }
             }
         } else {
-            if (toprow == 1) {
-                if (size == 0) {
-                    keyboard = Keyboard(this, R.xml.azerty0r, mode)
-                } else if (size == 1) {
-                    keyboard = Keyboard(this, R.xml.azerty1r, mode)
-                } else if (size == 2) {
-                    keyboard = Keyboard(this, R.xml.azerty2r, mode)
-                } else
-                    keyboard = Keyboard(this, R.xml.azerty3r, mode)
+            keyboard = if (toprow == 1) {
+                when (size) {
+                    0 -> Keyboard(this, R.xml.azerty0r, mode)
+                    1 -> Keyboard(this, R.xml.azerty1r, mode)
+                    2 -> Keyboard(this, R.xml.azerty2r, mode)
+                    else -> Keyboard(this, R.xml.azerty3r, mode)
+                }
             } else {
-                if (size == 0) {
-                    keyboard = Keyboard(this, R.xml.azerty0e, mode)
-                } else if (size == 1) {
-                    keyboard = Keyboard(this, R.xml.azerty1e, mode)
-                } else if (size == 2) {
-                    keyboard = Keyboard(this, R.xml.azerty2e, mode)
-                } else
-                    keyboard = Keyboard(this, R.xml.azerty3e, mode)
+                when (size) {
+                    0 -> Keyboard(this, R.xml.azerty0e, mode)
+                    1 -> Keyboard(this, R.xml.azerty1e, mode)
+                    2 -> Keyboard(this, R.xml.azerty2e, mode)
+                    else -> Keyboard(this, R.xml.azerty3e, mode)
+                }
             }
         }
         return keyboard
     }
 
+    @SuppressLint("InflateParams")
     override fun onCreateInputView(): View {
 
         val pre = getSharedPreferences("MY_SHARED_PREF", Context.MODE_PRIVATE)
 
-        when (pre.getInt("RADIO_INDEX_COLOUR", 0)) {
-            0 ->
-                //kv = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard, null);
-                kv = layoutInflater.inflate(R.layout.keyboard, null) as KeyboardView
-            1 -> kv = layoutInflater.inflate(R.layout.keyboard1, null) as KeyboardView
-            2 -> kv = layoutInflater.inflate(R.layout.keyboard2, null) as KeyboardView
-            3 -> kv = layoutInflater.inflate(R.layout.keyboard3, null) as KeyboardView
-            4 -> kv = layoutInflater.inflate(R.layout.keyboard4, null) as KeyboardView
-            5 -> kv = layoutInflater.inflate(R.layout.keyboard5, null) as KeyboardView
-
-            else -> kv = layoutInflater.inflate(R.layout.keyboard, null) as KeyboardView
+        kv = when (pre.getInt("RADIO_INDEX_COLOUR", 0)) {
+            0 -> layoutInflater.inflate(R.layout.keyboard, null) as KeyboardView
+            1 -> layoutInflater.inflate(R.layout.keyboard1, null) as KeyboardView
+            2 -> layoutInflater.inflate(R.layout.keyboard2, null) as KeyboardView
+            3 -> layoutInflater.inflate(R.layout.keyboard3, null) as KeyboardView
+            4 -> layoutInflater.inflate(R.layout.keyboard4, null) as KeyboardView
+            5 -> layoutInflater.inflate(R.layout.keyboard5, null) as KeyboardView
+            else -> layoutInflater.inflate(R.layout.keyboard, null) as KeyboardView
         }
 
-        if (pre.getInt("PREVIEW", 0) == 1) {
-            kv!!.isPreviewEnabled = true
-        } else
-            kv!!.isPreviewEnabled = false
+        kv!!.isPreviewEnabled = pre.getInt("PREVIEW", 0) == 1
 
-        if (pre.getInt("SOUND", 1) == 1) {
-            soundOn = true
-        } else
-            soundOn = false
+        soundOn = pre.getInt("SOUND", 1) == 1
 
-        if (pre.getInt("VIBRATE", 1) == 1) {
-            vibratorOn = true
-        } else
-            vibratorOn = false
+        vibratorOn = pre.getInt("VIBRATE", 1) == 1
 
         shift = false
         ctrl = false
@@ -743,7 +722,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         kv!!.setOnKeyboardActionListener(this)
 
 
-        return kv
+        return kv!!
     }
 
     override fun onStartInputView(attribute: EditorInfo, restarting: Boolean) {
@@ -753,11 +732,10 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     }
 
-    fun controlKeyUpdateView() {
+    private fun controlKeyUpdateView() {
         keyboard = kv!!.keyboard
-        var i: Int
+        var i = 0
         val keys = keyboard!!.keys
-        i = 0
         while (i < keys.size) {
             if (ctrl) {
                 if (keys[i].label != null && keys[i].label == "Ctrl") {
@@ -775,7 +753,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         kv!!.invalidateKey(i)
     }
 
-    fun shiftKeyUpdateView() {
+    private fun shiftKeyUpdateView() {
 
         keyboard = kv!!.keyboard
         val keys = keyboard!!.keys
@@ -796,7 +774,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         kv!!.invalidateAllKeys()
     }
 
-    fun handleArrow(keyCode: Int) {
+    private fun handleArrow(keyCode: Int) {
         val ic = currentInputConnection
         val now2 = System.currentTimeMillis()
         if (ctrl && shift) {
@@ -870,7 +848,5 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 META_SHIFT_ON or META_CTRL_ON
             )
         )
-
-
     }
 }

@@ -2,7 +2,6 @@ package com.gazlaws.codeboard
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -15,40 +14,35 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.SeekBar
 
-
 /**
  * Created by Ruby on 02/06/2016.
  */
 class MainActivity : AppCompatActivity() {
-    internal var radioGroupColour: RadioGroup
-    internal var radioGroupLayout: RadioGroup
-    internal var seekBar: SeekBar
+    private lateinit var radioGroupColour: RadioGroup
+    private lateinit var radioGroupLayout: RadioGroup
+    private lateinit var seekBar: SeekBar
 
 
-    internal val RADIO_INDEX_COLOUR = "RADIO_INDEX_COLOUR"
-    internal val RADIO_INDEX_LAYOUT = "RADIO_INDEX_LAYOUT"
+    private val RADIO_INDEX_COLOUR = "RADIO_INDEX_COLOUR"
+    private val RADIO_INDEX_LAYOUT = "RADIO_INDEX_LAYOUT"
 
-
-    internal var radioGroupOnCheckedChangeListenerColour: RadioGroup.OnCheckedChangeListener =
-        RadioGroup.OnCheckedChangeListener { group, checkedId ->
+    private var radioGroupOnCheckedChangeListenerColour: RadioGroup.OnCheckedChangeListener =
+        RadioGroup.OnCheckedChangeListener { _, checkedId ->
             val checkedRadioButtonColour =
                 radioGroupColour.findViewById<View>(checkedId) as RadioButton
             val checkedIndexColour = radioGroupColour.indexOfChild(checkedRadioButtonColour)
-            SavePreferences(RADIO_INDEX_COLOUR, checkedIndexColour)
+            savePreferences(RADIO_INDEX_COLOUR, checkedIndexColour)
         }
 
-    internal var radioGroupOnCheckedChangeListenerLayout: RadioGroup.OnCheckedChangeListener =
-        RadioGroup.OnCheckedChangeListener { group, checkedId ->
+    private var radioGroupOnCheckedChangeListenerLayout: RadioGroup.OnCheckedChangeListener =
+        RadioGroup.OnCheckedChangeListener { _, checkedId ->
             val checkedRadioButtonLayout =
                 radioGroupLayout.findViewById<View>(checkedId) as RadioButton
             val checkedIndexLayout = radioGroupLayout.indexOfChild(checkedRadioButtonLayout)
-            SavePreferences(RADIO_INDEX_LAYOUT, checkedIndexLayout)
+            savePreferences(RADIO_INDEX_LAYOUT, checkedIndexLayout)
         }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -103,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         seekBar = findViewById<View>(R.id.size_seekbar) as SeekBar
         // perform seek bar change listener event used for getting the progress value
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            internal var progressChangedValue = seekBar.progress
+            var progressChangedValue = seekBar.progress
 
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 progressChangedValue = progress
@@ -116,9 +110,7 @@ class MainActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar) {
                 //                Toast.makeText(MainActivity.this, "Seek bar progress is :" + progressChangedValue,
                 //                        Toast.LENGTH_SHORT).show();
-                SavePreferences("SIZE", progressChangedValue)
-
-
+                savePreferences("SIZE", progressChangedValue)
             }
         })
 
@@ -129,18 +121,16 @@ class MainActivity : AppCompatActivity() {
         radioGroupLayout.setOnCheckedChangeListener(radioGroupOnCheckedChangeListenerLayout)
 
 
-        LoadPreferences()
+        loadPreferences()
 
     }
 
-
-    private fun SavePreferences(key: String, value: Int) {
+    private fun savePreferences(key: String, value: Int) {
         val sharedPreferences = getSharedPreferences("MY_SHARED_PREF", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putInt(key, value)
         editor.apply()
     }
-
 
     fun changeButton(v: View) {
 
@@ -166,9 +156,9 @@ class MainActivity : AppCompatActivity() {
     fun previewToggle(v: View) {
         val preview = findViewById<View>(R.id.check_preview) as CheckBox
         if (preview.isChecked) {
-            SavePreferences("PREVIEW", 1)
+            savePreferences("PREVIEW", 1)
         } else
-            SavePreferences("PREVIEW", 0)
+            savePreferences("PREVIEW", 0)
         closeKeyboard(v)
 
     }
@@ -176,40 +166,38 @@ class MainActivity : AppCompatActivity() {
     fun soundToggle(v: View) {
         val preview = findViewById<View>(R.id.check_sound) as CheckBox
         if (preview.isChecked) {
-            SavePreferences("SOUND", 1)
+            savePreferences("SOUND", 1)
         } else
-            SavePreferences("SOUND", 0)
+            savePreferences("SOUND", 0)
         closeKeyboard(v)
     }
 
     fun vibratorToggle(v: View) {
         val preview = findViewById<View>(R.id.check_vibrator) as CheckBox
         if (preview.isChecked) {
-            SavePreferences("VIBRATE", 1)
+            savePreferences("VIBRATE", 1)
         } else
-            SavePreferences("VIBRATE", 0)
+            savePreferences("VIBRATE", 0)
         closeKeyboard(v)
     }
 
     fun arrowToggle(v: View) {
         val preview = findViewById<View>(R.id.check_no_arrow) as CheckBox
         if (preview.isChecked) {
-            SavePreferences("ARROW_ROW", 0)
+            savePreferences("ARROW_ROW", 0)
         } else
-            SavePreferences("ARROW_ROW", 1)
+            savePreferences("ARROW_ROW", 1)
         closeKeyboard(v)
     }
-
 
     fun closeKeyboard(v: View) {
 
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         imm.hideSoftInputFromWindow(v.windowToken, 0)
-
     }
 
-    private fun LoadPreferences() {
+    private fun loadPreferences() {
         val sharedPreferences = getSharedPreferences("MY_SHARED_PREF", Context.MODE_PRIVATE)
 
         val savedRadioColour = sharedPreferences.getInt(RADIO_INDEX_COLOUR, 0)
@@ -235,28 +223,15 @@ class MainActivity : AppCompatActivity() {
         val noarrow = findViewById<View>(R.id.check_no_arrow) as CheckBox
         val size = findViewById<View>(R.id.size_seekbar) as SeekBar
 
-        if (setPreview == 1)
-            preview.isChecked = true
-        else
-            preview.isChecked = false
+        preview.isChecked = setPreview == 1
 
-        if (setSound == 1)
-            sound.isChecked = true
-        else
-            sound.isChecked = false
+        sound.isChecked = setSound == 1
 
-        if (setVibrator == 1)
-            vibrate.isChecked = true
-        else
-            vibrate.isChecked = false
+        vibrate.isChecked = setVibrator == 1
 
-        if (setArrow == 1)
-            noarrow.isChecked = false
-        else
-            noarrow.isChecked = true
+        noarrow.isChecked = setArrow != 1
 
         size.progress = setSize
-
     }
 
     fun openPlay(v: View) {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.annotation.IdRes
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -16,21 +17,7 @@ import android.widget.SeekBar
  * Created by Ruby on 02/06/2016.
  */
 class MainActivity : AppCompatActivity() {
-    private lateinit var radioGroupColour: RadioGroup
-    private lateinit var radioGroupLayout: RadioGroup
     private lateinit var seekBar: SeekBar
-
-    private var radioGroupOnCheckedChangeListenerColour: RadioGroup.OnCheckedChangeListener =
-        RadioGroup.OnCheckedChangeListener { _, checkedId ->
-            val selectedIndex = radioGroupColour.findViewById<RadioButton>(checkedId)
-            preferences.selectedKeyboardColorIndex = radioGroupColour.indexOfChild(selectedIndex)
-        }
-
-    private var radioGroupOnCheckedChangeListenerLayout: RadioGroup.OnCheckedChangeListener =
-        RadioGroup.OnCheckedChangeListener { _, checkedId ->
-            val selectedIndex = radioGroupLayout.findViewById<RadioButton>(checkedId)
-            preferences.selectedKeyboardLayoutIndex = radioGroupLayout.indexOfChild(selectedIndex)
-        }
 
     private val preferences: Preferences by lazy { Preferences(this) }
 
@@ -44,16 +31,22 @@ class MainActivity : AppCompatActivity() {
         // perform seek bar change listener event used for getting the progress value
         seekBar.setOnSeekBarChangeListener(OnSeekBarChangeListener())
 
-        radioGroupColour = findViewById<View>(R.id.radiogroupcolour) as RadioGroup
-        radioGroupColour.setOnCheckedChangeListener(radioGroupOnCheckedChangeListenerColour)
+        findViewById<RadioGroup>(R.id.radiogroupcolour).apply {
+            setSelectedChild(preferences.selectedKeyboardColorIndex)
+            setOnCheckedChangeListener { _, checkedId ->
+                preferences.selectedKeyboardColorIndex = getSelectedItemIndexById(checkedId)
+            }
+        }
 
-        radioGroupLayout = findViewById<View>(R.id.radiogrouplayout) as RadioGroup
-        radioGroupLayout.setOnCheckedChangeListener(radioGroupOnCheckedChangeListenerLayout)
+        findViewById<RadioGroup>(R.id.radiogrouplayout).apply {
+            setSelectedChild(preferences.selectedKeyboardLayoutIndex)
+            setOnCheckedChangeListener { _, checkedId ->
+                preferences.selectedKeyboardLayoutIndex = getSelectedItemIndexById(checkedId)
+            }
+        }
 
         loadPreferences()
     }
-
-
 
     private fun onFirstOpenApp() {
         if (!preferences.isFirstTimeAppOpen) {
@@ -142,14 +135,6 @@ class MainActivity : AppCompatActivity() {
     private fun loadPreferences() {
         val sharedPreferences = getSharedPreferences("MY_SHARED_PREF", Context.MODE_PRIVATE)
 
-        val savedCheckedRadioButtonColour =
-            radioGroupColour.getChildAt(preferences.selectedKeyboardColorIndex) as RadioButton
-        savedCheckedRadioButtonColour.isChecked = true
-
-        val savedCheckedRadioButtonLayout =
-            radioGroupLayout.getChildAt(preferences.selectedKeyboardLayoutIndex) as RadioButton
-        savedCheckedRadioButtonLayout.isChecked = true
-
         val setPreview = sharedPreferences.getInt("PREVIEW", 0)
         val setSound = sharedPreferences.getInt("SOUND", 1)
         val setVibrator = sharedPreferences.getInt("VIBRATE", 1)
@@ -189,6 +174,15 @@ class MainActivity : AppCompatActivity() {
         val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/gazlaws-dev/codeboard"))
 
         startActivity(i)
+    }
+
+    private fun RadioGroup.getSelectedItemIndexById(@IdRes selectedChildId: Int): Int {
+        val selectedChildView = findViewById<View>(selectedChildId)
+        return indexOfChild(selectedChildView)
+    }
+
+    private fun RadioGroup.setSelectedChild(childIndex: Int) {
+        (getChildAt(childIndex) as? RadioButton)?.isChecked = true
     }
 
     private inner class OnSeekBarChangeListener : SeekBar.OnSeekBarChangeListener {

@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Vibrator
 import android.support.annotation.IntRange
+import android.support.annotation.IntegerRes
 import android.support.annotation.LayoutRes
 import android.support.annotation.XmlRes
 import android.util.Log
@@ -36,13 +37,9 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     private var shiftLock = false
     private var isShiftOn = false
     private var isCtrlOn = false
+
+    @IntegerRes
     private var mKeyboardState = R.integer.keyboard_normal
-    // TODO: Change this to enum
-    private var mLayout: Int = 0
-    // TODO: Change this to boolean
-    private var mToprow: Int = 0
-    // TODO: Change this to enum
-    private var mSize: Int = 0
     private var timerLongPress: Timer? = null
     private var switchedKeyboard = false
 
@@ -144,7 +141,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 if (mKeyboardState == R.integer.keyboard_normal) {
                     //change to symbol keyboard
                     val symbolKeyboard =
-                        chooseKeyboard(mLayout, mToprow, mSize, R.integer.keyboard_sym)
+                        chooseKeyboard(R.integer.keyboard_sym)
 
                     keyboardView!!.keyboard = symbolKeyboard
 
@@ -152,7 +149,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 } else if (mKeyboardState == R.integer.keyboard_sym) {
                     //change to normal keyboard
                     val normalKeyboard =
-                        chooseKeyboard(mLayout, mToprow, mSize, R.integer.keyboard_normal)
+                        chooseKeyboard(R.integer.keyboard_normal)
 
                     keyboardView!!.keyboard = normalKeyboard
                     mKeyboardState = R.integer.keyboard_normal
@@ -344,23 +341,20 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     }
 
-    private fun chooseKeyboard(
-        @IntRange(from = 0L, to = 1L) layout: Int,
-        @IntRange(from = 0L, to = 1L) toprow: Int,
-        @IntRange(from = 0L, to = 3L) size: Int,
-        mode: Int
-    ): Keyboard {
+    private fun chooseKeyboard(@IntegerRes mode: Int): Keyboard {
+        @IntRange(from = 0L, to = 1L)
+        val topRowIndex = if (preferences.isDpadOn) 1 else 0
+        val sizeIndex = preferences.keyboardSize
         @XmlRes
-        val keyboardXmlRes = if (layout == 0) {
-            QWERTY_KEYBOARDS[size][toprow]
+        val keyboardXmlRes = if (preferences.selectedKeyboardLayoutIndex == 0) {
+            QWERTY_KEYBOARDS[sizeIndex][topRowIndex]
         } else {
-            AZERTY_KEYBOARDS[size][toprow]
+            AZERTY_KEYBOARDS[sizeIndex][topRowIndex]
         }
         return Keyboard(this, keyboardXmlRes, mode)
     }
 
     override fun onCreateInputView(): View? {
-        val localPreferences = getSharedPreferences(SHARED_PREF_FILE, Context.MODE_PRIVATE)
         @LayoutRes
         val keyboardLayoutRes =
             KEYBOARD_LAYOUT_RESES.getOrElse(preferences.selectedKeyboardColorIndex) { R.layout.keyboard }
@@ -373,13 +367,10 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         isShiftOn = false
         isCtrlOn = false
 
-        mLayout = localPreferences.getInt(KEY_RADIO_INDEX_LAYOUT, 0)
-        mSize = localPreferences.getInt(KEY_SIZE, 2)
-        mToprow = localPreferences.getInt(KEY_ARROW_ROW, 1)
         mKeyboardState = R.integer.keyboard_normal
         //reset to normal
 
-        val keyboard = chooseKeyboard(mLayout, mToprow, mSize, mKeyboardState)
+        val keyboard = chooseKeyboard(mKeyboardState)
         keyboardView.keyboard = keyboard
         keyboardView.setOnKeyboardActionListener(this)
 
@@ -515,11 +506,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     companion object {
-        private const val SHARED_PREF_FILE = "MY_SHARED_PREF"
-        private const val KEY_RADIO_INDEX_LAYOUT = "RADIO_INDEX_LAYOUT"
-        private const val KEY_SIZE = "SIZE"
-        private const val KEY_ARROW_ROW = "ARROW_ROW"
-
         private const val DROID_EDIT_IME_OPTIONS = 1342177286
 
         @LayoutRes

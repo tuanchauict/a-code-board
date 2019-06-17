@@ -4,11 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.CheckBox
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -40,45 +38,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //  Declare a new thread to do a preference check
-        val t = Thread(Runnable {
-            //  Initialize SharedPreferences
-            val getPrefs = PreferenceManager
-                .getDefaultSharedPreferences(baseContext)
-
-            //  Create a new boolean and preference and set it to true
-            val isFirstStart = getPrefs.getBoolean("firstStart1", true)
-
-            //  If the activity has never started before...
-            if (isFirstStart) {
-                val change = findViewById<View>(R.id.change_button) as Button
-                change.visibility = View.GONE
-
-                //  Launch app intro
-                val i = Intent(this@MainActivity, IntroActivity::class.java)
-                startActivity(i)
-
-                //  Make a new preferences editor
-                val e = getPrefs.edit()
-
-                //  Edit preference to make it false because we don't want this to run again
-                e.putBoolean("firstStart1", false)
-
-                //  Apply changes
-                e.apply()
-            } else {
-                //Dev
-                //SharedPreferences.Editor e = getPrefs.edit();
-                //
-                //e.putBoolean("firstStart1", true);
-                //REMOVE BEFORE PUBLISHING ^
-                //
-                //e.apply();
-            }
-        })
-
-        // Start the thread
-        t.start()
+        onFirstOpenApp()
 
         seekBar = findViewById<View>(R.id.size_seekbar) as SeekBar
         // perform seek bar change listener event used for getting the progress value
@@ -106,9 +66,19 @@ class MainActivity : AppCompatActivity() {
         radioGroupLayout = findViewById<View>(R.id.radiogrouplayout) as RadioGroup
         radioGroupLayout.setOnCheckedChangeListener(radioGroupOnCheckedChangeListenerLayout)
 
-
         loadPreferences()
+    }
 
+    private fun onFirstOpenApp() {
+        if (!preferences.isFirstTimeAppOpen) {
+            return
+        }
+        preferences.isFirstTimeAppOpen = false
+
+        findViewById<View>(R.id.change_button).visibility = View.GONE
+
+        //  Launch app intro
+        Intent(this, IntroActivity::class.java).also(::startActivity)
     }
 
     private fun savePreferences(key: String, value: Int) {

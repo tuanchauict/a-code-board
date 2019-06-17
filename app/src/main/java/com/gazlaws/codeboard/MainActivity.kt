@@ -64,9 +64,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.change_button).visibility = View.GONE
 
         //  Launch app intro
-        Intent(this, IntroActivity::class.java).also {
-            startActivity(it)
-        }
+        Intent(this, IntroActivity::class.java).also(::startActivity)
     }
 
     private fun savePreferences(key: String, value: Int) {

@@ -17,8 +17,6 @@ import android.widget.SeekBar
  * Created by Ruby on 02/06/2016.
  */
 class MainActivity : AppCompatActivity() {
-    private lateinit var seekBar: SeekBar
-
     private val preferences: Preferences by lazy { Preferences(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,9 +25,9 @@ class MainActivity : AppCompatActivity() {
 
         onFirstOpenApp()
 
-        seekBar = findViewById<View>(R.id.size_seekbar) as SeekBar
-        // perform seek bar change listener event used for getting the progress value
-        seekBar.setOnSeekBarChangeListener(OnSeekBarChangeListener())
+        findViewById<SeekBar>(R.id.size_seekbar).apply {
+            setOnSeekBarChangeListener(OnSeekBarChangeListener())
+        }
 
         findViewById<RadioGroup>(R.id.radiogroupcolour).apply {
             setSelectedChild(preferences.selectedKeyboardColorIndex)

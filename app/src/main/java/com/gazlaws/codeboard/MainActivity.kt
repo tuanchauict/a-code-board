@@ -130,10 +130,13 @@ class MainActivity : AppCompatActivity() {
     private inner class OnSeekBarChangeListener : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
 
-        override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+        override fun onStartTrackingTouch(seekBar: SeekBar) {
+            closeKeyboard(seekBar)
+        }
 
         override fun onStopTrackingTouch(seekBar: SeekBar) {
             preferences.keyboardSize = seekBar.progress
+            closeKeyboard(seekBar)
         }
     }
 }

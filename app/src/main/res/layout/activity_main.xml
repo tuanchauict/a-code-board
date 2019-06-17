@@ -59,40 +59,31 @@
             android:text="Keyboard Size"
             android:textSize="20sp" />
 
-
         <SeekBar
             android:id="@+id/size_seekbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="3"
-            android:onClick="closeKeyboard"
-            android:progress="2" />
+            android:max="3" />
 
-        <RelativeLayout
-            android:id="@+id/relative_layout"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:orientation="horizontal">
+            android:layout_marginBottom="8dp">
 
             <TextView
-                android:id="@+id/smallest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
+                android:layout_gravity="left"
                 android:text="Smallest (for tablets)" />
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
                 android:text="Large" />
 
-        </RelativeLayout>
+        </FrameLayout>
 
 
         <TextView

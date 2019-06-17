@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         onFirstOpenApp()
 
         findViewById<SeekBar>(R.id.size_seekbar).apply {
+            progress = preferences.keyboardSize
             setOnSeekBarChangeListener(OnSeekBarChangeListener())
         }
 
@@ -43,7 +44,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        loadPreferences()
+        findViewById<CheckBox>(R.id.check_preview).apply {
+            isChecked = preferences.isPreviewEnabled
+        }
+
+        findViewById<CheckBox>(R.id.check_sound).apply {
+            isChecked = preferences.isSoundOn
+        }
+        findViewById<CheckBox>(R.id.check_vibrator).apply {
+            isChecked = preferences.isVibrateOn
+        }
+        findViewById<CheckBox>(R.id.check_no_arrow).apply {
+            isChecked = preferences.isDpadOn
+        }
     }
 
     private fun onFirstOpenApp() {
@@ -128,33 +141,6 @@ class MainActivity : AppCompatActivity() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         imm.hideSoftInputFromWindow(v.windowToken, 0)
-    }
-
-    private fun loadPreferences() {
-        val sharedPreferences = getSharedPreferences("MY_SHARED_PREF", Context.MODE_PRIVATE)
-
-        val setPreview = sharedPreferences.getInt("PREVIEW", 0)
-        val setSound = sharedPreferences.getInt("SOUND", 1)
-        val setVibrator = sharedPreferences.getInt("VIBRATE", 1)
-        val setSize = sharedPreferences.getInt("SIZE", 2)
-
-        val setArrow = sharedPreferences.getInt("ARROW_ROW", 1)
-        val preview = findViewById<View>(R.id.check_preview) as CheckBox
-
-        val sound = findViewById<View>(R.id.check_sound) as CheckBox
-        val vibrate = findViewById<View>(R.id.check_vibrator) as CheckBox
-        val noarrow = findViewById<View>(R.id.check_no_arrow) as CheckBox
-        val size = findViewById<View>(R.id.size_seekbar) as SeekBar
-
-        preview.isChecked = setPreview == 1
-
-        sound.isChecked = setSound == 1
-
-        vibrate.isChecked = setVibrator == 1
-
-        noarrow.isChecked = setArrow != 1
-
-        size.progress = setSize
     }
 
     fun openPlay(v: View) {

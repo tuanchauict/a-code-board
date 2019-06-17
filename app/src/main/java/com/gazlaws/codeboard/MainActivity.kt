@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.change_keyboard).visibility = View.GONE
 
-        //  Launch app intro
+        // Launch app intro
         Intent(this, IntroActivity::class.java).also(::startActivity)
     }
 
@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun openTutorial(v: View) {
-        val i = Intent(this@MainActivity, IntroActivity::class.java)
+        val i = Intent(this, IntroActivity::class.java)
         startActivity(i)
     }
 

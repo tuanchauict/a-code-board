@@ -13,42 +13,43 @@
             android:id="@+id/change_keyboard"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Change Keyboard" />
+            android:text="@string/change_keyboard" />
 
         <EditText
             android:id="@+id/hint_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="Re-open keyboard to see changes" />
+            android:hint="@string/re_open_keyboard_to_see_changes"
+            android:inputType="text" />
 
         <CheckBox
             android:id="@+id/check_no_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Replace arrows with cut/copy/paste shortcuts?" />
+            android:text="@string/replace_arrows_with_cut_copy_paste_shortcuts" />
 
         <CheckBox
             android:id="@+id/check_preview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Popup previews of characters?" />
+            android:text="@string/popup_previews_of_characters" />
 
         <CheckBox
             android:id="@+id/check_sound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Sound on keypress?" />
+            android:text="@string/sound_on_keypress" />
 
         <CheckBox
             android:id="@+id/check_vibrator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Vibrate on keypress?" />
+            android:text="@string/vibrate_on_keypress" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -56,7 +57,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="8dp"
-            android:text="Keyboard Size"
+            android:text="@string/keyboard_size"
             android:textSize="20sp" />
 
         <SeekBar
@@ -75,25 +76,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:text="Smallest (for tablets)" />
+                android:text="@string/smallest_for_tablets" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="Large" />
-
+                android:text="@string/large" />
         </FrameLayout>
-
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="24dp"
-            android:text="Colour"
+            android:text="@string/colour"
             android:textSize="20sp" />
-
 
         <RadioGroup
             android:id="@+id/radiogroupcolour"
@@ -109,7 +107,7 @@
                 android:layout_margin="16dp"
                 android:button="@drawable/selectmd"
                 android:onClick="closeKeyboard"
-                android:text=" Material Dark"
+                android:text="@string/material_dark"
 
                 />
 
@@ -120,7 +118,7 @@
                 android:layout_margin="16dp"
                 android:button="@drawable/selectml"
                 android:onClick="closeKeyboard"
-                android:text=" Material Light" />
+                android:text="@string/material_light" />
 
             <RadioButton
                 android:id="@+id/black_button"
@@ -129,7 +127,7 @@
                 android:layout_margin="16dp"
                 android:button="@drawable/selectblack"
                 android:onClick="closeKeyboard"
-                android:text=" Pure Black" />
+                android:text="@string/pure_black" />
 
             <RadioButton
                 android:id="@+id/white_button"
@@ -138,7 +136,7 @@
                 android:layout_margin="16dp"
                 android:button="@drawable/selectwhite"
                 android:onClick="closeKeyboard"
-                android:text=" White" />
+                android:text="@string/white" />
 
             <RadioButton
                 android:id="@+id/blue_button"
@@ -147,7 +145,7 @@
                 android:layout_margin="16dp"
                 android:button="@drawable/selectblue"
                 android:onClick="closeKeyboard"
-                android:text=" Blue" />
+                android:text="@string/blue" />
 
             <RadioButton
                 android:id="@+id/purple_button"
@@ -158,24 +156,15 @@
                 android:button="@drawable/selectpurple"
                 android:checked="false"
                 android:onClick="closeKeyboard"
-                android:text=" Purple" />
-
+                android:text="@string/purple" />
         </RadioGroup>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-
-            android:text="Layout"
+            android:text="@string/layout"
             android:textSize="20sp" />
-        <!--todolater-->
-        <!--<CheckBox-->
-        <!--android:id="@+id/editrow"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Replace arrow keys with edit options (select/cut/copy/paste)"-->
-        <!--/>-->
 
         <RadioGroup
             android:id="@+id/radiogrouplayout"
@@ -190,9 +179,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:onClick="closeKeyboard"
-                android:text="Qwerty"
-
-                />
+                android:text="@string/qwerty" />
 
             <RadioButton
                 android:id="@+id/azertylayout"
@@ -201,25 +188,22 @@
                 android:layout_margin="8dp"
                 android:checked="false"
                 android:onClick="closeKeyboard"
-                android:text="Azerty" />
+                android:text="@string/azerty" />
+
             <!--<RadioButton-->
-            <!--android:id="@+id/dvoraklayout"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="16dp"-->
-            <!--android:onClick="closeKeyboard"-->
-            <!--android:text="  Dvorak"-->
-
-            <!--/>-->
-
-
+                <!--android:id="@+id/dvoraklayout"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="16dp"-->
+                <!--android:onClick="closeKeyboard"-->
+                <!--android:text="Dvorak" />-->
         </RadioGroup>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Pay if you can :)"
+            android:text="@string/pay_if_you_can"
             android:visibility="gone" />
 
         <Button
@@ -227,28 +211,25 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:onClick="openTutorial"
-            android:text="Tutorial to enable keyboard" />
-
+            android:text="@string/tutorial_to_enable_keyboard" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:onClick="openPlay"
-            android:text="Rate on Google Play" />
+            android:text="@string/rate_on_google_play" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="This app is free, open-source and does not read your data:" />
+            android:text="@string/this_app_is_free_open_source_and_does_not_read_your_data" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="48dp"
             android:onClick="openGithub"
-            android:text="Check out the source code" />
-
-
+            android:text="@string/check_out_the_source_code" />
     </LinearLayout>
 </ScrollView>

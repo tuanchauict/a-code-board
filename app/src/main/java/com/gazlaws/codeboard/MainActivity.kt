@@ -42,23 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         seekBar = findViewById<View>(R.id.size_seekbar) as SeekBar
         // perform seek bar change listener event used for getting the progress value
-        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            var progressChangedValue = seekBar.progress
-
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                progressChangedValue = progress
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
-
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-                //                Toast.makeText(MainActivity.this, "Seek bar progress is :" + progressChangedValue,
-                //                        Toast.LENGTH_SHORT).show();
-                savePreferences("SIZE", progressChangedValue)
-            }
-        })
+        seekBar.setOnSeekBarChangeListener(OnSeekBarChangeListener())
 
         radioGroupColour = findViewById<View>(R.id.radiogroupcolour) as RadioGroup
         radioGroupColour.setOnCheckedChangeListener(radioGroupOnCheckedChangeListenerColour)
@@ -68,6 +52,8 @@ class MainActivity : AppCompatActivity() {
 
         loadPreferences()
     }
+
+
 
     private fun onFirstOpenApp() {
         if (!preferences.isFirstTimeAppOpen) {
@@ -203,5 +189,15 @@ class MainActivity : AppCompatActivity() {
         val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/gazlaws-dev/codeboard"))
 
         startActivity(i)
+    }
+
+    private inner class OnSeekBarChangeListener : SeekBar.OnSeekBarChangeListener {
+        override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
+
+        override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+
+        override fun onStopTrackingTouch(seekBar: SeekBar) {
+            preferences.keyboardSize = seekBar.progress
+        }
     }
 }

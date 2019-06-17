@@ -22,30 +22,23 @@ class MainActivity : AppCompatActivity() {
     private lateinit var radioGroupLayout: RadioGroup
     private lateinit var seekBar: SeekBar
 
-
-    private val RADIO_INDEX_COLOUR = "RADIO_INDEX_COLOUR"
-    private val RADIO_INDEX_LAYOUT = "RADIO_INDEX_LAYOUT"
-
     private var radioGroupOnCheckedChangeListenerColour: RadioGroup.OnCheckedChangeListener =
         RadioGroup.OnCheckedChangeListener { _, checkedId ->
-            val checkedRadioButtonColour =
-                radioGroupColour.findViewById<View>(checkedId) as RadioButton
-            val checkedIndexColour = radioGroupColour.indexOfChild(checkedRadioButtonColour)
-            savePreferences(RADIO_INDEX_COLOUR, checkedIndexColour)
+            val selectedIndex = radioGroupColour.findViewById<RadioButton>(checkedId)
+            preferences.selectedKeyboardColorIndex = radioGroupColour.indexOfChild(selectedIndex)
         }
 
     private var radioGroupOnCheckedChangeListenerLayout: RadioGroup.OnCheckedChangeListener =
         RadioGroup.OnCheckedChangeListener { _, checkedId ->
-            val checkedRadioButtonLayout =
-                radioGroupLayout.findViewById<View>(checkedId) as RadioButton
-            val checkedIndexLayout = radioGroupLayout.indexOfChild(checkedRadioButtonLayout)
-            savePreferences(RADIO_INDEX_LAYOUT, checkedIndexLayout)
+            val selectedIndex = radioGroupLayout.findViewById<RadioButton>(checkedId)
+            preferences.selectedKeyboardLayoutIndex = radioGroupLayout.indexOfChild(selectedIndex)
         }
+
+    private val preferences: Preferences by lazy { Preferences(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
         //  Declare a new thread to do a preference check
         val t = Thread(Runnable {
@@ -58,8 +51,6 @@ class MainActivity : AppCompatActivity() {
 
             //  If the activity has never started before...
             if (isFirstStart) {
-
-
                 val change = findViewById<View>(R.id.change_button) as Button
                 change.visibility = View.GONE
 
@@ -75,7 +66,6 @@ class MainActivity : AppCompatActivity() {
 
                 //  Apply changes
                 e.apply()
-
             } else {
                 //Dev
                 //SharedPreferences.Editor e = getPrefs.edit();
@@ -89,10 +79,6 @@ class MainActivity : AppCompatActivity() {
 
         // Start the thread
         t.start()
-
-        //debug only
-        //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
 
         seekBar = findViewById<View>(R.id.size_seekbar) as SeekBar
         // perform seek bar change listener event used for getting the progress value
@@ -200,14 +186,12 @@ class MainActivity : AppCompatActivity() {
     private fun loadPreferences() {
         val sharedPreferences = getSharedPreferences("MY_SHARED_PREF", Context.MODE_PRIVATE)
 
-        val savedRadioColour = sharedPreferences.getInt(RADIO_INDEX_COLOUR, 0)
         val savedCheckedRadioButtonColour =
-            radioGroupColour.getChildAt(savedRadioColour) as RadioButton
+            radioGroupColour.getChildAt(preferences.selectedKeyboardColorIndex) as RadioButton
         savedCheckedRadioButtonColour.isChecked = true
 
-        val savedRadioLayout = sharedPreferences.getInt(RADIO_INDEX_LAYOUT, 0)
         val savedCheckedRadioButtonLayout =
-            radioGroupLayout.getChildAt(savedRadioLayout) as RadioButton
+            radioGroupLayout.getChildAt(preferences.selectedKeyboardLayoutIndex) as RadioButton
         savedCheckedRadioButtonLayout.isChecked = true
 
         val setPreview = sharedPreferences.getInt("PREVIEW", 0)

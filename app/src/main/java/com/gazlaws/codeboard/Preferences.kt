@@ -8,6 +8,10 @@ class Preferences(context: Context) {
     private val sharePreferences: SharedPreferences =
         context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
 
+    var isFirstTimeAppOpen: Boolean
+        get() = sharePreferences.getBoolean(KEY_IS_FIRST_TIME_APP_OPEN, true)
+        set(value) = sharePreferences.edit().putBoolean(KEY_IS_FIRST_TIME_APP_OPEN, value).apply()
+
     var selectedKeyboardColorIndex: Int
         @IntRange(from = 0, to = 5L)
         get() = sharePreferences.getInt(KEY_SELECTED_COLOR_INDEX, 0)
@@ -44,6 +48,8 @@ class Preferences(context: Context) {
 
     private companion object {
         const val FILE_NAME = "CodeBoard"
+
+        const val KEY_IS_FIRST_TIME_APP_OPEN = "IS_FIRST_TIME_APP_OPEN"
 
         const val KEY_SELECTED_COLOR_INDEX = "KEY_SELECTED_COLOR_INDEX"
         const val KEY_IS_PREVIEW_ENABLED = "IS_PREVIEW_ENABLED"

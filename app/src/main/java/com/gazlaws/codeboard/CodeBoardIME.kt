@@ -50,304 +50,64 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     private var switchedKeyboard = false
 
     private fun onKeyCtrl(code: Int, ic: InputConnection?) {
-        var codeChar = code.toChar()
-        val now2 = System.currentTimeMillis()
-        when (codeChar) {
-            'a', 'A' -> if (sEditorInfo.imeOptions == 1342177286)
-            //fix for DroidEdit
-            {
-                currentInputConnection.performContextMenuAction(android.R.id.selectAll)
-            } else
-                ic!!.sendKeyEvent(
-                    KeyEvent(
-                        now2 + 1,
-                        now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_A,
-                        0,
-                        META_CTRL_ON
-                    )
+        val codeChar = code.toChar().toUpperCase()
+        if (sEditorInfo.isDroidEdit() && codeChar in DROID_EDIT_PROBLEM_KEY_CODES) {
+            val actionKey = if (codeChar == 'Z' && !isShiftOn) 'z' else codeChar
+            val action = DROID_EDIT_PROBLEM_KEY_CODES[actionKey] ?: return
+            currentInputConnection.performContextMenuAction(action)
+            if (codeChar == 'Z') {
+                isShiftOn = false
+                ic?.sendKeyEventOnce(
+                    KeyEvent.ACTION_UP,
+                    KEYCODE_SHIFT_LEFT,
+                    META_SHIFT_ON,
+                    System.currentTimeMillis()
                 )
-            'c', 'C' -> if (sEditorInfo.imeOptions == 1342177286)
-            //fix for DroidEdit
-            {
-                currentInputConnection.performContextMenuAction(android.R.id.copy)
-            } else
-                ic!!.sendKeyEvent(
-                    KeyEvent(
-                        now2 + 1,
-                        now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_C,
-                        0,
-                        META_CTRL_ON
-                    )
-                )
-            'v', 'V' -> if (sEditorInfo.imeOptions == 1342177286)
-            //fix for DroidEdit
-            {
-                currentInputConnection.performContextMenuAction(android.R.id.paste)
-            } else
-                ic!!.sendKeyEvent(
-                    KeyEvent(
-                        now2 + 1,
-                        now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_V,
-                        0,
-                        META_CTRL_ON
-                    )
-                )
-            'x', 'X' -> if (sEditorInfo.imeOptions == 1342177286)
-            //fix for DroidEdit
-            {
-                currentInputConnection.performContextMenuAction(android.R.id.cut)
-            } else
-                ic!!.sendKeyEvent(
-                    KeyEvent(
-                        now2 + 1,
-                        now2 + 1,
-                        KeyEvent.ACTION_DOWN,
-                        KeyEvent.KEYCODE_X,
-                        0,
-                        META_CTRL_ON
-                    )
-                )
-            'z', 'Z' -> if (isShiftOn) {
-                if (ic != null) {
-                    if (sEditorInfo.imeOptions == 1342177286)
-                    //fix for DroidEdit
-                    {
-                        currentInputConnection.performContextMenuAction(android.R.id.redo)
-                    } else
-                        ic.sendKeyEvent(
-                            KeyEvent(
-                                now2 + 1,
-                                now2 + 1,
-                                KeyEvent.ACTION_DOWN,
-                                KeyEvent.KEYCODE_Z,
-                                0,
-                                META_CTRL_ON or META_SHIFT_ON
-                            )
-                        )
 
-                    val nowS = System.currentTimeMillis()
-                    isShiftOn = false
-                    ic.sendKeyEvent(
-                        KeyEvent(
-                            nowS,
-                            nowS,
-                            KeyEvent.ACTION_UP,
-                            KEYCODE_SHIFT_LEFT,
-                            0,
-                            META_SHIFT_ON
-                        )
-                    )
-
-                    shiftLock = false
-                    shiftKeyUpdateView()
-                }
-            } else {
-                //Log.e("isCtrlOn", "z");
-                if (sEditorInfo.imeOptions == 1342177286)
-                //fix for DroidEdit
-                {
-                    currentInputConnection.performContextMenuAction(android.R.id.undo)
-                } else
-                    ic!!.sendKeyEvent(
-                        KeyEvent(
-                            now2 + 1,
-                            now2 + 1,
-                            KeyEvent.ACTION_DOWN,
-                            KeyEvent.KEYCODE_Z,
-                            0,
-                            META_CTRL_ON
-                        )
-                    )
-
-            }
-
-            'b' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_B, 0, META_CTRL_ON
-                )
-            )
-
-            'd' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_D, 0, META_CTRL_ON
-                )
-            )
-
-            'e' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_E, 0, META_CTRL_ON
-                )
-            )
-            'f' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_F, 0, META_CTRL_ON
-                )
-            )
-            'g' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_G, 0, META_CTRL_ON
-                )
-            )
-            'h' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_H, 0, META_CTRL_ON
-                )
-            )
-            'i' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_I, 0, META_CTRL_ON
-                )
-            )
-            'j' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_J, 0, META_CTRL_ON
-                )
-            )
-
-            'k' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_K, 0, META_CTRL_ON
-                )
-            )
-            'l' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_L, 0, META_CTRL_ON
-                )
-            )
-            'm' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_M, 0, META_CTRL_ON
-                )
-            )
-            'n' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_N, 0, META_CTRL_ON
-                )
-            )
-
-            'o' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_O, 0, META_CTRL_ON
-                )
-            )
-            'p' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_P, 0, META_CTRL_ON
-                )
-            )
-
-
-            'q' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_P, 0, META_CTRL_ON
-                )
-            )
-            'r' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_R, 0, META_CTRL_ON
-                )
-            )
-
-            's' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_S, 0, META_CTRL_ON
-                )
-            )
-
-            't' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_T, 0, META_CTRL_ON
-                )
-            )
-
-            'u' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_U, 0, META_CTRL_ON
-                )
-            )
-
-            'w' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_W, 0, META_CTRL_ON
-                )
-            )
-
-
-            'y' -> ic!!.sendKeyEvent(
-                KeyEvent(
-                    now2 + 1, now2 + 1,
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_Y, 0, META_CTRL_ON
-                )
-            )
-
-            else -> if (Character.isLetter(codeChar) && isShiftOn) {
-                codeChar = Character.toUpperCase(codeChar)
-                ic!!.commitText(codeChar.toString(), 1)
-                if (!shiftLock) {
-                    val nowS = System.currentTimeMillis()
-                    isShiftOn = false
-                    ic.sendKeyEvent(
-                        KeyEvent(
-                            nowS,
-                            nowS,
-                            KeyEvent.ACTION_UP,
-                            KEYCODE_SHIFT_LEFT,
-                            0,
-                            META_SHIFT_ON
-                        )
-                    )
-
-                    //Log.e("CodeboardIME", "Unshifted b/c no lock");
-                }
+                shiftLock = false
                 shiftKeyUpdateView()
             }
+            return
+        }
+        val keyCode = CHAR_TO_KEYCODE_MAP[codeChar]
+        if (keyCode == null) {
+            ic?.commitText("$codeChar", 1)
+            if (!shiftLock) {
+                isShiftOn = false
+                ic?.sendKeyEventOnce(
+                    KeyEvent.ACTION_UP,
+                    KEYCODE_SHIFT_LEFT,
+                    META_SHIFT_ON
+                )
+
+                //Log.e("CodeboardIME", "Unshifted b/c no lock");
+            }
+            shiftKeyUpdateView()
+            return
+        }
+
+        val metaState = if (codeChar == 'Z' && isShiftOn) {
+            META_CTRL_ON or META_SHIFT_ON
+        } else {
+            META_CTRL_ON
+        }
+
+        ic?.sendKeyEventOnce(
+            KeyEvent.ACTION_DOWN,
+            keyCode,
+            metaState,
+            System.currentTimeMillis() + 1
+        )
+        if (codeChar == 'Z'  && isShiftOn) {
+            isShiftOn = false
+            ic?.sendKeyEventOnce(
+                KeyEvent.ACTION_UP,
+                KEYCODE_SHIFT_LEFT,
+                META_SHIFT_ON
+            )
+
+            shiftLock = false
+            shiftKeyUpdateView()
         }
     }
 
@@ -750,37 +510,25 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     private fun handleArrow(keyCode: Int) {
-        val ic = currentInputConnection
-        val now2 = System.currentTimeMillis()
-        if (isCtrlOn && isShiftOn) {
-            ic.sendKeyEvent(
-                KeyEvent(
-                    now2,
-                    now2,
+        val ic = currentInputConnection ?: return
+        when {
+            isCtrlOn && isShiftOn -> {
+                ic.sendKeyEventOnce(
                     KeyEvent.ACTION_DOWN,
                     KEYCODE_CTRL_LEFT,
-                    0,
                     META_SHIFT_ON or META_CTRL_ON
                 )
-            )
-            moveSelection(keyCode)
-            ic.sendKeyEvent(
-                KeyEvent(
-                    now2,
-                    now2,
+                moveSelection(keyCode)
+                ic.sendKeyEventOnce(
                     KeyEvent.ACTION_UP,
                     KEYCODE_CTRL_LEFT,
-                    0,
                     META_SHIFT_ON or META_CTRL_ON
                 )
-            )
 
-        } else if (isShiftOn)
-            moveSelection(keyCode)
-        else if (isCtrlOn)
-            ic.sendKeyEvent(KeyEvent(now2, now2, KeyEvent.ACTION_DOWN, keyCode, 0, META_CTRL_ON))
-        else {
-            sendDownUpKeyEvents(keyCode)
+            }
+            isShiftOn -> moveSelection(keyCode)
+            isCtrlOn -> ic.sendKeyEventOnce(KeyEvent.ACTION_DOWN, keyCode, META_CTRL_ON)
+            else -> sendDownUpKeyEvents(keyCode)
         }
     }
 
@@ -788,42 +536,45 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         //        inputMethodService.sendDownKeyEvent(KeyEvent.KEYCODE_SHIFT_LEFT, 0);
         //        inputMethodService.sendDownAndUpKeyEvent(dpad_keyCode, 0);
         //        inputMethodService.sendUpKeyEvent(KeyEvent.KEYCODE_SHIFT_LEFT, 0);
-        val ic = currentInputConnection
-        val now2 = System.currentTimeMillis()
-        ic.sendKeyEvent(
-            KeyEvent(
-                now2,
-                now2,
-                KeyEvent.ACTION_DOWN,
-                KEYCODE_SHIFT_LEFT,
-                0,
-                META_SHIFT_ON or META_CTRL_ON
-            )
+        val ic = currentInputConnection ?: return
+        ic.sendKeyEventOnce(
+            KeyEvent.ACTION_DOWN,
+            KEYCODE_SHIFT_LEFT,
+            META_SHIFT_ON or META_CTRL_ON
         )
-        if (isCtrlOn)
-            ic.sendKeyEvent(
-                KeyEvent(
-                    now2,
-                    now2,
-                    KeyEvent.ACTION_DOWN,
-                    keyCode,
-                    0,
-                    META_SHIFT_ON or META_CTRL_ON
-                )
-            )
-        else
-            ic.sendKeyEvent(KeyEvent(now2, now2, KeyEvent.ACTION_DOWN, keyCode, 0, META_SHIFT_ON))
-        ic.sendKeyEvent(
-            KeyEvent(
-                now2,
-                now2,
-                KeyEvent.ACTION_UP,
-                KEYCODE_SHIFT_LEFT,
-                0,
-                META_SHIFT_ON or META_CTRL_ON
-            )
+
+        val metaState = if (isCtrlOn) META_SHIFT_ON or META_CTRL_ON else META_SHIFT_ON
+        ic.sendKeyEventOnce(
+            KeyEvent.ACTION_DOWN,
+            keyCode,
+            metaState
+        )
+
+        ic.sendKeyEventOnce(
+            KeyEvent.ACTION_UP,
+            KEYCODE_SHIFT_LEFT,
+            META_SHIFT_ON or META_CTRL_ON
         )
     }
+
+    private fun InputConnection.sendKeyEventOnce(
+        action: Int,
+        code: Int,
+        metaState: Int,
+        sendingTimeMillis: Long = System.currentTimeMillis()
+    ) {
+        val keyEvent = KeyEvent(
+            sendingTimeMillis,
+            sendingTimeMillis,
+            action,
+            code,
+            0,
+            metaState
+        )
+        sendKeyEvent(keyEvent)
+    }
+
+    private fun EditorInfo.isDroidEdit(): Boolean = imeOptions == DROID_EDIT_IME_OPTIONS
 
     companion object {
         private const val SHARED_PREF_FILE = "MY_SHARED_PREF"
@@ -834,6 +585,8 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         private const val KEY_RADIO_INDEX_LAYOUT = "RADIO_INDEX_LAYOUT"
         private const val KEY_SIZE = "SIZE"
         private const val KEY_ARROW_ROW = "ARROW_ROW"
+
+        private const val DROID_EDIT_IME_OPTIONS = 1342177286
 
         @LayoutRes
         private val KEYBOARD_LAYOUT_RESES: Array<Int> = arrayOf(
@@ -861,5 +614,42 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             arrayOf(R.xml.azerty3e, R.xml.azerty3r)
         )
 
+        private val DROID_EDIT_PROBLEM_KEY_CODES = mapOf(
+            'A' to android.R.id.selectAll,
+            'C' to android.R.id.copy,
+            'V' to android.R.id.paste,
+            'X' to android.R.id.cut,
+            'z' to android.R.id.undo,
+            'Z' to android.R.id.redo
+        )
+
+        private val CHAR_TO_KEYCODE_MAP = mapOf(
+            'A' to KeyEvent.KEYCODE_A,
+            'B' to KeyEvent.KEYCODE_B,
+            'C' to KeyEvent.KEYCODE_C,
+            'D' to KeyEvent.KEYCODE_D,
+            'E' to KeyEvent.KEYCODE_E,
+            'F' to KeyEvent.KEYCODE_F,
+            'G' to KeyEvent.KEYCODE_G,
+            'H' to KeyEvent.KEYCODE_H,
+            'I' to KeyEvent.KEYCODE_I,
+            'J' to KeyEvent.KEYCODE_J,
+            'K' to KeyEvent.KEYCODE_K,
+            'L' to KeyEvent.KEYCODE_L,
+            'M' to KeyEvent.KEYCODE_M,
+            'N' to KeyEvent.KEYCODE_N,
+            'O' to KeyEvent.KEYCODE_O,
+            'P' to KeyEvent.KEYCODE_P,
+            'Q' to KeyEvent.KEYCODE_Q,
+            'R' to KeyEvent.KEYCODE_R,
+            'S' to KeyEvent.KEYCODE_S,
+            'T' to KeyEvent.KEYCODE_T,
+            'U' to KeyEvent.KEYCODE_U,
+            'V' to KeyEvent.KEYCODE_V,
+            'W' to KeyEvent.KEYCODE_W,
+            'X' to KeyEvent.KEYCODE_X,
+            'Y' to KeyEvent.KEYCODE_Y,
+            'Z' to KeyEvent.KEYCODE_Z
+        )
     }
 }

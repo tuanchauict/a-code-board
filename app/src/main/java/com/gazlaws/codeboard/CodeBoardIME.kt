@@ -99,15 +99,15 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         }
     )
 
-    private fun onKeyCtrl(code: Int, inputConnection: InputConnection?) {
+    private fun onKeyCtrl(code: Int) {
         val codeChar = code.toChar().toUpperCase()
         if (sEditorInfo.isDroidEdit() && codeChar in DROID_EDIT_PROBLEM_KEY_CODES) {
             val actionKey = if (codeChar == 'Z' && !isShiftOn) 'z' else codeChar
             val action = DROID_EDIT_PROBLEM_KEY_CODES[actionKey] ?: return
-            currentInputConnection.performContextMenuAction(action)
+            currentInputConnection?.performContextMenuAction(action)
             if (codeChar == 'Z') {
                 isShiftOn = false
-                inputConnection?.sendKeyEventOnce(
+                currentInputConnection?.sendKeyEventOnce(
                     KeyEvent.ACTION_UP,
                     KEYCODE_SHIFT_LEFT,
                     META_SHIFT_ON,
@@ -121,10 +121,10 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         }
         val keyCode = CHAR_TO_KEYCODE_MAP[codeChar]
         if (keyCode == null) {
-            inputConnection?.commitText("$codeChar", 1)
+            currentInputConnection?.commitText("$codeChar", 1)
             if (!isShiftLocked) {
                 isShiftOn = false
-                inputConnection?.sendKeyEventOnce(
+                currentInputConnection?.sendKeyEventOnce(
                     KeyEvent.ACTION_UP,
                     KEYCODE_SHIFT_LEFT,
                     META_SHIFT_ON
@@ -142,7 +142,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             META_CTRL_ON
         }
 
-        inputConnection?.sendKeyEventOnce(
+        currentInputConnection?.sendKeyEventOnce(
             KeyEvent.ACTION_DOWN,
             keyCode,
             metaState,
@@ -150,7 +150,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         )
         if (codeChar == 'Z' && isShiftOn) {
             isShiftOn = false
-            inputConnection?.sendKeyEventOnce(
+            currentInputConnection?.sendKeyEventOnce(
                 KeyEvent.ACTION_UP,
                 KEYCODE_SHIFT_LEFT,
                 META_SHIFT_ON
@@ -174,15 +174,14 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             action.invoke()
             return
         }
-        val inputConnection = currentInputConnection
 
         val code = primaryCode.toChar()
         when {
             isCtrlOn -> {
-                onKeyCtrl(primaryCode, inputConnection)
+                onKeyCtrl(primaryCode)
                 if (!isShiftLocked) {
                     isShiftOn = false
-                    inputConnection.sendKeyEventOnce(
+                    currentInputConnection?.sendKeyEventOnce(
                         KeyEvent.ACTION_UP,
                         KEYCODE_SHIFT_LEFT,
                         META_SHIFT_ON
@@ -194,11 +193,11 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 controlKeyUpdateView()
             }
             code.isLetter() && isShiftOn -> {
-                inputConnection.commitText("${code.toUpperCase()}", 1)
+                currentInputConnection?.commitText("${code.toUpperCase()}", 1)
                 if (!isShiftLocked) {
 
                     isShiftOn = false
-                    inputConnection.sendKeyEventOnce(
+                    currentInputConnection?.sendKeyEventOnce(
                         KeyEvent.ACTION_UP,
                         KEYCODE_SHIFT_LEFT,
                         META_SHIFT_ON
@@ -211,7 +210,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             }
             else -> {
                 if (!switchedKeyboard) {
-                    inputConnection.commitText("$code", 1)
+                    currentInputConnection?.commitText("$code", 1)
                 }
                 switchedKeyboard = false
             }

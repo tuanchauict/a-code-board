@@ -210,7 +210,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         timerLongPress = null
     }
 
-    @Suppress("DEPRECATION")
     private fun onKeyLongPress(keyCode: Int) {
         if (keyCode == KEYCODE_SHIFT) {
             isShiftLocked = !isShiftLocked
@@ -300,8 +299,8 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         val nonNullKeyboardView = keyboardView ?: return
         val nonNullKeyboard = nonNullKeyboardView.keyboard ?: return
 
-        val index = nonNullKeyboard.keys.indexOfFirst { it.label == "Ctrl" || it.label == "CTRL" }
-        nonNullKeyboard.keys.getOrNull(index)?.label = if (isCtrlOn) "CTRL" else "Ctrl"
+        val index = nonNullKeyboard.keys.indexOfFirst { it.label in TEXT_CONTROL.values }
+        nonNullKeyboard.keys.getOrNull(index)?.label = TEXT_CONTROL[isCtrlOn]
         nonNullKeyboardView.invalidateKey(index)
     }
 
@@ -309,8 +308,8 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         val nonNullKeyboardView = keyboardView ?: return
         val nonNullKeyboard = nonNullKeyboardView.keyboard ?: return
 
-        val index = nonNullKeyboard.keys.indexOfFirst { it.label == "Shft" || it.label == "SHFT" }
-        nonNullKeyboard.keys.getOrNull(index)?.label = if (isShiftOn) "SHFT" else "Shft"
+        val index = nonNullKeyboard.keys.indexOfFirst { it.label in TEXT_SHIFT.values }
+        nonNullKeyboard.keys.getOrNull(index)?.label = TEXT_SHIFT[isShiftOn]
         nonNullKeyboard.isShifted = isShiftOn
         nonNullKeyboardView.invalidateAllKeys()
     }
@@ -510,5 +509,8 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             'Y' to KeyEvent.KEYCODE_Y,
             'Z' to KeyEvent.KEYCODE_Z
         )
+
+        private val TEXT_SHIFT = BooleanMap("SHFT", "Shft")
+        private val TEXT_CONTROL = BooleanMap("CTRL", "Ctrl")
     }
 }

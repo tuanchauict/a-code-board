@@ -34,7 +34,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     private var keyboardView: KeyboardView? = null
     private var keyboard: Keyboard? = null
     private lateinit var sEditorInfo: EditorInfo
-    private var shiftLock = false
+    private var isShiftLocked = false
     private var isShiftOn = false
     private var isCtrlOn = false
 
@@ -62,7 +62,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                     System.currentTimeMillis()
                 )
 
-                shiftLock = false
+                isShiftLocked = false
                 shiftKeyUpdateView()
             }
             return
@@ -70,7 +70,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         val keyCode = CHAR_TO_KEYCODE_MAP[codeChar]
         if (keyCode == null) {
             inputConnection?.commitText("$codeChar", 1)
-            if (!shiftLock) {
+            if (!isShiftLocked) {
                 isShiftOn = false
                 inputConnection?.sendKeyEventOnce(
                     KeyEvent.ACTION_UP,
@@ -104,7 +104,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 META_SHIFT_ON
             )
 
-            shiftLock = false
+            isShiftLocked = false
             shiftKeyUpdateView()
         }
     }
@@ -187,7 +187,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                     META_SHIFT_ON
                 )
 
-                isShiftOn = if (shiftLock) true else !isShiftOn
+                isShiftOn = if (isShiftLocked) true else !isShiftOn
                 shiftKeyUpdateView()
             }
 
@@ -206,7 +206,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 when {
                     isCtrlOn -> {
                         onKeyCtrl(primaryCode, inputConnection)
-                        if (!shiftLock) {
+                        if (!isShiftLocked) {
                             isShiftOn = false
                             inputConnection.sendKeyEventOnce(
                                 KeyEvent.ACTION_UP,
@@ -221,7 +221,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                     }
                     code.isLetter() && isShiftOn -> {
                         inputConnection.commitText("${code.toUpperCase()}", 1)
-                        if (!shiftLock) {
+                        if (!isShiftLocked) {
 
                             isShiftOn = false
                             inputConnection.sendKeyEventOnce(
@@ -278,8 +278,8 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     private fun onKeyLongPress(keyCode: Int) {
         // Process long-click here
         if (keyCode == 16) {
-            shiftLock = !shiftLock
-            //Log.e("CodeBoardIME", "long press" + Boolean.toString(shiftLock));
+            isShiftLocked = !isShiftLocked
+            //Log.e("CodeBoardIME", "long press" + Boolean.toString(isShiftLocked));
             //and onKey will now happen
         }
 

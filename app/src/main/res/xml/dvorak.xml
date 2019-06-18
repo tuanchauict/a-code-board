@@ -1,36 +1,31 @@
 <Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
     android:horizontalGap="0px"
     android:keyHeight="7%p"
-    android:verticalGap="0px"
-    >
+    android:verticalGap="0px">
     <Row
-        android:rowEdgeFlags="top"
         android:keyWidth="25%p"
         android:keyHeight="4%p"
-       >
-    <Key
-        android:codes="53737"
-        android:isRepeatable="true"
-        android:keyLabel="Select All"
+        android:rowEdgeFlags="top">
+        <Key
+            android:codes="53737"
+            android:isRepeatable="true"
+            android:keyLabel="Select All" />
+        <Key
+            android:codes="53738"
+            android:isRepeatable="true"
+            android:keyLabel="Cut" />
         />
-    <Key
-        android:codes="53738"
-        android:isRepeatable="true"
-        android:keyLabel="Cut"/>
-       />
-    <Key
-        android:codes="53739"
-        android:isRepeatable="true"
-        android:keyLabel="Copy"/>
-    <Key
-        android:codes="53740"
+        <Key
+            android:codes="53739"
+            android:isRepeatable="true"
+            android:keyLabel="Copy" />
+        <Key
+            android:codes="53740"
 
-        android:keyLabel="Paste" />
+            android:keyLabel="Paste" />
 
-</Row>
-    <Row
-        android:keyHeight="5%p"
-        >
+    </Row>
+    <Row android:keyHeight="5%p">
         <Key
             android:codes="126"
             android:keyEdgeFlags="left"
@@ -72,18 +67,15 @@
             android:codes="-5"
             android:isRepeatable="true"
             android:keyEdgeFlags="right"
-            android:keyLabel="◀"/>
+            android:keyLabel="◀" />
     </Row>
 
-    <Row
-        android:keyHeight="6%p"
-        >
+    <Row android:keyHeight="6%p">
 
         <Key
             android:codes="96"
             android:keyEdgeFlags="left"
-            android:keyLabel="`"
-            />
+            android:keyLabel="`" />
         <Key
             android:codes="49"
             android:keyLabel="1" />
@@ -95,7 +87,7 @@
             android:keyLabel="3" />
         <Key
             android:codes="52"
-            android:keyLabel="4"/>
+            android:keyLabel="4" />
         <Key
             android:codes="53"
             android:keyLabel="5" />
@@ -110,18 +102,17 @@
             android:keyLabel="8" />
         <Key
             android:codes="57"
-            android:keyLabel="9"/>
+            android:keyLabel="9" />
         <Key
             android:codes="48"
             android:keyLabel="0" />
         <Key
             android:codes="91"
-            android:keyLabel="["
-            />
+            android:keyLabel="[" />
         <Key
             android:codes="93"
-            android:keyLabel="]"
-            android:keyEdgeFlags="right"/>
+            android:keyEdgeFlags="right"
+            android:keyLabel="]" />
 
     </Row>
     <Row>
@@ -176,8 +167,7 @@
         <Key
             android:codes="97"
             android:keyEdgeFlags="left"
-            android:keyLabel="a"
-            />
+            android:keyLabel="a" />
         <Key
             android:codes="111"
             android:keyLabel="o" />
@@ -204,17 +194,14 @@
             android:keyLabel="n" />
         <Key
             android:codes="115"
-            android:keyLabel="s"
-            />
+            android:keyLabel="s" />
         <Key
             android:codes="95,45"
-            android:keyLabel="_-"
-            />
+            android:keyLabel="_-" />
         <Key
             android:codes="-4"
             android:keyEdgeFlags="right"
-            android:keyLabel="Enter"
-           />
+            android:keyLabel="Enter" />
     </Row>
     <Row>
         <Key
@@ -244,12 +231,10 @@
             android:keyLabel="m" />
         <Key
             android:codes="119"
-            android:keyLabel="w"
-         />
+            android:keyLabel="w" />
         <Key
             android:codes="118"
-            android:keyLabel="v"
-            />
+            android:keyLabel="v" />
 
         <Key
             android:codes="122"
@@ -261,26 +246,24 @@
         android:keyHeight="6%p"
         android:rowEdgeFlags="bottom">
         <Key
-            android:keyEdgeFlags="left"
             android:codes="18"
-            android:keyLabel="Ctrl"
-            />
+            android:keyEdgeFlags="left"
+            android:keyLabel="Ctrl" />
         <Key
             android:codes="-13"
-            android:keyIcon="@drawable/globe_alt"/>
+            android:keyIcon="@drawable/globe_alt" />
         <Key
             android:codes="38"
             android:keyLabel="&amp; |"
             android:popupCharacters="|"
-            android:popupKeyboard="@layout/popup_layout"
-             />
+            android:popupKeyboard="@layout/popup_layout" />
 
 
         <Key
             android:codes="32"
             android:isRepeatable="true"
-            android:keyLabel="Space"
             android:keyWidth="25%p"
+            android:keyLabel="Space"
 
             />
 

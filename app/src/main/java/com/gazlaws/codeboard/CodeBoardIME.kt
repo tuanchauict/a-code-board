@@ -179,29 +179,16 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             }
 
             16 -> {
-                // Log.e("CodeBoardIME", "onKey" + Boolean.toString(shiftLock));
-                //Shift - runs after long press, so shiftlock may have just been activated
-                if (isShiftOn)
-                    inputConnection.sendKeyEventOnce(
-                        KeyEvent.ACTION_UP,
-                        KEYCODE_SHIFT_LEFT,
-                        META_SHIFT_ON
-                    )
-                else {
-                    inputConnection.sendKeyEventOnce(
-                        KeyEvent.ACTION_DOWN,
-                        KEYCODE_SHIFT_LEFT,
-                        META_SHIFT_ON
-                    )
-                }
+                // Shift - runs after long press, so shiftlock may have just been activated
+                val shiftKeyAction = if (isShiftOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
+                inputConnection.sendKeyEventOnce(
+                    shiftKeyAction,
+                    KEYCODE_SHIFT_LEFT,
+                    META_SHIFT_ON
+                )
 
-                if (shiftLock) {
-                    isShiftOn = true
-                    shiftKeyUpdateView()
-                } else {
-                    isShiftOn = !isShiftOn
-                    shiftKeyUpdateView()
-                }
+                isShiftOn = if (shiftLock) true else !isShiftOn
+                shiftKeyUpdateView()
             }
 
             9 ->

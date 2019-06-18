@@ -106,32 +106,15 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             val action = DROID_EDIT_PROBLEM_KEY_CODES[actionKey] ?: return
             currentInputConnection?.performContextMenuAction(action)
             if (codeChar == 'Z') {
-                isShiftOn = false
-                currentInputConnection?.sendKeyEventOnce(
-                    KeyEvent.ACTION_UP,
-                    KEYCODE_SHIFT_LEFT,
-                    META_SHIFT_ON
-                )
-
                 isShiftLocked = false
-                shiftKeyUpdateView()
+                releaseShiftKeyWhenNotLocked()
             }
             return
         }
         val keyCode = CHAR_TO_KEYCODE_MAP[codeChar]
         if (keyCode == null) {
             currentInputConnection?.commitText("$codeChar", 1)
-            if (!isShiftLocked) {
-                isShiftOn = false
-                currentInputConnection?.sendKeyEventOnce(
-                    KeyEvent.ACTION_UP,
-                    KEYCODE_SHIFT_LEFT,
-                    META_SHIFT_ON
-                )
-
-                //Log.e("CodeboardIME", "Unshifted b/c no lock");
-            }
-            shiftKeyUpdateView()
+            releaseShiftKeyWhenNotLocked()
             return
         }
 
@@ -148,15 +131,8 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             System.currentTimeMillis() + 1
         )
         if (codeChar == 'Z' && isShiftOn) {
-            isShiftOn = false
-            currentInputConnection?.sendKeyEventOnce(
-                KeyEvent.ACTION_UP,
-                KEYCODE_SHIFT_LEFT,
-                META_SHIFT_ON
-            )
-
             isShiftLocked = false
-            shiftKeyUpdateView()
+            releaseShiftKeyWhenNotLocked()
         }
     }
 

@@ -161,19 +161,12 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
             17 -> {
                 // Ctrl key
-                if (isCtrlOn)
-                    inputConnection.sendKeyEventOnce(
-                        KeyEvent.ACTION_UP,
-                        KEYCODE_CTRL_LEFT,
-                        META_CTRL_ON
-                    )
-                else
-                    inputConnection.sendKeyEventOnce(
-                        KeyEvent.ACTION_DOWN,
-                        KEYCODE_CTRL_LEFT,
-                        META_CTRL_ON
-                    )
-
+                val controlKeyAction = if (isCtrlOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
+                inputConnection.sendKeyEventOnce(
+                    controlKeyAction,
+                    KEYCODE_CTRL_LEFT,
+                    META_CTRL_ON
+                )
                 isCtrlOn = !isCtrlOn
                 controlKeyUpdateView()
             }

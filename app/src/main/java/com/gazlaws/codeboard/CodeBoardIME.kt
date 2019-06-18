@@ -110,8 +110,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 currentInputConnection?.sendKeyEventOnce(
                     KeyEvent.ACTION_UP,
                     KEYCODE_SHIFT_LEFT,
-                    META_SHIFT_ON,
-                    System.currentTimeMillis()
+                    META_SHIFT_ON
                 )
 
                 isShiftLocked = false
@@ -179,34 +178,13 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         when {
             isCtrlOn -> {
                 onKeyCtrl(primaryCode)
-                if (!isShiftLocked) {
-                    isShiftOn = false
-                    currentInputConnection?.sendKeyEventOnce(
-                        KeyEvent.ACTION_UP,
-                        KEYCODE_SHIFT_LEFT,
-                        META_SHIFT_ON
-                    )
-
-                    shiftKeyUpdateView()
-                }
+                releaseShiftKeyWhenNotLocked()
                 isCtrlOn = false
                 controlKeyUpdateView()
             }
-            code.isLetter() && isShiftOn -> {
+            isShiftOn && code.isLetter() -> {
                 currentInputConnection?.commitText("${code.toUpperCase()}", 1)
-                if (!isShiftLocked) {
-
-                    isShiftOn = false
-                    currentInputConnection?.sendKeyEventOnce(
-                        KeyEvent.ACTION_UP,
-                        KEYCODE_SHIFT_LEFT,
-                        META_SHIFT_ON
-                    )
-
-                    //Log.e("CodeboardIME", "Unshifted b/c no lock");
-                }
-
-                shiftKeyUpdateView()
+                releaseShiftKeyWhenNotLocked()
             }
             else -> {
                 if (!switchedKeyboard) {
@@ -215,6 +193,20 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 switchedKeyboard = false
             }
         }
+    }
+
+    private fun releaseShiftKeyWhenNotLocked() {
+        if (isShiftLocked) {
+            return
+        }
+        isShiftOn = false
+        currentInputConnection?.sendKeyEventOnce(
+            KeyEvent.ACTION_UP,
+            KEYCODE_SHIFT_LEFT,
+            META_SHIFT_ON
+        )
+
+        shiftKeyUpdateView()
     }
 
     override fun onPress(primaryCode: Int) {

@@ -32,7 +32,6 @@ import java.util.TimerTask
  */
 class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener {
     private var keyboardView: KeyboardView? = null
-    private var keyboard: Keyboard? = null
     private lateinit var sEditorInfo: EditorInfo
     private var isShiftLocked = false
     private var isShiftOn = false
@@ -110,17 +109,13 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     override fun onKey(primaryCode: Int, KeyCodes: IntArray) {
+        CODE_TO_MENU_ACTION_MAP[primaryCode]?.also {
+            currentInputConnection?.performContextMenuAction(it)
+            return
+        }
         val inputConnection = currentInputConnection
-        keyboard = keyboardView!!.keyboard
 
         when (primaryCode) {
-            53737 -> currentInputConnection.performContextMenuAction(android.R.id.selectAll)
-            53738 -> currentInputConnection.performContextMenuAction(android.R.id.cut)
-            53739 -> currentInputConnection.performContextMenuAction(android.R.id.copy)
-            53740 -> currentInputConnection.performContextMenuAction(android.R.id.paste)
-            53741 -> currentInputConnection.performContextMenuAction(android.R.id.undo)
-            53742 -> currentInputConnection.performContextMenuAction(android.R.id.redo)
-
             Keyboard.KEYCODE_DELETE -> sendDownUpKeyEvents(KeyEvent.KEYCODE_DEL)
             Keyboard.KEYCODE_DONE -> sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER)
 
@@ -461,6 +456,22 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     companion object {
         private const val DROID_EDIT_IME_OPTIONS = 1342177286
+
+        private const val CODE_SELECT_ALL = 53737
+        private const val CODE_CUT = 53738
+        private const val CODE_COPY = 53739
+        private const val CODE_PASTE = 53740
+        private const val CODE_UNDO = 53741
+        private const val CODE_REDO = 53742
+
+        private val CODE_TO_MENU_ACTION_MAP = mapOf(
+            CODE_SELECT_ALL to android.R.id.selectAll,
+            CODE_CUT to android.R.id.cut,
+            CODE_COPY to android.R.id.copy,
+            CODE_PASTE to android.R.id.paste,
+            CODE_UNDO to android.R.id.undo,
+            CODE_REDO to android.R.id.redo
+        )
 
         @LayoutRes
         private val KEYBOARD_LAYOUT_RESES: Array<Int> = arrayOf(

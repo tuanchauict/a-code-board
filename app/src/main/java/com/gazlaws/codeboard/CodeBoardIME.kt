@@ -385,24 +385,12 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     private fun controlKeyUpdateView() {
-        keyboard = keyboardView!!.keyboard
-        var i = 0
-        val keys = keyboard!!.keys
-        while (i < keys.size) {
-            if (isCtrlOn) {
-                if (keys[i].label != null && keys[i].label == "Ctrl") {
-                    keys[i].label = "CTRL"
-                    break
-                }
-            } else {
-                if (keys[i].label != null && keys[i].label == "CTRL") {
-                    keys[i].label = "Ctrl"
-                    break
-                }
-            }
-            i++
-        }
-        keyboardView!!.invalidateKey(i)
+        val nonNullKeyboardView = keyboardView ?: return
+        val nonNullKeyboard = nonNullKeyboardView.keyboard ?: return
+
+        val index = nonNullKeyboard.keys.indexOfFirst { it.label == "Ctrl" || it.label == "CTRL" }
+        nonNullKeyboard.keys.getOrNull(index)?.label = if (isCtrlOn) "CTRL" else "Ctrl"
+        nonNullKeyboardView.invalidateKey(index)
     }
 
     private fun shiftKeyUpdateView() {

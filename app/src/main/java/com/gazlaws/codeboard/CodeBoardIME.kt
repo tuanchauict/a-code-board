@@ -38,7 +38,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     private var isCtrlOn = false
 
     @IntegerRes
-    private var mKeyboardState = R.integer.keyboard_normal
+    private var currentKeyboardMode = R.integer.keyboard_normal
     private var timerLongPress: Timer? = null
     private var switchedKeyboard = false
 
@@ -121,7 +121,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
         when (primaryCode) {
             KEYCODE_ESCAPE -> {
-                // Escape
                 inputConnection.sendKeyEventOnce(
                     KeyEvent.ACTION_DOWN,
                     KeyEvent.KEYCODE_ESCAPE,
@@ -134,26 +133,16 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 imm.showInputMethodPicker()
             }
 
-            KEYCODE_SYM_MODE -> if (keyboardView != null) {
-                if (mKeyboardState == R.integer.keyboard_normal) {
-                    //change to symbol keyboard
-                    val symbolKeyboard =
-                        chooseKeyboard(R.integer.keyboard_sym)
-
-                    keyboardView!!.keyboard = symbolKeyboard
-
-                    mKeyboardState = R.integer.keyboard_sym
-                } else if (mKeyboardState == R.integer.keyboard_sym) {
-                    //change to normal keyboard
-                    val normalKeyboard =
-                        chooseKeyboard(R.integer.keyboard_normal)
-
-                    keyboardView!!.keyboard = normalKeyboard
-                    mKeyboardState = R.integer.keyboard_normal
+            KEYCODE_SYM_MODE -> {
+                val newKeyboardMode = if (currentKeyboardMode == R.integer.keyboard_normal) {
+                    R.integer.keyboard_sym
+                } else {
+                    R.integer.keyboard_normal
                 }
+                keyboardView?.keyboard = chooseKeyboard(newKeyboardMode)
                 controlKeyUpdateView()
                 shiftKeyUpdateView()
-
+                currentKeyboardMode = newKeyboardMode
             }
 
             KEYCODE_CONTROL -> {
@@ -305,7 +294,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     override fun swipeUp() = Unit
 
-    private fun chooseKeyboard(@IntegerRes mode: Int): Keyboard {
+    private fun chooseKeyboard(@IntegerRes keyboardMode: Int): Keyboard {
         @IntRange(from = 0L, to = 1L)
         val topRowIndex = if (preferences.isDpadOn) 1 else 0
         val sizeIndex = preferences.keyboardSize
@@ -315,7 +304,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         } else {
             AZERTY_KEYBOARDS[sizeIndex][topRowIndex]
         }
-        return Keyboard(this, keyboardXmlRes, mode)
+        return Keyboard(this, keyboardXmlRes, keyboardMode)
     }
 
     override fun onCreateInputView(): View? {
@@ -330,10 +319,10 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         isShiftOn = false
         isCtrlOn = false
 
-        mKeyboardState = R.integer.keyboard_normal
+        currentKeyboardMode = R.integer.keyboard_normal
         //reset to normal
 
-        val keyboard = chooseKeyboard(mKeyboardState)
+        val keyboard = chooseKeyboard(currentKeyboardMode)
         keyboardView.keyboard = keyboard
         keyboardView.setOnKeyboardActionListener(this)
 

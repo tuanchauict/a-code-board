@@ -192,9 +192,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             keypressSoundPlayer.setOnCompletionListener { mp -> mp.release() }
         }
         if (preferences.isVibrateOn) {
-            val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-            @Suppress("DEPRECATION")
-            vibrator.vibrate(20)
+            vibrate(20)
         }
 
         timerLongPress?.cancel()
@@ -214,21 +212,17 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     @Suppress("DEPRECATION")
     private fun onKeyLongPress(keyCode: Int) {
-        // Process long-click here
-        if (keyCode == 16) {
+        if (keyCode == KEYCODE_SHIFT) {
             isShiftLocked = !isShiftLocked
-            //Log.e("CodeBoardIME", "long press" + Boolean.toString(isShiftLocked));
-            //and onKey will now happen
         }
 
-        if (keyCode == 32) {
+        if (keyCode == KEYCODE_SPACE) {
             switchedKeyboard = true
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showInputMethodPicker()
         }
 
-        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        vibrator.vibrate(50)
+        vibrate(50L)
     }
 
     override fun onText(text: CharSequence) {
@@ -373,6 +367,12 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         )
     }
 
+    @Suppress("DEPRECATION")
+    private fun vibrate(durationMillis: Long) {
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibrator.vibrate(durationMillis)
+    }
+
     private fun InputConnection.sendKeyEventOnce(
         action: Int,
         code: Int,
@@ -427,6 +427,8 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         private const val KEYCODE_DPAD_DOWN = 5001
         private const val KEYCODE_DPAD_UP = 5002
         private const val KEYCODE_DPAD_RIGHT = 5003
+
+        private const val KEYCODE_SPACE = 32
 
         private val KEYCODE_TO_MENU_ACTION_MAP = mapOf(
             KEYCODE_SELECT_ALL to android.R.id.selectAll,

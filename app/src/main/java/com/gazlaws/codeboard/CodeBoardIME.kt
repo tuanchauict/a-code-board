@@ -225,21 +225,11 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     override fun onText(text: CharSequence) {
-        val inputConnection = currentInputConnection
-        if (text.toString().contains("for")) {
-            inputConnection.commitText(text, 1)
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
+        val inputConnection = currentInputConnection ?: return
+        inputConnection.commitText(text, 1)
 
-        } else {
-            inputConnection.commitText(text, 1)
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
+        val numberOfRepeats = if ("for" in text) 7 else 3
+        repeat(numberOfRepeats) {
             sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
         }
     }

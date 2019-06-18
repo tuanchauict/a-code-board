@@ -44,7 +44,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     private val uiHandler = Handler(Looper.getMainLooper())
 
-    private val preferences: Preferences = Preferences(applicationContext)
+    private val preferences: Preferences by lazy { Preferences(applicationContext) }
 
     private fun onKeyCtrl(code: Int, inputConnection: InputConnection?) {
         val codeChar = code.toChar().toUpperCase()
@@ -348,7 +348,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         val nonNullKeyboardView = keyboardView ?: return
         val nonNullKeyboard = nonNullKeyboardView.keyboard ?: return
 
-        val index = nonNullKeyboard.keys.indexOfFirst { it.label == "Ctrl" || it.label == "CTRL" }
+        val index = nonNullKeyboard.keys.indexOfFirst { it.label == "Shft" || it.label == "SHFT" }
         nonNullKeyboard.keys.getOrNull(index)?.label = if (isShiftOn) "SHFT" else "Shft"
         nonNullKeyboard.isShifted = isShiftOn
         nonNullKeyboardView.invalidateAllKeys()

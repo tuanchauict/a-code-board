@@ -46,6 +46,59 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     private val preferences: Preferences by lazy { Preferences(applicationContext) }
 
+    private val mapKeyCodeToOnKeyAction: Map<Int, () -> Unit?> = mapOf(
+        KEYCODE_ESCAPE to {
+            currentInputConnection?.sendKeyEventOnce(
+                KeyEvent.ACTION_DOWN,
+                KeyEvent.KEYCODE_ESCAPE,
+                META_CTRL_ON or KeyEvent.META_CTRL_LEFT_ON
+            )
+        },
+        KEYCODE_INPUT_METHOD_PICKER to {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showInputMethodPicker()
+        },
+        KEYCODE_SYM_MODE to {
+            val newKeyboardMode = if (currentKeyboardMode == R.integer.keyboard_normal) {
+                R.integer.keyboard_sym
+            } else {
+                R.integer.keyboard_normal
+            }
+            keyboardView?.keyboard = chooseKeyboard(newKeyboardMode)
+            controlKeyUpdateView()
+            shiftKeyUpdateView()
+            currentKeyboardMode = newKeyboardMode
+        },
+        KEYCODE_CONTROL to {
+            val controlKeyAction = if (isCtrlOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
+            currentInputConnection?.sendKeyEventOnce(
+                controlKeyAction,
+                KEYCODE_CTRL_LEFT,
+                META_CTRL_ON
+            )
+            isCtrlOn = !isCtrlOn
+            controlKeyUpdateView()
+        },
+        KEYCODE_SHIFT to {
+            // Shift - runs after long press, so shiftlock may have just been activated
+            val shiftKeyAction = if (isShiftOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
+            currentInputConnection?.sendKeyEventOnce(
+                shiftKeyAction,
+                KEYCODE_SHIFT_LEFT,
+                META_SHIFT_ON
+            )
+
+            isShiftOn = if (isShiftLocked) true else !isShiftOn
+            shiftKeyUpdateView()
+        },
+        KEYCODE_DPAD_LEFT to {
+            handleArrow(KeyEvent.KEYCODE_DPAD_LEFT)
+        },
+        KEYCODE_DPAD_RIGHT to {
+            handleArrow(KeyEvent.KEYCODE_DPAD_RIGHT)
+        }
+    )
+
     private fun onKeyCtrl(code: Int, inputConnection: InputConnection?) {
         val codeChar = code.toChar().toUpperCase()
         if (sEditorInfo.isDroidEdit() && codeChar in DROID_EDIT_PROBLEM_KEY_CODES) {
@@ -108,7 +161,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         }
     }
 
-    override fun onKey(primaryCode: Int, KeyCodes: IntArray) {
+    override fun onKey(primaryCode: Int, keyCodes: IntArray) {
         KEYCODE_TO_MENU_ACTION_MAP[primaryCode]?.also {
             currentInputConnection?.performContextMenuAction(it)
             return
@@ -117,105 +170,52 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             sendDownUpKeyEvents(it)
             return
         }
+        mapKeyCodeToOnKeyAction[primaryCode]?.also { action ->
+            action.invoke()
+            return
+        }
         val inputConnection = currentInputConnection
 
-        when (primaryCode) {
-            KEYCODE_ESCAPE -> {
-                inputConnection.sendKeyEventOnce(
-                    KeyEvent.ACTION_DOWN,
-                    KeyEvent.KEYCODE_ESCAPE,
-                    META_CTRL_ON or KeyEvent.META_CTRL_LEFT_ON
-                )
-            }
+        val code = primaryCode.toChar()
+        when {
+            isCtrlOn -> {
+                onKeyCtrl(primaryCode, inputConnection)
+                if (!isShiftLocked) {
+                    isShiftOn = false
+                    inputConnection.sendKeyEventOnce(
+                        KeyEvent.ACTION_UP,
+                        KEYCODE_SHIFT_LEFT,
+                        META_SHIFT_ON
+                    )
 
-            KEYCODE_INPUT_METHOD_PICKER -> {
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.showInputMethodPicker()
-            }
-
-            KEYCODE_SYM_MODE -> {
-                val newKeyboardMode = if (currentKeyboardMode == R.integer.keyboard_normal) {
-                    R.integer.keyboard_sym
-                } else {
-                    R.integer.keyboard_normal
+                    shiftKeyUpdateView()
                 }
-                keyboardView?.keyboard = chooseKeyboard(newKeyboardMode)
-                controlKeyUpdateView()
-                shiftKeyUpdateView()
-                currentKeyboardMode = newKeyboardMode
-            }
-
-            KEYCODE_CONTROL -> {
-                val controlKeyAction = if (isCtrlOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
-                inputConnection.sendKeyEventOnce(
-                    controlKeyAction,
-                    KEYCODE_CTRL_LEFT,
-                    META_CTRL_ON
-                )
-                isCtrlOn = !isCtrlOn
+                isCtrlOn = false
                 controlKeyUpdateView()
             }
+            code.isLetter() && isShiftOn -> {
+                inputConnection.commitText("${code.toUpperCase()}", 1)
+                if (!isShiftLocked) {
 
-            KEYCODE_SHIFT -> {
-                // Shift - runs after long press, so shiftlock may have just been activated
-                val shiftKeyAction = if (isShiftOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
-                inputConnection.sendKeyEventOnce(
-                    shiftKeyAction,
-                    KEYCODE_SHIFT_LEFT,
-                    META_SHIFT_ON
-                )
+                    isShiftOn = false
+                    inputConnection.sendKeyEventOnce(
+                        KeyEvent.ACTION_UP,
+                        KEYCODE_SHIFT_LEFT,
+                        META_SHIFT_ON
+                    )
 
-                isShiftOn = if (isShiftLocked) true else !isShiftOn
+                    //Log.e("CodeboardIME", "Unshifted b/c no lock");
+                }
+
                 shiftKeyUpdateView()
             }
-
-            KEYCODE_DPAD_LEFT -> handleArrow(KeyEvent.KEYCODE_DPAD_LEFT)
-            KEYCODE_DPAD_RIGHT -> handleArrow(KeyEvent.KEYCODE_DPAD_RIGHT)
-
             else -> {
-                val code = primaryCode.toChar()
-                when {
-                    isCtrlOn -> {
-                        onKeyCtrl(primaryCode, inputConnection)
-                        if (!isShiftLocked) {
-                            isShiftOn = false
-                            inputConnection.sendKeyEventOnce(
-                                KeyEvent.ACTION_UP,
-                                KEYCODE_SHIFT_LEFT,
-                                META_SHIFT_ON
-                            )
-
-                            shiftKeyUpdateView()
-                        }
-                        isCtrlOn = false
-                        controlKeyUpdateView()
-                    }
-                    code.isLetter() && isShiftOn -> {
-                        inputConnection.commitText("${code.toUpperCase()}", 1)
-                        if (!isShiftLocked) {
-
-                            isShiftOn = false
-                            inputConnection.sendKeyEventOnce(
-                                KeyEvent.ACTION_UP,
-                                KEYCODE_SHIFT_LEFT,
-                                META_SHIFT_ON
-                            )
-
-                            //Log.e("CodeboardIME", "Unshifted b/c no lock");
-                        }
-
-                        shiftKeyUpdateView()
-                    }
-                    else -> {
-                        if (!switchedKeyboard) {
-                            inputConnection.commitText("$code", 1)
-                        }
-                        switchedKeyboard = false
-                    }
+                if (!switchedKeyboard) {
+                    inputConnection.commitText("$code", 1)
                 }
+                switchedKeyboard = false
             }
         }
-
     }
 
     override fun onPress(primaryCode: Int) {

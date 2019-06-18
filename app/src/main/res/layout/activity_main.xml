@@ -207,17 +207,17 @@
             android:visibility="gone" />
 
         <Button
+            android:id="@+id/open_tutorial"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:onClick="openTutorial"
             android:text="@string/tutorial_to_enable_keyboard" />
 
         <Button
+            android:id="@+id/open_play_store"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:onClick="openPlay"
             android:text="@string/rate_on_google_play" />
 
         <TextView
@@ -226,10 +226,10 @@
             android:text="@string/this_app_is_free_open_source_and_does_not_read_your_data" />
 
         <Button
+            android:id="@+id/open_github"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="48dp"
-            android:onClick="openGithub"
             android:text="@string/check_out_the_source_code" />
     </LinearLayout>
 </ScrollView>

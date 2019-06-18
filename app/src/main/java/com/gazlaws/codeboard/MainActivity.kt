@@ -15,6 +15,9 @@ import android.widget.SeekBar
 
 /**
  * Created by Ruby on 02/06/2016.
+ * Kotlinized by Tuan Chau
+ *
+ * TODO: Update this class doc
  */
 class MainActivity : AppCompatActivity() {
     private val preferences: Preferences by lazy { Preferences(this) }
@@ -82,6 +85,24 @@ class MainActivity : AppCompatActivity() {
                 imm.showInputMethodPicker()
             }
         }
+
+        findViewById<View>(R.id.open_github).apply {
+            setOnClickListener {
+                Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_URL)).let(::startActivity)
+            }
+        }
+
+        findViewById<View>(R.id.open_play_store).apply {
+            setOnClickListener {
+                Intent(Intent.ACTION_VIEW, Uri.parse(PLAY_STORE_URL)).let(::startActivity)
+            }
+        }
+
+        findViewById<View>(R.id.open_tutorial).apply {
+            setOnClickListener {
+                Intent(this@MainActivity, IntroActivity::class.java).let(::startActivity)
+            }
+        }
     }
 
     private fun onFirstOpenApp() {
@@ -99,23 +120,6 @@ class MainActivity : AppCompatActivity() {
     fun closeKeyboard(v: View) {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(v.windowToken, 0)
-    }
-
-    fun openPlay(v: View) {
-        val i = Intent(Intent.ACTION_VIEW)
-        i.data = Uri.parse("market://details?id=com.gazlaws.codeboard")
-        startActivity(i)
-    }
-
-    fun openTutorial(v: View) {
-        val i = Intent(this, IntroActivity::class.java)
-        startActivity(i)
-    }
-
-    fun openGithub(v: View) {
-        val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/gazlaws-dev/codeboard"))
-
-        startActivity(i)
     }
 
     private fun RadioGroup.getSelectedItemIndexById(@IdRes selectedChildId: Int): Int {
@@ -138,5 +142,10 @@ class MainActivity : AppCompatActivity() {
             preferences.keyboardSize = seekBar.progress
             closeKeyboard(seekBar)
         }
+    }
+
+    companion object {
+        private const val GITHUB_URL = "https://github.com/gazlaws-dev/codeboard"
+        private const val PLAY_STORE_URL = "market://details?id=com.gazlaws.codeboard"
     }
 }

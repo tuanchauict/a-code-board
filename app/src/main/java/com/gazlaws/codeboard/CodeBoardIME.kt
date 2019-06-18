@@ -394,24 +394,13 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     private fun shiftKeyUpdateView() {
+        val nonNullKeyboardView = keyboardView ?: return
+        val nonNullKeyboard = nonNullKeyboardView.keyboard ?: return
 
-        keyboard = keyboardView!!.keyboard
-        val keys = keyboard!!.keys
-        for (i in keys.indices) {
-            if (isShiftOn) {
-                if (keys[i].label != null && keys[i].label == "Shft") {
-                    keys[i].label = "SHFT"
-                    break
-                }
-            } else {
-                if (keys[i].label != null && keys[i].label == "SHFT") {
-                    keys[i].label = "Shft"
-                    break
-                }
-            }
-        }
-        keyboard!!.isShifted = isShiftOn
-        keyboardView!!.invalidateAllKeys()
+        val index = nonNullKeyboard.keys.indexOfFirst { it.label == "Ctrl" || it.label == "CTRL" }
+        nonNullKeyboard.keys.getOrNull(index)?.label = if (isShiftOn) "SHFT" else "Shft"
+        nonNullKeyboard.isShifted = isShiftOn
+        nonNullKeyboardView.invalidateAllKeys()
     }
 
     private fun handleArrow(keyCode: Int) {

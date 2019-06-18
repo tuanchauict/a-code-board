@@ -23,8 +23,6 @@ import android.view.ViewConfiguration
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputConnection
 import android.view.inputmethod.InputMethodManager
-import java.util.Timer
-import java.util.TimerTask
 
 /**
  * Created by Ruby(aka gazlaws) on 13/02/2016.
@@ -39,7 +37,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     @IntegerRes
     private var currentKeyboardMode = R.integer.keyboard_normal
-    private var timerLongPress: Timer? = null
     private var switchedKeyboard = false
 
     private val uiHandler = Handler(Looper.getMainLooper())
@@ -195,19 +192,18 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             vibrate(20)
         }
 
-        timerLongPress?.cancel()
-
-        timerLongPress = Timer().apply {
-            schedule(
-                LongKeyPressTimerTask(primaryCode),
-                ViewConfiguration.getLongPressTimeout().toLong()
-            )
-        }
+        uiHandler.removeCallbacksAndMessages(null)
+        uiHandler.postDelayed({
+            try {
+                onKeyLongPress(primaryCode)
+            } catch (e: Exception) {
+                Log.e("CodeBoardIME", "uiHandler.run: ${e.message}", e)
+            }
+        }, ViewConfiguration.getLongPressTimeout().toLong())
     }
 
     override fun onRelease(primaryCode: Int) {
-        timerLongPress?.cancel()
-        timerLongPress = null
+        uiHandler.removeCallbacksAndMessages(null)
     }
 
     private fun onKeyLongPress(keyCode: Int) {
@@ -380,18 +376,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     private fun EditorInfo.isDroidEdit(): Boolean = imeOptions == DROID_EDIT_IME_OPTIONS
-
-    private inner class LongKeyPressTimerTask(private val primaryCode: Int) : TimerTask() {
-        override fun run() {
-            uiHandler.post {
-                try {
-                    onKeyLongPress(primaryCode)
-                } catch (e: Exception) {
-                    Log.e("CodeBoardIME", "uiHandler.run: " + e.message, e)
-                }
-            }
-        }
-    }
 
     companion object {
         private const val DROID_EDIT_IME_OPTIONS = 1342177286

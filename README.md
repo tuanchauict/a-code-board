@@ -2,12 +2,12 @@
 
 Currently, I (Tuan Chau) am working on this folk to improve the keyboard which following roadmap:
 
-1. Refactor the current codebase
-    1. Kotlinized
-    2. Refactor
-2. Make this keyboard easier to type on phone, yes, I'm targeting to make this awesome for phone, not tablet.
-3. (Optional) Customize for specified languages (Python is the first language I think of)
-4. (Optional) Autosuggestion
+1. [x] Refactor the current codebase
+    1. [x] Kotlinized
+    2. [x] Refactor
+2. [ ] Make this keyboard easier to type on phone, yes, I'm targeting to make this awesome for phone, not tablet.
+3. [ ] (Optional) Customize for specified languages (Python is the first language I think of)
+4. [ ] (Optional) Autosuggestion
 
 # [codeboard](https://play.google.com/store/apps/details?id=com.gazlaws.codeboard)
 

@@ -300,26 +300,25 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         nonNullKeyboardView.invalidateAllKeys()
     }
 
-    private fun handleArrow(keyCode: Int) {
-        val inputConnection = currentInputConnection ?: return
+    private fun handleArrow(keyCode: Int) =
         when {
-            isCtrlOn && isShiftOn -> {
-                inputConnection.sendKeyEventDownUpWithActionBetween(
+            isCtrlOn && isShiftOn -> currentInputConnection
+                ?.sendKeyEventDownUpWithActionBetween(
                     KEYCODE_CTRL_LEFT,
                     MetaState.SHIFT_CONTROL_ON
                 ) { moveSelection(keyCode) }
-            }
             isShiftOn -> moveSelection(keyCode)
-            isCtrlOn -> inputConnection.sendKeyEventOnce(
-                KeyEvent.ACTION_DOWN,
-                keyCode,
-                MetaState.CONTROL_ON
-            )
+            isCtrlOn -> currentInputConnection
+                ?.sendKeyEventOnce(
+                    KeyEvent.ACTION_DOWN,
+                    keyCode,
+                    MetaState.CONTROL_ON
+                )
             else -> sendDownUpKeyEvents(keyCode)
         }
-    }
 
-    private fun moveSelection(keyCode: Int) = currentInputConnection?.sendKeyEventDownUpWithActionBetween(
+    private fun moveSelection(keyCode: Int) =
+        currentInputConnection?.sendKeyEventDownUpWithActionBetween(
             KEYCODE_SHIFT_LEFT,
             MetaState.SHIFT_CONTROL_ON
         ) {

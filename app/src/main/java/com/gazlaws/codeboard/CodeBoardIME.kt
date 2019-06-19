@@ -304,18 +304,10 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         val inputConnection = currentInputConnection ?: return
         when {
             isCtrlOn && isShiftOn -> {
-                inputConnection.sendKeyEventOnce(
-                    KeyEvent.ACTION_DOWN,
+                inputConnection.sendKeyEventDownUpWithActionBetween(
                     KEYCODE_CTRL_LEFT,
                     META_SHIFT_ON or META_CTRL_ON
-                )
-                moveSelection(keyCode)
-                inputConnection.sendKeyEventOnce(
-                    KeyEvent.ACTION_UP,
-                    KEYCODE_CTRL_LEFT,
-                    META_SHIFT_ON or META_CTRL_ON
-                )
-
+                ) { moveSelection(keyCode) }
             }
             isShiftOn -> moveSelection(keyCode)
             isCtrlOn -> inputConnection.sendKeyEventOnce(
@@ -327,30 +319,13 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         }
     }
 
-    private fun moveSelection(keyCode: Int) {
-        //        inputMethodService.sendDownKeyEvent(KeyEvent.KEYCODE_SHIFT_LEFT, 0);
-        //        inputMethodService.sendDownAndUpKeyEvent(dpad_keyCode, 0);
-        //        inputMethodService.sendUpKeyEvent(KeyEvent.KEYCODE_SHIFT_LEFT, 0);
-        val inputConnection = currentInputConnection ?: return
-        inputConnection.sendKeyEventOnce(
-            KeyEvent.ACTION_DOWN,
+    private fun moveSelection(keyCode: Int) = currentInputConnection?.sendKeyEventDownUpWithActionBetween(
             KEYCODE_SHIFT_LEFT,
             META_SHIFT_ON or META_CTRL_ON
-        )
-
-        val metaState = if (isCtrlOn) META_SHIFT_ON or META_CTRL_ON else META_SHIFT_ON
-        inputConnection.sendKeyEventOnce(
-            KeyEvent.ACTION_DOWN,
-            keyCode,
-            metaState
-        )
-
-        inputConnection.sendKeyEventOnce(
-            KeyEvent.ACTION_UP,
-            KEYCODE_SHIFT_LEFT,
-            META_SHIFT_ON or META_CTRL_ON
-        )
-    }
+        ) {
+            val metaState = if (isCtrlOn) META_SHIFT_ON or META_CTRL_ON else META_SHIFT_ON
+            currentInputConnection?.sendKeyEventOnce(KeyEvent.ACTION_DOWN, keyCode, metaState)
+        }
 
     @Suppress("DEPRECATION")
     private fun vibrate(durationMillis: Long) {
@@ -373,6 +348,16 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             metaState
         )
         sendKeyEvent(keyEvent)
+    }
+
+    private fun InputConnection.sendKeyEventDownUpWithActionBetween(
+        code: Int,
+        metaState: Int,
+        action: () -> Unit = {}
+    ) {
+        sendKeyEventOnce(KeyEvent.ACTION_DOWN, code, metaState)
+        action()
+        sendKeyEventOnce(KeyEvent.ACTION_UP, code, metaState)
     }
 
     private fun EditorInfo.isDroidEdit(): Boolean = imeOptions == DROID_EDIT_IME_OPTIONS

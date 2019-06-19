@@ -184,9 +184,10 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     override fun onPress(primaryCode: Int) {
         if (preferences.isSoundOn) {
-            val keypressSoundPlayer = MediaPlayer.create(this, R.raw.keypress_sound)
-            keypressSoundPlayer.start()
-            keypressSoundPlayer.setOnCompletionListener { mp -> mp.release() }
+            MediaPlayer.create(this, R.raw.keypress_sound).run {
+                setOnCompletionListener { mp -> mp.release() }
+                start()
+            }
         }
         if (preferences.isVibrateOn) {
             vibrate(20)

@@ -48,7 +48,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             currentInputConnection?.sendKeyEventOnce(
                 KeyEvent.ACTION_DOWN,
                 KeyEvent.KEYCODE_ESCAPE,
-                META_CTRL_ON or KeyEvent.META_CTRL_LEFT_ON
+                MetaState.CONTROL_ON
             )
         },
         KEYCODE_INPUT_METHOD_PICKER to {
@@ -71,7 +71,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             currentInputConnection?.sendKeyEventOnce(
                 controlKeyAction,
                 KEYCODE_CTRL_LEFT,
-                META_CTRL_ON
+                MetaState.CONTROL_ON
             )
             isCtrlOn = !isCtrlOn
             controlKeyUpdateView()
@@ -82,7 +82,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             currentInputConnection?.sendKeyEventOnce(
                 shiftKeyAction,
                 KEYCODE_SHIFT_LEFT,
-                META_SHIFT_ON
+                MetaState.SHIFT_ON
             )
 
             isShiftOn = if (isShiftLocked) true else !isShiftOn
@@ -116,9 +116,9 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         }
 
         val metaState = if (codeChar == 'Z' && isShiftOn) {
-            META_CTRL_ON or META_SHIFT_ON
+            MetaState.SHIFT_CONTROL_ON
         } else {
-            META_CTRL_ON
+            MetaState.CONTROL_ON
         }
 
         currentInputConnection?.sendKeyEventOnce(
@@ -176,7 +176,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         currentInputConnection?.sendKeyEventOnce(
             KeyEvent.ACTION_UP,
             KEYCODE_SHIFT_LEFT,
-            META_SHIFT_ON
+            MetaState.SHIFT_ON
         )
 
         shiftKeyUpdateView()
@@ -306,14 +306,14 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             isCtrlOn && isShiftOn -> {
                 inputConnection.sendKeyEventDownUpWithActionBetween(
                     KEYCODE_CTRL_LEFT,
-                    META_SHIFT_ON or META_CTRL_ON
+                    MetaState.SHIFT_CONTROL_ON
                 ) { moveSelection(keyCode) }
             }
             isShiftOn -> moveSelection(keyCode)
             isCtrlOn -> inputConnection.sendKeyEventOnce(
                 KeyEvent.ACTION_DOWN,
                 keyCode,
-                META_CTRL_ON
+                MetaState.CONTROL_ON
             )
             else -> sendDownUpKeyEvents(keyCode)
         }
@@ -321,9 +321,9 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     private fun moveSelection(keyCode: Int) = currentInputConnection?.sendKeyEventDownUpWithActionBetween(
             KEYCODE_SHIFT_LEFT,
-            META_SHIFT_ON or META_CTRL_ON
+            MetaState.SHIFT_CONTROL_ON
         ) {
-            val metaState = if (isCtrlOn) META_SHIFT_ON or META_CTRL_ON else META_SHIFT_ON
+            val metaState = if (isCtrlOn) MetaState.SHIFT_CONTROL_ON else MetaState.SHIFT_ON
             currentInputConnection?.sendKeyEventOnce(KeyEvent.ACTION_DOWN, keyCode, metaState)
         }
 
@@ -336,7 +336,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     private fun InputConnection.sendKeyEventOnce(
         action: Int,
         code: Int,
-        metaState: Int,
+        metaState: MetaState,
         sendingTimeMillis: Long = System.currentTimeMillis()
     ) {
         val keyEvent = KeyEvent(
@@ -345,14 +345,14 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             action,
             code,
             0,
-            metaState
+            metaState.value
         )
         sendKeyEvent(keyEvent)
     }
 
     private fun InputConnection.sendKeyEventDownUpWithActionBetween(
         code: Int,
-        metaState: Int,
+        metaState: MetaState,
         action: () -> Unit = {}
     ) {
         sendKeyEventOnce(KeyEvent.ACTION_DOWN, code, metaState)
@@ -361,6 +361,12 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     private fun EditorInfo.isDroidEdit(): Boolean = imeOptions == DROID_EDIT_IME_OPTIONS
+
+    private enum class MetaState(val value: Int) {
+        SHIFT_ON(META_CTRL_ON),
+        CONTROL_ON(META_CTRL_ON),
+        SHIFT_CONTROL_ON(META_SHIFT_ON or META_CTRL_ON)
+    }
 
     companion object {
         private const val DROID_EDIT_IME_OPTIONS = 1342177286

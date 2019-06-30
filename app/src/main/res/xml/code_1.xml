@@ -5,24 +5,31 @@
     android:verticalGap="0px">
 
     <Row android:keyHeight="6%p">
+        <!--Symbol 1-->
         <Key
             android:codes="-150"
             android:keyWidth="13.33%p"
             android:keyLabel="#1" />
+        <!--Symbol 2-->
         <Key
             android:codes="-16"
             android:keyWidth="13.33%p"
             android:keyLabel="#2" />
+        <!--Symbol 3-->
         <Key
             android:codes="-17"
             android:keyWidth="13.33%p"
             android:keyLabel="#3" />
+        <!--Comma-->
         <Key
-            android:codes="61"
-            android:keyLabel="=" />
+            android:codes="44"
+            android:keyWidth="10%p"
+            android:keyLabel="," />
+        <!--"-->
         <Key
-            android:codes="33"
-            android:keyLabel="!" />
+            android:codes="34"
+            android:keyWidth="7%p"
+            android:keyLabel="''" />
         <Key
             android:codes="58"
             android:keyLabel=":" />
@@ -191,16 +198,17 @@
             android:codes="9"
             android:keyWidth="15%p"
             android:keyLabel="Tab" />
-        <!--Comma-->
+
+        <!--Equal-->
         <Key
-            android:codes="44"
-            android:keyWidth="10%p"
-            android:keyLabel="," />
-        <!--"-->
+            android:codes="61"
+            android:keyLabel="=" />
+
+        <!--Not-->
         <Key
-            android:codes="34"
-            android:keyWidth="7%p"
-            android:keyLabel="''" />
+            android:codes="33"
+            android:keyLabel="!" />
+
         <!--Space-->
         <Key
             android:codes="32"

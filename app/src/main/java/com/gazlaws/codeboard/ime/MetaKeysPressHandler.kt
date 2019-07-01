@@ -1,7 +1,9 @@
 package com.gazlaws.codeboard.ime
 
+import android.inputmethodservice.Keyboard
 import android.view.KeyEvent
 import android.view.inputmethod.InputConnection
+import com.gazlaws.codeboard.BooleanMap
 import com.gazlaws.codeboard.ime.CodeBoardIME.Companion.KEYCODE_SHIFT
 import com.gazlaws.codeboard.sendKeyEventOnce
 
@@ -27,6 +29,7 @@ class MetaKeysPressHandler(private val inputMethodService: CodeBoardIME) {
     fun onKey(primaryKey: Int): Boolean {
         if (primaryKey == KEYCODE_SHIFT) {
             onShiftKeyPressed()
+            lastShiftKeyPressed = System.currentTimeMillis()
             return true
         }
         lastShiftKeyPressed = 0 // reset when another key is pressed
@@ -36,7 +39,6 @@ class MetaKeysPressHandler(private val inputMethodService: CodeBoardIME) {
     private fun onShiftKeyPressed() {
         val doubleShiftDurationMillis = System.currentTimeMillis() - lastShiftKeyPressed
         isShiftLocked = doubleShiftDurationMillis <= DOUBLE_SHIFT_MAX_DURATION_MILLIS
-        lastShiftKeyPressed = System.currentTimeMillis()
 
         val shiftKeyAction = if (isShiftOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
         currentInputConnection.sendKeyEventOnce(
@@ -46,7 +48,7 @@ class MetaKeysPressHandler(private val inputMethodService: CodeBoardIME) {
         )
 
         isShiftOn = isShiftLocked || !isShiftOn
-        inputMethodService.updateViewByShiftKey()
+        updateViewByShiftKey()
     }
 
     fun releaseShiftKeyWhenNotLocked() {
@@ -60,10 +62,28 @@ class MetaKeysPressHandler(private val inputMethodService: CodeBoardIME) {
             CodeBoardIME.MetaState.SHIFT_ON
         )
 
-        inputMethodService.updateViewByShiftKey()
+        updateViewByShiftKey()
+    }
+
+    fun updateViewByShiftKey() {
+        val nonNullKeyboardView = inputMethodService.keyboardView ?: return
+        nonNullKeyboardView.keyboard?.updateShiftState()
+        nonNullKeyboardView.invalidateAllKeys()
+    }
+
+    private fun Keyboard.getKeyByKeyCode(keyCode: Int): Keyboard.Key? {
+        // TODO: Optimise this with shiftKeyIndex for shift
+        return keys.find { keyCode in it.codes }
+    }
+
+    private fun Keyboard.updateShiftState() {
+        getKeyByKeyCode(KEYCODE_SHIFT)?.label = TEXT_SHIFT[isShiftOn]
+        isShifted = isShiftOn
     }
 
     companion object {
         private const val DOUBLE_SHIFT_MAX_DURATION_MILLIS = 300L
+
+        private val TEXT_SHIFT = BooleanMap("SHIFT", "Shift")
     }
 }

@@ -8,7 +8,6 @@ import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import android.os.Vibrator
-import android.support.annotation.IntRange
 import android.support.annotation.IntegerRes
 import android.support.annotation.LayoutRes
 import android.support.annotation.XmlRes
@@ -33,7 +32,8 @@ import com.gazlaws.codeboard.sendKeyEventOnce
  * Kotlinized by Tuan Chau (aka tuanchauict)
  */
 class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener {
-    private var keyboardView: KeyboardView? = null
+    var keyboardView: KeyboardView? = null
+        private set
     private lateinit var sEditorInfo: EditorInfo
     private var isCtrlOn = false
 
@@ -71,7 +71,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             currentKeyboardMode = newKeyboardMode
             keyboardView?.keyboard = chooseKeyboard(newKeyboardMode)
             controlKeyUpdateView()
-            updateViewByShiftKey()
+            metaKeysPressHandler.updateViewByShiftKey()
         },
         KEYCODE_CONTROL to {
             val controlKeyAction = if (isCtrlOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
@@ -218,7 +218,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     override fun swipeUp() = Unit
 
     private fun chooseKeyboard(@IntegerRes keyboardMode: Int): Keyboard {
-        @IntRange(from = 0L, to = 1L)
+//        @IntRange(from = 0L, to = 1L)
 //        val topRowIndex = if (preferences.isDpadOn) 1 else 0
 //        val sizeIndex = preferences.keyboardSize
         @XmlRes
@@ -262,17 +262,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         val index = nonNullKeyboard.keys.indexOfFirst { it.label in TEXT_CONTROL.values }
         nonNullKeyboard.keys.getOrNull(index)?.label = TEXT_CONTROL[isCtrlOn]
         nonNullKeyboardView.invalidateKey(index)
-    }
-
-    // TODO: Move to MetaKeysPressHandler
-    fun updateViewByShiftKey() {
-        val nonNullKeyboardView = keyboardView ?: return
-        val nonNullKeyboard = nonNullKeyboardView.keyboard ?: return
-
-        val index = nonNullKeyboard.keys.indexOfFirst { it.label in TEXT_SHIFT.values }
-        nonNullKeyboard.keys.getOrNull(index)?.label = TEXT_SHIFT[metaKeysPressHandler.isShiftOn]
-        nonNullKeyboard.isShifted = metaKeysPressHandler.isShiftOn
-        nonNullKeyboardView.invalidateAllKeys()
     }
 
     private fun handleArrow(keyCode: Int) =
@@ -422,7 +411,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             'Z' to KeyEvent.KEYCODE_Z
         )
 
-        private val TEXT_SHIFT = BooleanMap("SHFT", "Shft")
         private val TEXT_CONTROL = BooleanMap("CTRL", "Ctrl")
     }
 }

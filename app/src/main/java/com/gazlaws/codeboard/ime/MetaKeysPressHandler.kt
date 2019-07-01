@@ -9,6 +9,8 @@ class MetaKeysPressHandler(private val inputMethodService: CodeBoardIME) {
     var isShiftOn: Boolean = false
         private set
     var isShiftLocked: Boolean = false
+        private set
+    private var lastShiftKeyPressed: Long = 0L
 
     private val currentInputConnection: InputConnection?
         get() = inputMethodService.currentInputConnection
@@ -27,11 +29,15 @@ class MetaKeysPressHandler(private val inputMethodService: CodeBoardIME) {
             onShiftKeyPressed()
             return true
         }
+        lastShiftKeyPressed = 0 // reset when another key is pressed
         return false
     }
 
     private fun onShiftKeyPressed() {
-        // Shift - runs after long press, so shiftlock may have just been activated
+        val doubleShiftDurationMillis = System.currentTimeMillis() - lastShiftKeyPressed
+        isShiftLocked = doubleShiftDurationMillis <= DOUBLE_SHIFT_MAX_DURATION_MILLIS
+        lastShiftKeyPressed = System.currentTimeMillis()
+
         val shiftKeyAction = if (isShiftOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
         currentInputConnection.sendKeyEventOnce(
             shiftKeyAction,
@@ -39,7 +45,7 @@ class MetaKeysPressHandler(private val inputMethodService: CodeBoardIME) {
             CodeBoardIME.MetaState.SHIFT_ON
         )
 
-        isShiftOn = if (isShiftLocked) true else !isShiftOn
+        isShiftOn = isShiftLocked || !isShiftOn
         inputMethodService.updateViewByShiftKey()
     }
 
@@ -57,4 +63,7 @@ class MetaKeysPressHandler(private val inputMethodService: CodeBoardIME) {
         inputMethodService.updateViewByShiftKey()
     }
 
+    companion object {
+        private const val DOUBLE_SHIFT_MAX_DURATION_MILLIS = 300L
+    }
 }

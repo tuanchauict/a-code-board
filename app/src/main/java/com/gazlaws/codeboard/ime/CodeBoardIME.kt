@@ -98,10 +98,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 if (codeChar == 'Z' && !metaKeysPressHandler.isShiftOn) 'z' else codeChar
             val action = DROID_EDIT_PROBLEM_KEY_CODES[actionKey] ?: return
             currentInputConnection?.performContextMenuAction(action)
-            if (codeChar == 'Z') {
-                metaKeysPressHandler.isShiftLocked = false
-                metaKeysPressHandler.releaseShiftKeyWhenNotLocked()
-            }
             return
         }
         val keyCode = CHAR_TO_KEYCODE_MAP[codeChar]
@@ -123,10 +119,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             metaState,
             System.currentTimeMillis() + 1
         )
-        if (codeChar == 'Z' && metaKeysPressHandler.isShiftOn) {
-            metaKeysPressHandler.isShiftLocked = false
-            metaKeysPressHandler.releaseShiftKeyWhenNotLocked()
-        }
     }
 
     override fun onKey(primaryCode: Int, keyCodes: IntArray) {
@@ -196,10 +188,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     private fun onKeyLongPress(keyCode: Int) {
-        if (keyCode == KEYCODE_SHIFT) {
-            metaKeysPressHandler.isShiftLocked = !metaKeysPressHandler.isShiftLocked
-        }
-
         if (keyCode == KEYCODE_SPACE) {
             switchedKeyboard = true
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

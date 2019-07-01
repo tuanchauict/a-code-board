@@ -20,28 +20,29 @@
             android:codes="-17"
             android:keyWidth="13.33%p"
             android:keyLabel="#3" />
-        <!--Comma-->
+        <!--Dot-->
         <Key
-            android:codes="44"
+            android:codes="46"
             android:keyWidth="10%p"
-            android:keyLabel="," />
+            android:keyEdgeFlags="right"
+            android:keyLabel=".;" />
         <!--"-->
         <Key
             android:codes="34"
             android:keyWidth="7%p"
-            android:keyLabel="''" />
+            android:keyLabel="'''" />
         <Key
             android:codes="58"
-            android:keyLabel=":" />
+            android:keyLabel=":/" />
         <Key
             android:codes="123"
-            android:keyLabel="{" />
+            android:keyLabel="{}" />
         <Key
             android:codes="91"
-            android:keyLabel="[" />
+            android:keyLabel="[]" />
         <Key
             android:codes="40"
-            android:keyLabel="(" />
+            android:keyLabel="()" />
     </Row>
 
     <!-- Normal, 1234567890-->
@@ -189,6 +190,7 @@
             android:keyLabel="DEL" />
     </Row>
 
+    <!--Normal, Tab != Space . Enter-->
     <Row
         android:keyHeight="@dimen/keyboard_symbol_height"
         android:rowEdgeFlags="bottom">
@@ -199,28 +201,28 @@
             android:keyWidth="15%p"
             android:keyLabel="Tab" />
 
-        <!--Equal-->
-        <Key
-            android:codes="61"
-            android:keyLabel="=" />
-
         <!--Not-->
         <Key
             android:codes="33"
             android:keyLabel="!" />
+
+        <!--Equal-->
+        <Key
+            android:codes="61"
+            android:keyLabel="=" />
 
         <!--Space-->
         <Key
             android:codes="32"
             android:keyWidth="40%p"
             android:keyLabel="Space" />
-
-        <!--Dot-->
+        <!--Comma-->
         <Key
-            android:codes="46"
+            android:codes="44"
             android:keyWidth="10%p"
-            android:keyEdgeFlags="right"
-            android:keyLabel="." />
+            android:keyLabel="," />
+
+
 
         <!--Enter-->
         <Key

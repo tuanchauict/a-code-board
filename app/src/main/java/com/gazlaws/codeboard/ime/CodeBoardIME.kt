@@ -35,8 +35,6 @@ import com.gazlaws.codeboard.sendKeyEventOnce
 class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener {
     private var keyboardView: KeyboardView? = null
     private lateinit var sEditorInfo: EditorInfo
-    private var isShiftLocked = false
-    private var isShiftOn = false
     private var isCtrlOn = false
 
     @IntegerRes
@@ -73,7 +71,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             currentKeyboardMode = newKeyboardMode
             keyboardView?.keyboard = chooseKeyboard(newKeyboardMode)
             controlKeyUpdateView()
-            shiftKeyUpdateView()
+            updateViewByShiftKey()
         },
         KEYCODE_CONTROL to {
             val controlKeyAction = if (isCtrlOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
@@ -84,18 +82,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             )
             isCtrlOn = !isCtrlOn
             controlKeyUpdateView()
-        },
-        KEYCODE_SHIFT to {
-            // Shift - runs after long press, so shiftlock may have just been activated
-            val shiftKeyAction = if (isShiftOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
-            currentInputConnection.sendKeyEventOnce(
-                shiftKeyAction,
-                KEYCODE_SHIFT_LEFT,
-                MetaState.SHIFT_ON
-            )
-
-            isShiftOn = if (isShiftLocked) true else !isShiftOn
-            shiftKeyUpdateView()
         },
         KEYCODE_DPAD_LEFT to {
             handleArrow(KeyEvent.KEYCODE_DPAD_LEFT)
@@ -108,23 +94,24 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     private fun onKeyCtrl(code: Int) {
         val codeChar = code.toChar().toUpperCase()
         if (sEditorInfo.isDroidEdit() && codeChar in DROID_EDIT_PROBLEM_KEY_CODES) {
-            val actionKey = if (codeChar == 'Z' && !isShiftOn) 'z' else codeChar
+            val actionKey =
+                if (codeChar == 'Z' && !metaKeysPressHandler.isShiftOn) 'z' else codeChar
             val action = DROID_EDIT_PROBLEM_KEY_CODES[actionKey] ?: return
             currentInputConnection?.performContextMenuAction(action)
             if (codeChar == 'Z') {
-                isShiftLocked = false
-                releaseShiftKeyWhenNotLocked()
+                metaKeysPressHandler.isShiftLocked = false
+                metaKeysPressHandler.releaseShiftKeyWhenNotLocked()
             }
             return
         }
         val keyCode = CHAR_TO_KEYCODE_MAP[codeChar]
         if (keyCode == null) {
             currentInputConnection?.commitText("$codeChar", 1)
-            releaseShiftKeyWhenNotLocked()
+            metaKeysPressHandler.releaseShiftKeyWhenNotLocked()
             return
         }
 
-        val metaState = if (codeChar == 'Z' && isShiftOn) {
+        val metaState = if (codeChar == 'Z' && metaKeysPressHandler.isShiftOn) {
             MetaState.SHIFT_CONTROL_ON
         } else {
             MetaState.CONTROL_ON
@@ -136,9 +123,9 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             metaState,
             System.currentTimeMillis() + 1
         )
-        if (codeChar == 'Z' && isShiftOn) {
-            isShiftLocked = false
-            releaseShiftKeyWhenNotLocked()
+        if (codeChar == 'Z' && metaKeysPressHandler.isShiftOn) {
+            metaKeysPressHandler.isShiftLocked = false
+            metaKeysPressHandler.releaseShiftKeyWhenNotLocked()
         }
     }
 
@@ -163,13 +150,13 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         when {
             isCtrlOn -> {
                 onKeyCtrl(primaryCode)
-                releaseShiftKeyWhenNotLocked()
+                metaKeysPressHandler.releaseShiftKeyWhenNotLocked()
                 isCtrlOn = false
                 controlKeyUpdateView()
             }
-            isShiftOn && code.isLetter() -> {
+            metaKeysPressHandler.isShiftOn && code.isLetter() -> {
                 currentInputConnection?.commitText("${code.toUpperCase()}", 1)
-                releaseShiftKeyWhenNotLocked()
+                metaKeysPressHandler.releaseShiftKeyWhenNotLocked()
             }
             else -> {
                 if (!switchedKeyboard && !characterLongPressController.isLongPressSuccess) {
@@ -178,20 +165,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 switchedKeyboard = false
             }
         }
-    }
-
-    private fun releaseShiftKeyWhenNotLocked() {
-        if (isShiftLocked) {
-            return
-        }
-        isShiftOn = false
-        currentInputConnection.sendKeyEventOnce(
-            KeyEvent.ACTION_UP,
-            KEYCODE_SHIFT_LEFT,
-            MetaState.SHIFT_ON
-        )
-
-        shiftKeyUpdateView()
     }
 
     override fun onPress(primaryCode: Int) {
@@ -224,7 +197,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     private fun onKeyLongPress(keyCode: Int) {
         if (keyCode == KEYCODE_SHIFT) {
-            isShiftLocked = !isShiftLocked
+            metaKeysPressHandler.isShiftLocked = !metaKeysPressHandler.isShiftLocked
         }
 
         if (keyCode == KEYCODE_SPACE) {
@@ -272,9 +245,10 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             layoutInflater.inflate(keyboardLayoutRes, null) as? KeyboardView ?: return null
         this.keyboardView = keyboardView
 
+        metaKeysPressHandler.reset()
+
         keyboardView.isPreviewEnabled = preferences.isPreviewEnabled
 
-        isShiftOn = false
         isCtrlOn = false
 
         currentKeyboardMode = R.integer.keyboard_normal
@@ -302,24 +276,25 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         nonNullKeyboardView.invalidateKey(index)
     }
 
-    private fun shiftKeyUpdateView() {
+    // TODO: Move to MetaKeysPressHandler
+    fun updateViewByShiftKey() {
         val nonNullKeyboardView = keyboardView ?: return
         val nonNullKeyboard = nonNullKeyboardView.keyboard ?: return
 
         val index = nonNullKeyboard.keys.indexOfFirst { it.label in TEXT_SHIFT.values }
-        nonNullKeyboard.keys.getOrNull(index)?.label = TEXT_SHIFT[isShiftOn]
-        nonNullKeyboard.isShifted = isShiftOn
+        nonNullKeyboard.keys.getOrNull(index)?.label = TEXT_SHIFT[metaKeysPressHandler.isShiftOn]
+        nonNullKeyboard.isShifted = metaKeysPressHandler.isShiftOn
         nonNullKeyboardView.invalidateAllKeys()
     }
 
     private fun handleArrow(keyCode: Int) =
         when {
-            isCtrlOn && isShiftOn -> currentInputConnection
+            isCtrlOn && metaKeysPressHandler.isShiftOn -> currentInputConnection
                 ?.sendKeyEventDownUpWithActionBetween(
                     KEYCODE_CTRL_LEFT,
                     MetaState.SHIFT_CONTROL_ON
                 ) { moveSelection(keyCode) }
-            isShiftOn -> moveSelection(keyCode)
+            metaKeysPressHandler.isShiftOn -> moveSelection(keyCode)
             isCtrlOn -> currentInputConnection
                 ?.sendKeyEventOnce(
                     KeyEvent.ACTION_DOWN,
@@ -367,7 +342,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         private const val KEYCODE_ESCAPE = 27
         private const val KEYCODE_SYM_MODE = -15
         private const val KEYCODE_CONTROL = 17
-        private const val KEYCODE_SHIFT = 16
+        const val KEYCODE_SHIFT = 16
         private const val KEYCODE_TAB = 9
         private const val KEYCODE_INPUT_METHOD_PICKER = -13
 

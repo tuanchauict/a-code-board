@@ -2,6 +2,7 @@ package com.gazlaws.codeboard
 
 import android.view.KeyEvent
 import android.view.inputmethod.InputConnection
+import com.gazlaws.codeboard.ime.CodeBoardIME
 
 fun InputConnection?.sendKeyEventOnce(
     action: Int,

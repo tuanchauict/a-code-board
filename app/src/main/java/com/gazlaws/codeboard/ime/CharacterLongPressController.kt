@@ -1,4 +1,4 @@
-package com.gazlaws.codeboard
+package com.gazlaws.codeboard.ime
 
 import android.inputmethodservice.InputMethodService
 import android.os.Handler
@@ -26,7 +26,9 @@ class CharacterLongPressController(private val inputMethodService: InputMethodSe
             isLongPressSuccess = true
             val pairedCharacter = KEY_PAIR_MAP[character] ?: return@postDelayed
             currentInputConnection?.commitText(pairedCharacter, 1)
-        }, DEFAULT_LONG_PRESS_DURATION_MILLIS)
+        },
+            DEFAULT_LONG_PRESS_DURATION_MILLIS
+        )
     }
 
     fun release() = uiHandler.removeCallbacksAndMessages(null)

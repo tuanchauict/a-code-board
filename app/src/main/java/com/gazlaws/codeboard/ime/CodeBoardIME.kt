@@ -1,4 +1,4 @@
-package com.gazlaws.codeboard
+package com.gazlaws.codeboard.ime
 
 import android.content.Context
 import android.inputmethodservice.InputMethodService
@@ -22,6 +22,11 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import com.gazlaws.codeboard.BooleanMap
+import com.gazlaws.codeboard.Preferences
+import com.gazlaws.codeboard.R
+import com.gazlaws.codeboard.sendKeyEventDownUpWithActionBetween
+import com.gazlaws.codeboard.sendKeyEventOnce
 
 /**
  * Created by Ruby(aka gazlaws) on 13/02/2016.
@@ -43,7 +48,11 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     private val characterLongPressController: CharacterLongPressController =
         CharacterLongPressController(this)
 
-    private val preferences: Preferences by lazy { Preferences(applicationContext) }
+    private val preferences: Preferences by lazy {
+        Preferences(
+            applicationContext
+        )
+    }
 
     private val mapKeyCodeToOnKeyAction: Map<Int, () -> Unit?> = mapOf(
         KEYCODE_ESCAPE to {

@@ -48,11 +48,9 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     private val characterLongPressController: CharacterLongPressController =
         CharacterLongPressController(this)
 
-    private val preferences: Preferences by lazy {
-        Preferences(
-            applicationContext
-        )
-    }
+    private val metaKeysPressHandler: MetaKeysPressHandler = MetaKeysPressHandler(this)
+
+    private val preferences: Preferences by lazy { Preferences(applicationContext) }
 
     private val mapKeyCodeToOnKeyAction: Map<Int, () -> Unit?> = mapOf(
         KEYCODE_ESCAPE to {
@@ -145,6 +143,9 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     override fun onKey(primaryCode: Int, keyCodes: IntArray) {
+        if (metaKeysPressHandler.onKey(primaryCode)) {
+            return
+        }
         KEYCODE_TO_MENU_ACTION_MAP[primaryCode]?.also {
             currentInputConnection?.performContextMenuAction(it)
             return

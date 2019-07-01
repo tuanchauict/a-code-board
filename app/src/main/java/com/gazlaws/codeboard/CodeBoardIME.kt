@@ -61,10 +61,10 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             } else {
                 R.integer.keyboard_normal
             }
+            currentKeyboardMode = newKeyboardMode
             keyboardView?.keyboard = chooseKeyboard(newKeyboardMode)
             controlKeyUpdateView()
             shiftKeyUpdateView()
-            currentKeyboardMode = newKeyboardMode
         },
         KEYCODE_CONTROL to {
             val controlKeyAction = if (isCtrlOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN

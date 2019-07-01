@@ -40,6 +40,9 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     private val uiHandler = Handler(Looper.getMainLooper())
 
+    private val characterLongPressController: CharacterLongPressController =
+        CharacterLongPressController(this)
+
     private val preferences: Preferences by lazy { Preferences(applicationContext) }
 
     private val mapKeyCodeToOnKeyAction: Map<Int, () -> Unit?> = mapOf(
@@ -159,7 +162,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 releaseShiftKeyWhenNotLocked()
             }
             else -> {
-                if (!switchedKeyboard) {
+                if (!switchedKeyboard && !characterLongPressController.isLongPressSuccess) {
                     currentInputConnection?.commitText("$code", 1)
                 }
                 switchedKeyboard = false
@@ -200,10 +203,13 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 Log.e("CodeBoardIME", "uiHandler.run: ${e.message}", e)
             }
         }, ViewConfiguration.getLongPressTimeout().toLong())
+
+        characterLongPressController.fire(primaryCode)
     }
 
     override fun onRelease(primaryCode: Int) {
         uiHandler.removeCallbacksAndMessages(null)
+        characterLongPressController.release()
     }
 
     private fun onKeyLongPress(keyCode: Int) {

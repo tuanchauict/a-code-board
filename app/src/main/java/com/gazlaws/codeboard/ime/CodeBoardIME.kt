@@ -46,7 +46,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     private val characterLongPressController: CharacterLongPressController =
         CharacterLongPressController(this)
 
-    private val metaKeysPressHandler: MetaKeysPressHandler = MetaKeysPressHandler(this)
+    private val shiftKeyPressHandler: ShiftKeyPressHandler = ShiftKeyPressHandler(this)
 
     private val preferences: Preferences by lazy { Preferences(applicationContext) }
 
@@ -71,7 +71,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             currentKeyboardMode = newKeyboardMode
             keyboardView?.keyboard = chooseKeyboard(newKeyboardMode)
             controlKeyUpdateView()
-            metaKeysPressHandler.updateViewByShiftKey()
+            shiftKeyPressHandler.updateViewByShiftKey()
         },
         KEYCODE_CONTROL to {
             val controlKeyAction = if (isCtrlOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
@@ -95,7 +95,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         val codeChar = code.toChar().toUpperCase()
         if (sEditorInfo.isDroidEdit() && codeChar in DROID_EDIT_PROBLEM_KEY_CODES) {
             val actionKey =
-                if (codeChar == 'Z' && !metaKeysPressHandler.isShiftOn) 'z' else codeChar
+                if (codeChar == 'Z' && !shiftKeyPressHandler.isShiftOn) 'z' else codeChar
             val action = DROID_EDIT_PROBLEM_KEY_CODES[actionKey] ?: return
             currentInputConnection?.performContextMenuAction(action)
             return
@@ -103,11 +103,11 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         val keyCode = CHAR_TO_KEYCODE_MAP[codeChar]
         if (keyCode == null) {
             currentInputConnection?.commitText("$codeChar", 1)
-            metaKeysPressHandler.releaseShiftKeyWhenNotLocked()
+            shiftKeyPressHandler.releaseShiftKeyWhenNotLocked()
             return
         }
 
-        val metaState = if (codeChar == 'Z' && metaKeysPressHandler.isShiftOn) {
+        val metaState = if (codeChar == 'Z' && shiftKeyPressHandler.isShiftOn) {
             MetaState.SHIFT_CONTROL_ON
         } else {
             MetaState.CONTROL_ON
@@ -122,7 +122,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     override fun onKey(primaryCode: Int, keyCodes: IntArray) {
-        if (metaKeysPressHandler.onKey(primaryCode)) {
+        if (shiftKeyPressHandler.onKey(primaryCode)) {
             return
         }
         KEYCODE_TO_MENU_ACTION_MAP[primaryCode]?.also {
@@ -142,13 +142,13 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         when {
             isCtrlOn -> {
                 onKeyCtrl(primaryCode)
-                metaKeysPressHandler.releaseShiftKeyWhenNotLocked()
+                shiftKeyPressHandler.releaseShiftKeyWhenNotLocked()
                 isCtrlOn = false
                 controlKeyUpdateView()
             }
-            metaKeysPressHandler.isShiftOn && code.isLetter() -> {
+            shiftKeyPressHandler.isShiftOn && code.isLetter() -> {
                 currentInputConnection?.commitText("${code.toUpperCase()}", 1)
-                metaKeysPressHandler.releaseShiftKeyWhenNotLocked()
+                shiftKeyPressHandler.releaseShiftKeyWhenNotLocked()
             }
             else -> {
                 if (!switchedKeyboard && !characterLongPressController.isLongPressSuccess) {
@@ -232,7 +232,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             layoutInflater.inflate(R.layout.keyboard, null) as? KeyboardView ?: return null
         this.keyboardView = keyboardView
 
-        metaKeysPressHandler.reset()
+        shiftKeyPressHandler.reset()
 
         keyboardView.isPreviewEnabled = preferences.isPreviewEnabled
 
@@ -265,12 +265,12 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     private fun handleArrow(keyCode: Int) =
         when {
-            isCtrlOn && metaKeysPressHandler.isShiftOn -> currentInputConnection
+            isCtrlOn && shiftKeyPressHandler.isShiftOn -> currentInputConnection
                 ?.sendKeyEventDownUpWithActionBetween(
                     KEYCODE_CTRL_LEFT,
                     MetaState.SHIFT_CONTROL_ON
                 ) { moveSelection(keyCode) }
-            metaKeysPressHandler.isShiftOn -> moveSelection(keyCode)
+            shiftKeyPressHandler.isShiftOn -> moveSelection(keyCode)
             isCtrlOn -> currentInputConnection
                 ?.sendKeyEventOnce(
                     KeyEvent.ACTION_DOWN,

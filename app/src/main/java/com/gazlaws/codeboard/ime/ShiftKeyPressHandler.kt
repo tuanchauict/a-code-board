@@ -7,10 +7,10 @@ import com.gazlaws.codeboard.BooleanMap
 import com.gazlaws.codeboard.ime.CodeBoardIME.Companion.KEYCODE_SHIFT
 import com.gazlaws.codeboard.sendKeyEventOnce
 
-class MetaKeysPressHandler(private val inputMethodService: CodeBoardIME) {
+class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
     var isShiftOn: Boolean = false
         private set
-    var isShiftLocked: Boolean = false
+    private var isShiftLocked: Boolean = false
         private set
     private var lastShiftKeyPressed: Long = 0L
 

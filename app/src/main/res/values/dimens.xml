@@ -2,4 +2,6 @@
 <resources>
     <dimen name="keyboard_letter_height">8.5%p</dimen>
     <dimen name="keyboard_symbol_height">7%p</dimen>
+
+    <dimen name="keyboard_text_size">27sp</dimen>
 </resources>

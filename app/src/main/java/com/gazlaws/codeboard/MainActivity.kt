@@ -33,13 +33,6 @@ class MainActivity : AppCompatActivity() {
             setOnSeekBarChangeListener(OnSeekBarChangeListener())
         }
 
-        findViewById<RadioGroup>(R.id.radiogroupcolour).apply {
-            setSelectedChild(preferences.selectedKeyboardColorIndex)
-            setOnCheckedChangeListener { _, checkedId ->
-                preferences.selectedKeyboardColorIndex = getSelectedItemIndexById(checkedId)
-            }
-        }
-
         findViewById<RadioGroup>(R.id.radiogrouplayout).apply {
             setSelectedChild(preferences.selectedKeyboardLayoutIndex)
             setOnCheckedChangeListener { _, checkedId ->

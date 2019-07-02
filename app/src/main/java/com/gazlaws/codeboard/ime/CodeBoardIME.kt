@@ -228,9 +228,8 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     override fun onCreateInputView(): View? {
         @LayoutRes
-        val keyboardLayoutRes = KEYBOARD_LAYOUT_RESES[preferences.selectedKeyboardColorIndex]
         val keyboardView =
-            layoutInflater.inflate(keyboardLayoutRes, null) as? KeyboardView ?: return null
+            layoutInflater.inflate(R.layout.keyboard, null) as? KeyboardView ?: return null
         this.keyboardView = keyboardView
 
         metaKeysPressHandler.reset()
@@ -345,16 +344,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             KEYCODE_TAB to KeyEvent.KEYCODE_TAB,
             KEYCODE_DPAD_DOWN to KeyEvent.KEYCODE_DPAD_DOWN,
             KEYCODE_DPAD_UP to KeyEvent.KEYCODE_DPAD_UP
-        )
-
-        @LayoutRes
-        private val KEYBOARD_LAYOUT_RESES: Array<Int> = arrayOf(
-            R.layout.keyboard,
-            R.layout.keyboard1,
-            R.layout.keyboard2,
-            R.layout.keyboard3,
-            R.layout.keyboard4,
-            R.layout.keyboard5
         )
 
         @XmlRes

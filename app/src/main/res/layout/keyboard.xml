@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.inputmethodservice.KeyboardView
-
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.inputmethodservice.KeyboardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/keyboard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
-    android:keyPreviewOffset="40dp"
-    android:keyPreviewLayout="@layout/preview0"
-    android:background="@drawable/dark_263238"
-    android:keyBackground="@drawable/dark_263238"
-    android:popupLayout="@layout/popup0"
-    />
+    android:background="@drawable/shape_keyboard_bg"
+    android:keyBackground="@drawable/shape_keyboard_bg"
+    android:keyPreviewLayout="@layout/keyboard_preview"
+    android:keyPreviewOffset="30dp"
+    android:keyTextColor="@color/keyboard_text_color"
+    android:keyTextSize="@dimen/keyboard_text_size"
+    android:paddingTop="4dp"
+    android:popupLayout="@layout/keyboard_popup"
+    android:shadowColor="@android:color/transparent" />

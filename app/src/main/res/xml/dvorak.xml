@@ -256,7 +256,7 @@
             android:codes="38"
             android:keyLabel="&amp; |"
             android:popupCharacters="|"
-            android:popupKeyboard="@layout/popup_layout" />
+            android:popupKeyboard="@layout/keyboard_popup_layout" />
 
 
         <Key

@@ -313,12 +313,12 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         private const val KEYCODE_UNDO = 53741
         private const val KEYCODE_REDO = 53742
 
+        const val KEYCODE_SHIFT = 16
         private const val KEYCODE_DELETE = Keyboard.KEYCODE_DELETE
         private const val KEYCODE_DONE = Keyboard.KEYCODE_DONE
         private const val KEYCODE_ESCAPE = 27
         private const val KEYCODE_SYM_MODE = -15
         private const val KEYCODE_CONTROL = 17
-        const val KEYCODE_SHIFT = 16
         private const val KEYCODE_TAB = 9
         private const val KEYCODE_INPUT_METHOD_PICKER = -13
 

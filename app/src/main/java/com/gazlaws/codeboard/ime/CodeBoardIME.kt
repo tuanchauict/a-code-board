@@ -1,5 +1,6 @@
 package com.gazlaws.codeboard.ime
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.inputmethodservice.Keyboard
@@ -9,9 +10,6 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Vibrator
 import android.support.annotation.IntegerRes
-import android.support.annotation.LayoutRes
-import android.support.annotation.XmlRes
-import android.util.Log
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_CTRL_LEFT
 import android.view.KeyEvent.KEYCODE_SHIFT_LEFT
@@ -51,18 +49,18 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     private val preferences: Preferences by lazy { Preferences(applicationContext) }
 
     private val mapKeyCodeToOnKeyAction: Map<Int, () -> Unit?> = mapOf(
-        KEYCODE_ESCAPE to {
+        Keycode.ESCAPE to {
             currentInputConnection.sendKeyEventOnce(
                 KeyEvent.ACTION_DOWN,
                 KeyEvent.KEYCODE_ESCAPE,
                 MetaState.CONTROL_ON
             )
         },
-        KEYCODE_INPUT_METHOD_PICKER to {
+        Keycode.INPUT_METHOD_PICKER to {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showInputMethodPicker()
         },
-        KEYCODE_SYM_MODE to {
+        Keycode.SYM_MODE to {
             val newKeyboardMode = if (currentKeyboardMode == R.integer.keyboard_normal) {
                 R.integer.keyboard_sym
             } else {
@@ -73,7 +71,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             controlKeyUpdateView()
             shiftKeyPressHandler.updateViewByShiftKey()
         },
-        KEYCODE_CONTROL to {
+        Keycode.CONTROL to {
             val controlKeyAction = if (isCtrlOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
             currentInputConnection.sendKeyEventOnce(
                 controlKeyAction,
@@ -83,10 +81,10 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             isCtrlOn = !isCtrlOn
             controlKeyUpdateView()
         },
-        KEYCODE_DPAD_LEFT to {
+        Keycode.DPAD_LEFT to {
             handleArrow(KeyEvent.KEYCODE_DPAD_LEFT)
         },
-        KEYCODE_DPAD_RIGHT to {
+        Keycode.DPAD_RIGHT to {
             handleArrow(KeyEvent.KEYCODE_DPAD_RIGHT)
         }
     )
@@ -174,8 +172,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         uiHandler.postDelayed({
             try {
                 onKeyLongPress(primaryCode)
-            } catch (e: Exception) {
-                Log.e("CodeBoardIME", "uiHandler.run: ${e.message}", e)
+            } catch (_: Exception) {
             }
         }, ViewConfiguration.getLongPressTimeout().toLong())
 
@@ -188,7 +185,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     }
 
     private fun onKeyLongPress(keyCode: Int) {
-        if (keyCode == KEYCODE_SPACE) {
+        if (keyCode == Keycode.SPACE) {
             switchedKeyboard = true
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showInputMethodPicker()
@@ -217,17 +214,11 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
     override fun swipeUp() = Unit
 
-    private fun chooseKeyboard(@IntegerRes keyboardMode: Int): Keyboard {
-//        @IntRange(from = 0L, to = 1L)
-//        val topRowIndex = if (preferences.isDpadOn) 1 else 0
-//        val sizeIndex = preferences.keyboardSize
-        @XmlRes
-        val keyboardXmlRes = R.xml.code_1
-        return Keyboard(this, keyboardXmlRes, keyboardMode)
-    }
+    private fun chooseKeyboard(@IntegerRes keyboardMode: Int): Keyboard =
+        Keyboard(this, R.xml.code_1, keyboardMode)
 
+    @SuppressLint("InflateParams")
     override fun onCreateInputView(): View? {
-        @LayoutRes
         val keyboardView =
             layoutInflater.inflate(R.layout.keyboard, null) as? KeyboardView ?: return null
         this.keyboardView = keyboardView
@@ -306,60 +297,22 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     companion object {
         private const val DROID_EDIT_IME_OPTIONS = 1342177286
 
-        private const val KEYCODE_SELECT_ALL = 53737
-        private const val KEYCODE_CUT = 53738
-        private const val KEYCODE_COPY = 53739
-        private const val KEYCODE_PASTE = 53740
-        private const val KEYCODE_UNDO = 53741
-        private const val KEYCODE_REDO = 53742
-
-        const val KEYCODE_SHIFT = 16
-        private const val KEYCODE_DELETE = Keyboard.KEYCODE_DELETE
-        private const val KEYCODE_DONE = Keyboard.KEYCODE_DONE
-        private const val KEYCODE_ESCAPE = 27
-        private const val KEYCODE_SYM_MODE = -15
-        private const val KEYCODE_CONTROL = 17
-        private const val KEYCODE_TAB = 9
-        private const val KEYCODE_INPUT_METHOD_PICKER = -13
-
-        private const val KEYCODE_DPAD_LEFT = 5000
-        private const val KEYCODE_DPAD_DOWN = 5001
-        private const val KEYCODE_DPAD_UP = 5002
-        private const val KEYCODE_DPAD_RIGHT = 5003
-
-        private const val KEYCODE_SPACE = 32
 
         private val KEYCODE_TO_MENU_ACTION_MAP = mapOf(
-            KEYCODE_SELECT_ALL to android.R.id.selectAll,
-            KEYCODE_CUT to android.R.id.cut,
-            KEYCODE_COPY to android.R.id.copy,
-            KEYCODE_PASTE to android.R.id.paste,
-            KEYCODE_UNDO to android.R.id.undo,
-            KEYCODE_REDO to android.R.id.redo
+            Keycode.SELECT_ALL to android.R.id.selectAll,
+            Keycode.CUT to android.R.id.cut,
+            Keycode.COPY to android.R.id.copy,
+            Keycode.PASTE to android.R.id.paste,
+            Keycode.UNDO to android.R.id.undo,
+            Keycode.REDO to android.R.id.redo
         )
 
         private val KEYCODE_TO_SIMPLE_DOWN_UP_KEY_EVENT_MAP = mapOf(
-            KEYCODE_DELETE to KeyEvent.KEYCODE_DEL,
-            KEYCODE_DONE to KeyEvent.KEYCODE_ENTER,
-            KEYCODE_TAB to KeyEvent.KEYCODE_TAB,
-            KEYCODE_DPAD_DOWN to KeyEvent.KEYCODE_DPAD_DOWN,
-            KEYCODE_DPAD_UP to KeyEvent.KEYCODE_DPAD_UP
-        )
-
-        @XmlRes
-        private val QWERTY_KEYBOARDS = arrayOf(
-            arrayOf(R.xml.qwerty0e, R.xml.qwerty0r),
-            arrayOf(R.xml.qwerty1e, R.xml.qwerty1r),
-            arrayOf(R.xml.qwerty2e, R.xml.qwerty2r),
-            arrayOf(R.xml.qwerty3e, R.xml.qwerty3r)
-        )
-
-        @XmlRes
-        private val AZERTY_KEYBOARDS = arrayOf(
-            arrayOf(R.xml.azerty0e, R.xml.azerty0r),
-            arrayOf(R.xml.azerty1e, R.xml.azerty1r),
-            arrayOf(R.xml.azerty2e, R.xml.azerty2r),
-            arrayOf(R.xml.azerty3e, R.xml.azerty3r)
+            Keycode.DELETE to KeyEvent.KEYCODE_DEL,
+            Keycode.DONE to KeyEvent.KEYCODE_ENTER,
+            Keycode.TAB to KeyEvent.KEYCODE_TAB,
+            Keycode.DPAD_DOWN to KeyEvent.KEYCODE_DPAD_DOWN,
+            Keycode.DPAD_UP to KeyEvent.KEYCODE_DPAD_UP
         )
 
         private val DROID_EDIT_PROBLEM_KEY_CODES = mapOf(

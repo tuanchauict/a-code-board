@@ -4,14 +4,12 @@ import android.inputmethodservice.Keyboard
 import android.view.KeyEvent
 import android.view.inputmethod.InputConnection
 import com.gazlaws.codeboard.BooleanMap
-import com.gazlaws.codeboard.ime.CodeBoardIME.Companion.KEYCODE_SHIFT
 import com.gazlaws.codeboard.sendKeyEventOnce
 
 class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
     var isShiftOn: Boolean = false
         private set
     private var isShiftLocked: Boolean = false
-        private set
     private var lastShiftKeyPressed: Long = 0L
 
     private val currentInputConnection: InputConnection?
@@ -27,7 +25,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
      * Returns true if this method consumes the event.
      */
     fun onKey(primaryKey: Int): Boolean {
-        if (primaryKey == KEYCODE_SHIFT) {
+        if (primaryKey == Keycode.SHIFT) {
             onShiftKeyPressed()
             lastShiftKeyPressed = System.currentTimeMillis()
             return true
@@ -77,7 +75,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
     }
 
     private fun Keyboard.updateShiftState() {
-        getKeyByKeyCode(KEYCODE_SHIFT)?.label = TEXT_SHIFT[isShiftOn]
+        getKeyByKeyCode(Keycode.SHIFT)?.label = TEXT_SHIFT[isShiftOn]
         isShifted = isShiftOn
     }
 

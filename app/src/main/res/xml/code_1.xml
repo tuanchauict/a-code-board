@@ -4,45 +4,44 @@
     android:keyHeight="@dimen/keyboard_letter_height"
     android:verticalGap="4dp">
 
-    <Row android:keyHeight="6%p">
+    <Row android:keyHeight="7%p">
         <!--Symbol 1-->
         <Key
+            android:isSticky="true"
             android:codes="-150"
-            android:keyWidth="13.33%p"
-            android:keyLabel="#1" />
-        <!--Symbol 2-->
+            android:keyLabel=">|<" />
+        <!--+ - -->
         <Key
-            android:codes="-16"
-            android:keyWidth="13.33%p"
-            android:keyLabel="#2" />
-        <!--Symbol 3-->
+            android:codes="43"
+            android:keyLabel="+" />
+        <!--/ * -->
         <Key
-            android:codes="-17"
-            android:keyWidth="13.33%p"
-            android:keyLabel="#3" />
-        <!--Dot-->
+            android:codes="47"
+            android:keyLabel="/" />
+        <!-- _ \ -->
+        <Key
+            android:codes="95"
+            android:keyLabel="_" />
+        <!-- . ^ -->
         <Key
             android:codes="46"
-            android:keyWidth="10%p"
-            android:keyEdgeFlags="right"
-            android:keyLabel=".;" />
+            android:keyLabel="." />
         <!--"-->
         <Key
             android:codes="34"
-            android:keyWidth="7%p"
-            android:keyLabel="'''" />
+            android:keyLabel="''" />
         <Key
             android:codes="58"
-            android:keyLabel=":/" />
+            android:keyLabel=":" />
         <Key
             android:codes="123"
-            android:keyLabel="{}" />
+            android:keyLabel="{" />
         <Key
             android:codes="91"
-            android:keyLabel="[]" />
+            android:keyLabel="[" />
         <Key
             android:codes="40"
-            android:keyLabel="()" />
+            android:keyLabel="(" />
     </Row>
 
     <!-- Normal, 1234567890-->
@@ -83,7 +82,6 @@
     <Row android:keyboardMode="@integer/keyboard_normal">
         <Key
             android:codes="113"
-            android:keyEdgeFlags="left"
             android:keyLabel="q" />
         <Key
             android:codes="119"
@@ -111,7 +109,6 @@
             android:keyLabel="o" />
         <Key
             android:codes="112"
-            android:keyEdgeFlags="right"
             android:keyLabel="p" />
     </Row>
 
@@ -121,7 +118,7 @@
         android:keyboardMode="@integer/keyboard_normal">
         <Key
             android:codes="97"
-            android:keyEdgeFlags="left"
+            android:horizontalGap="5%p"
             android:keyLabel="a" />
         <Key
             android:codes="115"

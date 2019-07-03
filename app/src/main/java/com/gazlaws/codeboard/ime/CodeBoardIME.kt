@@ -135,6 +135,11 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             action.invoke()
             return
         }
+        shiftKeyPressHandler.getKeyStringWithShiftState(primaryCode)?.also {
+            currentInputConnection?.commitText(it, 1)
+            shiftKeyPressHandler.releaseShiftKeyWhenNotLocked()
+            return
+        }
 
         val code = primaryCode.toChar()
         when {
@@ -143,10 +148,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 shiftKeyPressHandler.releaseShiftKeyWhenNotLocked()
                 isCtrlOn = false
                 controlKeyUpdateView()
-            }
-            shiftKeyPressHandler.isShiftOn && code.isLetter() -> {
-                currentInputConnection?.commitText("${code.toUpperCase()}", 1)
-                shiftKeyPressHandler.releaseShiftKeyWhenNotLocked()
             }
             else -> {
                 if (!switchedKeyboard && !characterLongPressController.isLongPressSuccess) {

@@ -5,16 +5,15 @@
     android:verticalGap="4dp">
 
     <Row android:keyHeight="7%p">
-        <!--Symbol 1-->
+        <!-- F1 -->
         <Key
-            android:isSticky="true"
             android:codes="-150"
-            android:keyLabel=">|<" />
-        <!--+ - -->
+            android:keyLabel=">>" />
+        <!-- + - -->
         <Key
             android:codes="43"
             android:keyLabel="+" />
-        <!--/ * -->
+        <!-- / * -->
         <Key
             android:codes="47"
             android:keyLabel="/" />
@@ -26,19 +25,23 @@
         <Key
             android:codes="46"
             android:keyLabel="." />
-        <!--"-->
+        <!--" '-->
         <Key
             android:codes="34"
             android:keyLabel="''" />
+        <!-- : ; -->
         <Key
             android:codes="58"
             android:keyLabel=":" />
+        <!-- { } -->
         <Key
             android:codes="123"
             android:keyLabel="{" />
+        <!-- [ ] -->
         <Key
             android:codes="91"
             android:keyLabel="[" />
+        <!-- ( ) -->
         <Key
             android:codes="40"
             android:keyLabel="(" />
@@ -46,33 +49,43 @@
 
     <!-- Normal, 1234567890-->
     <Row android:keyHeight="@dimen/keyboard_letter_height">
+        <!-- 1 % -->
         <Key
             android:codes="49"
             android:keyLabel="1" />
+        <!-- 2 < -->
         <Key
             android:codes="50"
             android:keyLabel="2" />
+        <!-- 3 > -->
         <Key
             android:codes="51"
             android:keyLabel="3" />
+        <!-- 4 ? -->
         <Key
             android:codes="52"
             android:keyLabel="4" />
+        <!-- 5 & -->
         <Key
             android:codes="53"
             android:keyLabel="5" />
+        <!-- 6 | -->
         <Key
             android:codes="54"
             android:keyLabel="6" />
+        <!-- 7 ` -->
         <Key
             android:codes="55"
             android:keyLabel="7" />
+        <!-- 8 ~ -->
         <Key
             android:codes="56"
             android:keyLabel="8" />
+        <!-- 9 @ -->
         <Key
             android:codes="57"
             android:keyLabel="9" />
+        <!-- 0 $ -->
         <Key
             android:codes="48"
             android:keyLabel="0" />
@@ -113,9 +126,7 @@
     </Row>
 
     <!--Normal, asdfghjkl-->
-    <Row
-        android:keyWidth="11.11%p"
-        android:keyboardMode="@integer/keyboard_normal">
+    <Row android:keyboardMode="@integer/keyboard_normal">
         <Key
             android:codes="97"
             android:horizontalGap="5%p"
@@ -218,7 +229,6 @@
             android:codes="44"
             android:keyWidth="10%p"
             android:keyLabel="," />
-
 
 
         <!--Enter-->

@@ -151,7 +151,7 @@
     <Row android:keyboardMode="@integer/keyboard_normal">
         <!--Shift-->
         <Key
-            android:codes="16"
+            android:codes="-1"
             android:isModifier="true"
             android:keyWidth="15%p"
             android:keyEdgeFlags="left"

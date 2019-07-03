@@ -10,7 +10,7 @@ object Keycode {
     const val UNDO = 53741
     const val REDO = 53742
 
-    const val SHIFT = 16
+    const val SHIFT = -1
 
     const val DELETE = Keyboard.KEYCODE_DELETE
     const val DONE = Keyboard.KEYCODE_DONE

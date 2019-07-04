@@ -167,7 +167,7 @@
             android:isModifier="true"
             android:keyWidth="15%p"
             android:keyEdgeFlags="left"
-            android:keyLabel="Shift" />
+            android:keyIcon="@drawable/keyboard_f_shift_off" />
         <Key
             android:codes="122"
             android:keyLabel="z" />
@@ -196,7 +196,7 @@
             android:isRepeatable="true"
             android:keyWidth="15%p"
             android:keyEdgeFlags="right"
-            android:keyLabel="DEL" />
+            android:keyIcon="@drawable/keyboard_f_delete" />
     </Row>
 
     <!--Normal, Tab != Space . Enter-->
@@ -208,7 +208,7 @@
         <Key
             android:codes="9"
             android:keyWidth="15%p"
-            android:keyLabel="Tab" />
+            android:keyIcon="@drawable/keyboard_s_tab" />
 
         <!--Not-->
         <Key
@@ -224,7 +224,7 @@
         <Key
             android:codes="32"
             android:keyWidth="40%p"
-            android:keyLabel="Space" />
+            android:keyIcon="@drawable/keyboard_s_space" />
         <!--Comma-->
         <Key
             android:codes="44"

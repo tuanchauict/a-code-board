@@ -9,9 +9,11 @@ import com.gazlaws.codeboard.R
 import com.gazlaws.codeboard.sendKeyEventOnce
 
 class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
+    val isShifted: Boolean
+        get() = isShiftOn xor isCapOn
     var isShiftOn: Boolean = false
         private set
-    private var isShiftLocked: Boolean = false
+    private var isCapOn: Boolean = false
     private var lastShiftKeyPressed: Long = 0L
 
     private val currentInputConnection: InputConnection?
@@ -19,7 +21,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
 
     fun reset() {
         isShiftOn = false
-        isShiftLocked = false
+        isCapOn = false
     }
 
     /**
@@ -38,7 +40,12 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
 
     private fun onShiftKeyPressed() {
         val doubleShiftDurationMillis = System.currentTimeMillis() - lastShiftKeyPressed
-        isShiftLocked = doubleShiftDurationMillis <= DOUBLE_SHIFT_MAX_DURATION_MILLIS
+        if (doubleShiftDurationMillis <= DOUBLE_SHIFT_MAX_DURATION_MILLIS) {
+            isShiftOn = !isShiftOn
+            isCapOn = !isCapOn
+        } else {
+            isShiftOn = !isShiftOn
+        }
 
         val shiftKeyAction = if (isShiftOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
         currentInputConnection.sendKeyEventOnce(
@@ -47,12 +54,11 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
             CodeBoardIME.MetaState.SHIFT_ON
         )
 
-        isShiftOn = isShiftLocked || !isShiftOn
         updateViewByShiftKey()
     }
 
     fun releaseShiftKeyWhenNotLocked() {
-        if (isShiftLocked) {
+        if (isCapOn) {
             return
         }
         isShiftOn = false
@@ -76,19 +82,18 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
         if (keyChar !in CHARACTER_WITH_SHIFT_MAP) {
             return null
         }
-        return if (isShiftOn) CHARACTER_WITH_SHIFT_MAP[keyChar] else keyChar.toString()
-    }
-
-    private fun Keyboard.getKeyByKeyCode(keyCode: Int): Keyboard.Key? {
-        // TODO: Optimise this with shiftKeyIndex for shift
-        return keys.find { keyCode in it.codes }
+        return if (isShifted) CHARACTER_WITH_SHIFT_MAP[keyChar] else keyChar.toString()
     }
 
     private fun Keyboard.updateShiftState() {
-        getKeyByKeyCode(Keycode.SHIFT)?.label = TEXT_SHIFT[isShiftOn]
-        isShifted = isShiftOn
+        isShifted = this@ShiftKeyPressHandler.isShifted
         val characterToResMap = CHARACTER_TO_RES_MAP[isShifted]
         keys.forEach { key ->
+            if (key.isShiftKey()) {
+                val iconRes = SHIFT_CAP_ICON_MAP[isCapOn][isShiftOn]
+                key.icon = ContextCompat.getDrawable(inputMethodService, iconRes)
+                return
+            }
             val keyChar = key.codes.first().toChar()
             val iconRes = characterToResMap[keyChar]
             if (iconRes != null) {
@@ -102,10 +107,15 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
         }
     }
 
-    companion object {
-        private const val DOUBLE_SHIFT_MAX_DURATION_MILLIS = 300L
+    private fun Keyboard.Key.isShiftKey(): Boolean = codes.first() == Keycode.SHIFT
 
-        private val TEXT_SHIFT = BooleanMap("SHIFT", "Shift")
+    companion object {
+        private const val DOUBLE_SHIFT_MAX_DURATION_MILLIS = 200L
+        private val SHIFT_ICON_RES =
+            BooleanMap(R.drawable.keyboard_f_shift_on, R.drawable.keyboard_f_shift_off)
+        private val CAP_ICON_RES =
+            BooleanMap(R.drawable.keyboard_f_cap_off, R.drawable.keyboard_f_cap_on)
+        private val SHIFT_CAP_ICON_MAP = BooleanMap(CAP_ICON_RES, SHIFT_ICON_RES)
         private val CHARACTER_WITH_SHIFT_MAP: Map<Char, String> = mapOf(
             '+' to ".",
             '-' to "_",

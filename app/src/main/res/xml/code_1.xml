@@ -52,43 +52,43 @@
         <!-- 1 % -->
         <Key
             android:codes="49"
-            android:keyLabel="1" />
+            android:keyIcon="@drawable/keyboard_1" />
         <!-- 2 < -->
         <Key
             android:codes="50"
-            android:keyLabel="2" />
+            android:keyIcon="@drawable/keyboard_2" />
         <!-- 3 > -->
         <Key
             android:codes="51"
-            android:keyLabel="3" />
+            android:keyIcon="@drawable/keyboard_3" />
         <!-- 4 ? -->
         <Key
             android:codes="52"
-            android:keyLabel="4" />
+            android:keyIcon="@drawable/keyboard_4" />
         <!-- 5 & -->
         <Key
             android:codes="53"
-            android:keyLabel="5" />
+            android:keyIcon="@drawable/keyboard_5" />
         <!-- 6 | -->
         <Key
             android:codes="54"
-            android:keyLabel="6" />
+            android:keyIcon="@drawable/keyboard_6" />
         <!-- 7 ` -->
         <Key
             android:codes="55"
-            android:keyLabel="7" />
+            android:keyIcon="@drawable/keyboard_7" />
         <!-- 8 ~ -->
         <Key
             android:codes="56"
-            android:keyLabel="8" />
+            android:keyIcon="@drawable/keyboard_8" />
         <!-- 9 @ -->
         <Key
             android:codes="57"
-            android:keyLabel="9" />
+            android:keyIcon="@drawable/keyboard_9" />
         <!-- 0 $ -->
         <Key
             android:codes="48"
-            android:keyLabel="0" />
+            android:keyIcon="@drawable/keyboard_0" />
     </Row>
 
     <!-- Mode Normal, qwertyuiop-->

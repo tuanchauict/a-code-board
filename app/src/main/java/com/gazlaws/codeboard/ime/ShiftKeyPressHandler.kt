@@ -1,9 +1,11 @@
 package com.gazlaws.codeboard.ime
 
 import android.inputmethodservice.Keyboard
+import android.support.v4.content.ContextCompat
 import android.view.KeyEvent
 import android.view.inputmethod.InputConnection
 import com.gazlaws.codeboard.BooleanMap
+import com.gazlaws.codeboard.R
 import com.gazlaws.codeboard.sendKeyEventOnce
 
 class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
@@ -85,9 +87,15 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
     private fun Keyboard.updateShiftState() {
         getKeyByKeyCode(Keycode.SHIFT)?.label = TEXT_SHIFT[isShiftOn]
         isShifted = isShiftOn
-
+        val characterToResMap = CHARACTER_TO_RES_MAP[isShifted]
         keys.forEach { key ->
             val keyChar = key.codes.first().toChar()
+            val iconRes = characterToResMap[keyChar]
+            if (iconRes != null) {
+                key.icon = ContextCompat.getDrawable(inputMethodService, iconRes)
+                return@forEach
+            }
+
             if (keyChar in CHARACTER_WITH_SHIFT_MAP) {
                 key.label = if (isShifted) CHARACTER_WITH_SHIFT_MAP[keyChar] else keyChar.toString()
             }
@@ -148,5 +156,34 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
             'y' to "Y",
             'z' to "Z"
         )
+
+        private val CHARACTER_TO_RES_WITHOUT_SHIFT_MAP: Map<Char, Int> = mapOf(
+            '1' to R.drawable.keyboard_1,
+            '2' to R.drawable.keyboard_2,
+            '3' to R.drawable.keyboard_3,
+            '4' to R.drawable.keyboard_4,
+            '5' to R.drawable.keyboard_5,
+            '6' to R.drawable.keyboard_6,
+            '7' to R.drawable.keyboard_7,
+            '8' to R.drawable.keyboard_8,
+            '9' to R.drawable.keyboard_9,
+            '0' to R.drawable.keyboard_0
+        )
+
+        private val CHARACTER_TO_RES_WITH_SHIFT_MAP: Map<Char, Int> = mapOf(
+            '1' to R.drawable.keyboard_1_shift,
+            '2' to R.drawable.keyboard_2_shift,
+            '3' to R.drawable.keyboard_3_shift,
+            '4' to R.drawable.keyboard_4_shift,
+            '5' to R.drawable.keyboard_5_shift,
+            '6' to R.drawable.keyboard_6_shift,
+            '7' to R.drawable.keyboard_7_shift,
+            '8' to R.drawable.keyboard_8_shift,
+            '9' to R.drawable.keyboard_9_shift,
+            '0' to R.drawable.keyboard_0_shift
+        )
+
+        private val CHARACTER_TO_RES_MAP: BooleanMap<Map<Char, Int>> =
+            BooleanMap(CHARACTER_TO_RES_WITH_SHIFT_MAP, CHARACTER_TO_RES_WITHOUT_SHIFT_MAP)
     }
 }

@@ -4,51 +4,52 @@
     android:keyHeight="@dimen/keyboard_letter_height"
     android:verticalGap="4dp">
 
-    <Row android:keyHeight="7%p">
+    <Row android:keyHeight="@dimen/keyboard_symbol_height">
         <!-- F1 -->
         <Key
             android:codes="-150"
-            android:keyLabel=">>" />
-        <!-- + - -->
+            android:keyIcon="@drawable/keyboard_f_function" />
+        <!-- + . -->
         <Key
             android:codes="43"
-            android:keyLabel="+" />
-        <!-- / * -->
+            android:keyIcon="@drawable/keyboard_s_plus" />
+        <!-- - _ -->
+        <Key
+            android:codes="45"
+            android:keyIcon="@drawable/keyboard_s_minus" />
+        <!-- * ^ -->
+        <Key
+            android:codes="42"
+            android:keyIcon="@drawable/keyboard_s_multiply" />
+        <!-- / \ -->
         <Key
             android:codes="47"
-            android:keyLabel="/" />
-        <!-- _ \ -->
-        <Key
-            android:codes="95"
-            android:keyLabel="_" />
-        <!-- . ^ -->
-        <Key
-            android:codes="46"
-            android:keyLabel="." />
-        <!--" '-->
+            android:keyIcon="@drawable/keyboard_s_divide" />
+        <!-- " ' -->
         <Key
             android:codes="34"
-            android:keyLabel="''" />
+            android:keyIcon="@drawable/keyboard_s_quote" />
         <!-- : ; -->
         <Key
             android:codes="58"
-            android:keyLabel=":" />
-        <!-- { } -->
-        <Key
-            android:codes="123"
-            android:keyLabel="{" />
-        <!-- [ ] -->
-        <Key
-            android:codes="91"
-            android:keyLabel="[" />
+            android:keyIcon="@drawable/keyboard_s_colon" />
         <!-- ( ) -->
         <Key
             android:codes="40"
-            android:keyLabel="(" />
+            android:keyIcon="@drawable/keyboard_s_bracket" />
+        <!-- [ ] -->
+        <Key
+            android:codes="91"
+            android:keyIcon="@drawable/keyboard_s_square_bracket" />
+
+        <!-- { } -->
+        <Key
+            android:codes="123"
+            android:keyIcon="@drawable/keyboard_s_angle_bracket" />
     </Row>
 
     <!-- Normal, 1234567890-->
-    <Row android:keyHeight="@dimen/keyboard_letter_height">
+    <Row android:keyHeight="@dimen/keyboard_symbol_height">
         <!-- 1 % -->
         <Key
             android:codes="49"

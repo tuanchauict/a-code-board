@@ -107,10 +107,10 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
 
         private val TEXT_SHIFT = BooleanMap("SHIFT", "Shift")
         private val CHARACTER_WITH_SHIFT_MAP: Map<Char, String> = mapOf(
-            '+' to "-",
-            '/' to "*",
-            '_' to "\\",
-            '.' to "^",
+            '+' to ".",
+            '-' to "_",
+            '*' to "^",
+            '/' to "\\",
             '"' to "'",
             ':' to ";",
             '{' to "}",
@@ -158,6 +158,16 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
         )
 
         private val CHARACTER_TO_RES_WITHOUT_SHIFT_MAP: Map<Char, Int> = mapOf(
+            '+' to R.drawable.keyboard_s_plus,
+            '-' to R.drawable.keyboard_s_minus,
+            '*' to R.drawable.keyboard_s_multiply,
+            '/' to R.drawable.keyboard_s_divide,
+            '"' to R.drawable.keyboard_s_quote,
+            ':' to R.drawable.keyboard_s_colon,
+            '{' to R.drawable.keyboard_s_angle_bracket,
+            '[' to R.drawable.keyboard_s_square_bracket,
+            '(' to R.drawable.keyboard_s_bracket,
+
             '1' to R.drawable.keyboard_1,
             '2' to R.drawable.keyboard_2,
             '3' to R.drawable.keyboard_3,
@@ -171,6 +181,16 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
         )
 
         private val CHARACTER_TO_RES_WITH_SHIFT_MAP: Map<Char, Int> = mapOf(
+            '+' to R.drawable.keyboard_s_plus_shift,
+            '-' to R.drawable.keyboard_s_minus_shift,
+            '*' to R.drawable.keyboard_s_multiply_shift,
+            '/' to R.drawable.keyboard_s_divide_shift,
+            '"' to R.drawable.keyboard_s_quote_shift,
+            ':' to R.drawable.keyboard_s_colon_shift,
+            '{' to R.drawable.keyboard_s_angle_bracket_shift,
+            '[' to R.drawable.keyboard_s_square_bracket_shift,
+            '(' to R.drawable.keyboard_s_bracket_shift,
+
             '1' to R.drawable.keyboard_1_shift,
             '2' to R.drawable.keyboard_2_shift,
             '3' to R.drawable.keyboard_3_shift,

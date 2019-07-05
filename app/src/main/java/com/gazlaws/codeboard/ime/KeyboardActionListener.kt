@@ -65,6 +65,6 @@ class KeyboardActionListener(
     }
 
     companion object {
-        private const val DEFAULT_LONG_PRESS_DURATION_MILLIS = 500L
+        private const val DEFAULT_LONG_PRESS_DURATION_MILLIS = 300L
     }
 }

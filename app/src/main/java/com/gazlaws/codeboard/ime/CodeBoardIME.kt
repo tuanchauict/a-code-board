@@ -106,6 +106,10 @@ class CodeBoardIME : InputMethodService() {
     }
 
     private fun onKey(keyCode: Int) {
+        if (keyCode == Keycode.FUNCTION_SWITCH) {
+            // TODO: implement function switch
+            return
+        }
         if (shiftKeyPressHandler.onKey(keyCode)) {
             return
         }

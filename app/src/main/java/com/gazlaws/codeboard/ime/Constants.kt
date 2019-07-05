@@ -26,15 +26,15 @@ object Keycode {
 
     const val SPACE = 32
 
-    private const val S_PLUS = 43
-    private const val S_MINUS = 45
-    private const val S_MULTIPLY = 42
-    private const val S_DIVIDE = 47
-    private const val S_QUOTE = 34
-    private const val S_COLON = 58
-    private const val S_BRACKET = 40
-    private const val S_SQUARE_BRACKET = 91
-    private const val S_ANGLE_BRACKET = 123
+    private const val SYMBOL_PLUS = 43
+    private const val SYMBOL_MINUS = 45
+    private const val SYMBOL_MULTIPLY = 42
+    private const val SYMBOL_DIVIDE = 47
+    private const val SYMBOL_QUOTE = 34
+    private const val SYMBOL_COLON = 58
+    private const val SYMBOL_BRACKET = 40
+    private const val SYMBOL_SQUARE_BRACKET = 91
+    private const val SYMBOL_ANGLE_BRACKET = 123
 
     private const val DIGIT_0 = 48
     private const val DIGIT_1 = 49
@@ -47,8 +47,35 @@ object Keycode {
     private const val DIGIT_8 = 56
     private const val DIGIT_9 = 57
 
+    private const val LETTER_A = 97
+    private const val LETTER_B = 98
+    private const val LETTER_C = 99
+    private const val LETTER_D = 100
+    private const val LETTER_E = 101
+    private const val LETTER_F = 102
+    private const val LETTER_G = 103
+    private const val LETTER_H = 104
+    private const val LETTER_I = 105
+    private const val LETTER_J = 106
+    private const val LETTER_K = 107
+    private const val LETTER_L = 108
+    private const val LETTER_M = 109
+    private const val LETTER_N = 110
+    private const val LETTER_O = 111
+    private const val LETTER_P = 112
+    private const val LETTER_Q = 113
+    private const val LETTER_R = 114
+    private const val LETTER_S = 115
+    private const val LETTER_T = 116
+    private const val LETTER_U = 117
+    private const val LETTER_V = 118
+    private const val LETTER_W = 119
+    private const val LETTER_X = 120
+    private const val LETTER_Y = 121
+    private const val LETTER_Z = 122
 
-    private const val FUNCTION_SWITCH = -150
+
+    const val FUNCTION_SWITCH = -150
 
     val NO_PREVIEW_KEY_CODES: Set<Int> = setOf(
         DELETE,
@@ -58,15 +85,15 @@ object Keycode {
         SPACE,
         FUNCTION_SWITCH,
 
-        S_PLUS,
-        S_MINUS,
-        S_MULTIPLY,
-        S_DIVIDE,
-        S_QUOTE,
-        S_COLON,
-        S_BRACKET,
-        S_SQUARE_BRACKET,
-        S_ANGLE_BRACKET,
+        SYMBOL_PLUS,
+        SYMBOL_MINUS,
+        SYMBOL_MULTIPLY,
+        SYMBOL_DIVIDE,
+        SYMBOL_QUOTE,
+        SYMBOL_COLON,
+        SYMBOL_BRACKET,
+        SYMBOL_SQUARE_BRACKET,
+        SYMBOL_ANGLE_BRACKET,
 
         DIGIT_0,
         DIGIT_1,
@@ -81,6 +108,10 @@ object Keycode {
     )
 
     val LONG_PRESS_KEY_CODES: Set<Int> = setOf(
-        SPACE
+        SPACE,
+        LETTER_W,
+        LETTER_A,
+        LETTER_S,
+        LETTER_D
     )
 }

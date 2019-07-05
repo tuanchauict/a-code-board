@@ -9,7 +9,7 @@ import com.gazlaws.codeboard.R
 import com.gazlaws.codeboard.sendKeyEventOnce
 
 class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
-    val isShifted: Boolean
+    private val isShifted: Boolean
         get() = isShiftOn xor isCapOn
     var isShiftOn: Boolean = false
         private set
@@ -92,7 +92,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
             if (key.isShiftKey()) {
                 val iconRes = SHIFT_CAP_ICON_MAP[isCapOn][isShiftOn]
                 key.icon = ContextCompat.getDrawable(inputMethodService, iconRes)
-                return
+                return@forEach
             }
             val keyChar = key.codes.first().toChar()
             val iconRes = characterToResMap[keyChar]
@@ -126,6 +126,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
             '{' to "}",
             '[' to "]",
             '(' to ")",
+
             '!' to "#",
 
             '1' to "%",

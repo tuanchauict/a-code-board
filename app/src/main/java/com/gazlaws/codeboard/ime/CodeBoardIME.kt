@@ -5,10 +5,6 @@ import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.inputmethodservice.Keyboard
 import android.inputmethodservice.KeyboardView
-import android.media.MediaPlayer
-import android.os.Handler
-import android.os.Looper
-import android.os.Vibrator
 import android.support.annotation.IntegerRes
 import android.view.KeyEvent
 import android.view.KeyEvent.KEYCODE_CTRL_LEFT
@@ -16,7 +12,6 @@ import android.view.KeyEvent.KEYCODE_SHIFT_LEFT
 import android.view.KeyEvent.META_CTRL_ON
 import android.view.KeyEvent.META_SHIFT_ON
 import android.view.View
-import android.view.ViewConfiguration
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import com.gazlaws.codeboard.BooleanMap
@@ -29,7 +24,7 @@ import com.gazlaws.codeboard.sendKeyEventOnce
  * Created by Ruby(aka gazlaws) on 13/02/2016.
  * Kotlinized by Tuan Chau (aka tuanchauict)
  */
-class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener {
+class CodeBoardIME : InputMethodService() {
     var keyboardView: KeyboardView? = null
         private set
     private lateinit var sEditorInfo: EditorInfo
@@ -38,11 +33,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
     @IntegerRes
     private var currentKeyboardMode = R.integer.keyboard_normal
     private var switchedKeyboard = false
-
-    private val uiHandler = Handler(Looper.getMainLooper())
-
-    private val characterLongPressController: CharacterLongPressController =
-        CharacterLongPressController(this)
 
     private val shiftKeyPressHandler: ShiftKeyPressHandler = ShiftKeyPressHandler(this)
 
@@ -55,10 +45,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
                 KeyEvent.KEYCODE_ESCAPE,
                 MetaState.CONTROL_ON
             )
-        },
-        Keycode.INPUT_METHOD_PICKER to {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showInputMethodPicker()
         },
         Keycode.SYM_MODE to {
             val newKeyboardMode = if (currentKeyboardMode == R.integer.keyboard_normal) {
@@ -119,70 +105,43 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
         )
     }
 
-    override fun onKey(primaryCode: Int, keyCodes: IntArray) {
-        if (shiftKeyPressHandler.onKey(primaryCode)) {
+    private fun onKey(keyCode: Int) {
+        if (shiftKeyPressHandler.onKey(keyCode)) {
             return
         }
-        KEYCODE_TO_MENU_ACTION_MAP[primaryCode]?.also {
+        KEYCODE_TO_MENU_ACTION_MAP[keyCode]?.also {
             currentInputConnection?.performContextMenuAction(it)
             return
         }
-        KEYCODE_TO_SIMPLE_DOWN_UP_KEY_EVENT_MAP[primaryCode]?.also {
+        KEYCODE_TO_SIMPLE_DOWN_UP_KEY_EVENT_MAP[keyCode]?.also {
             sendDownUpKeyEvents(it)
             return
         }
-        mapKeyCodeToOnKeyAction[primaryCode]?.also { action ->
+        mapKeyCodeToOnKeyAction[keyCode]?.also { action ->
             action.invoke()
             return
         }
-        shiftKeyPressHandler.getKeyStringWithShiftState(primaryCode)?.also {
+        shiftKeyPressHandler.getKeyStringWithShiftState(keyCode)?.also {
             currentInputConnection?.commitText(it, 1)
             shiftKeyPressHandler.releaseShiftKeyWhenNotLocked()
             return
         }
 
-        val code = primaryCode.toChar()
+        val code = keyCode.toChar()
         when {
             isCtrlOn -> {
-                onKeyCtrl(primaryCode)
+                onKeyCtrl(keyCode)
                 shiftKeyPressHandler.releaseShiftKeyWhenNotLocked()
                 isCtrlOn = false
                 controlKeyUpdateView()
             }
             else -> {
-                if (!switchedKeyboard && !characterLongPressController.isLongPressSuccess) {
+                if (!switchedKeyboard) {
                     currentInputConnection?.commitText("$code", 1)
                 }
                 switchedKeyboard = false
             }
         }
-    }
-
-    override fun onPress(primaryCode: Int) {
-        if (preferences.isSoundOn) {
-            MediaPlayer.create(this, R.raw.keypress_sound).run {
-                setOnCompletionListener { mp -> mp.release() }
-                start()
-            }
-        }
-        if (preferences.isVibrateOn) {
-            vibrate(20)
-        }
-
-        uiHandler.removeCallbacksAndMessages(null)
-        uiHandler.postDelayed({
-            try {
-                onKeyLongPress(primaryCode)
-            } catch (_: Exception) {
-            }
-        }, ViewConfiguration.getLongPressTimeout().toLong())
-
-        characterLongPressController.fire(primaryCode)
-    }
-
-    override fun onRelease(primaryCode: Int) {
-        uiHandler.removeCallbacksAndMessages(null)
-        characterLongPressController.release()
     }
 
     private fun onKeyLongPress(keyCode: Int) {
@@ -191,29 +150,7 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.showInputMethodPicker()
         }
-
-        vibrate(50L)
     }
-
-    override fun onText(text: CharSequence) {
-        val inputConnection = currentInputConnection ?: return
-        inputConnection.commitText(text, 1)
-
-        val numberOfRepeats = if ("for" in text) 7 else 3
-        repeat(numberOfRepeats) {
-            sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
-        }
-    }
-
-    override fun swipeDown() {
-        keyboardView?.closing()
-    }
-
-    override fun swipeLeft() = Unit
-
-    override fun swipeRight() = Unit
-
-    override fun swipeUp() = Unit
 
     private fun chooseKeyboard(@IntegerRes keyboardMode: Int): Keyboard =
         Keyboard(this, R.xml.code_1, keyboardMode)
@@ -226,16 +163,22 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
 
         shiftKeyPressHandler.reset()
 
-        keyboardView.isPreviewEnabled = preferences.isPreviewEnabled
-
         isCtrlOn = false
 
         currentKeyboardMode = R.integer.keyboard_normal
-        //reset to normal
 
         val keyboard = chooseKeyboard(currentKeyboardMode)
         keyboardView.keyboard = keyboard
-        keyboardView.setOnKeyboardActionListener(this)
+
+        val keyboardActionListener = KeyboardActionListener(
+            this,
+            keyboardView,
+            Keycode.LONG_PRESS_KEY_CODES,
+            preferences,
+            ::onKey,
+            ::onKeyLongPress
+        )
+        keyboardView.setOnKeyboardActionListener(keyboardActionListener)
 
         return keyboardView
     }
@@ -280,12 +223,6 @@ class CodeBoardIME : InputMethodService(), KeyboardView.OnKeyboardActionListener
             val metaState = if (isCtrlOn) MetaState.SHIFT_CONTROL_ON else MetaState.SHIFT_ON
             currentInputConnection.sendKeyEventOnce(KeyEvent.ACTION_DOWN, keyCode, metaState)
         }
-
-    @Suppress("DEPRECATION")
-    private fun vibrate(durationMillis: Long) {
-        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        vibrator.vibrate(durationMillis)
-    }
 
     private fun EditorInfo.isDroidEdit(): Boolean = imeOptions == DROID_EDIT_IME_OPTIONS
 

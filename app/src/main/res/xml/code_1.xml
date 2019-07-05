@@ -237,7 +237,7 @@
             android:codes="-4"
             android:keyWidth="15%p"
             android:keyEdgeFlags="right"
-            android:keyLabel="Enter" />
+            android:keyIcon="@drawable/keyboard_s_enter" />
     </Row>
 
     <!--Unused keys-->

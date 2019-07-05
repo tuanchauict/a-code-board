@@ -1,6 +1,7 @@
 package com.gazlaws.codeboard.ime
 
 import android.inputmethodservice.Keyboard
+import android.view.KeyEvent
 
 object Keycode {
     const val SELECT_ALL = 53737
@@ -19,10 +20,10 @@ object Keycode {
     const val CONTROL = 17
     const val TAB = 9
 
-    const val DPAD_LEFT = 5000
-    const val DPAD_DOWN = 5001
-    const val DPAD_UP = 5002
-    const val DPAD_RIGHT = 5003
+    const val DPAD_LEFT = KeyEvent.KEYCODE_DPAD_LEFT
+    const val DPAD_DOWN = KeyEvent.KEYCODE_DPAD_DOWN
+    const val DPAD_UP = KeyEvent.KEYCODE_DPAD_UP
+    const val DPAD_RIGHT = KeyEvent.KEYCODE_DPAD_RIGHT
 
     const val SPACE = 32
 
@@ -47,32 +48,32 @@ object Keycode {
     private const val DIGIT_8 = 56
     private const val DIGIT_9 = 57
 
-    private const val LETTER_A = 97
-    private const val LETTER_B = 98
-    private const val LETTER_C = 99
-    private const val LETTER_D = 100
-    private const val LETTER_E = 101
-    private const val LETTER_F = 102
-    private const val LETTER_G = 103
-    private const val LETTER_H = 104
-    private const val LETTER_I = 105
-    private const val LETTER_J = 106
-    private const val LETTER_K = 107
-    private const val LETTER_L = 108
-    private const val LETTER_M = 109
-    private const val LETTER_N = 110
-    private const val LETTER_O = 111
-    private const val LETTER_P = 112
-    private const val LETTER_Q = 113
-    private const val LETTER_R = 114
-    private const val LETTER_S = 115
-    private const val LETTER_T = 116
-    private const val LETTER_U = 117
-    private const val LETTER_V = 118
-    private const val LETTER_W = 119
-    private const val LETTER_X = 120
-    private const val LETTER_Y = 121
-    private const val LETTER_Z = 122
+    const val LETTER_A = 97
+    const val LETTER_B = 98
+    const val LETTER_C = 99
+    const val LETTER_D = 100
+    const val LETTER_E = 101
+    const val LETTER_F = 102
+    const val LETTER_G = 103
+    const val LETTER_H = 104
+    const val LETTER_I = 105
+    const val LETTER_J = 106
+    const val LETTER_K = 107
+    const val LETTER_L = 108
+    const val LETTER_M = 109
+    const val LETTER_N = 110
+    const val LETTER_O = 111
+    const val LETTER_P = 112
+    const val LETTER_Q = 113
+    const val LETTER_R = 114
+    const val LETTER_S = 115
+    const val LETTER_T = 116
+    const val LETTER_U = 117
+    const val LETTER_V = 118
+    const val LETTER_W = 119
+    const val LETTER_X = 120
+    const val LETTER_Y = 121
+    const val LETTER_Z = 122
 
 
     const val FUNCTION_SWITCH = -150
@@ -113,5 +114,12 @@ object Keycode {
         LETTER_A,
         LETTER_S,
         LETTER_D
+    )
+
+    val LONG_LETTER_TO_DPAD_KEY_CODES_MAP: Map<Int, Int> = mapOf(
+        LETTER_A to DPAD_LEFT,
+        LETTER_D to DPAD_RIGHT,
+        LETTER_S to DPAD_DOWN,
+        LETTER_W to DPAD_UP
     )
 }

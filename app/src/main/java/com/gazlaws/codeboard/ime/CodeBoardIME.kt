@@ -19,6 +19,7 @@ import com.gazlaws.codeboard.Preferences
 import com.gazlaws.codeboard.R
 import com.gazlaws.codeboard.sendKeyEventDownUpWithActionBetween
 import com.gazlaws.codeboard.sendKeyEventOnce
+import java.security.Key
 
 /**
  * Created by Ruby(aka gazlaws) on 13/02/2016.
@@ -149,10 +150,15 @@ class CodeBoardIME : InputMethodService() {
     }
 
     private fun onKeyLongPress(keyCode: Int) {
-        if (keyCode == Keycode.SPACE) {
-            switchedKeyboard = true
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showInputMethodPicker()
+        when (keyCode) {
+            Keycode.SPACE -> {
+                switchedKeyboard = true
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.showInputMethodPicker()
+            }
+            in Keycode.LONG_LETTER_TO_DPAD_KEY_CODES_MAP -> {
+                sendDownUpKeyEvents(Keycode.LONG_LETTER_TO_DPAD_KEY_CODES_MAP[keyCode]!!)
+            }
         }
     }
 

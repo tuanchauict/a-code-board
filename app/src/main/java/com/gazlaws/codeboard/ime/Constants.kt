@@ -3,6 +3,7 @@ package com.gazlaws.codeboard.ime
 import android.inputmethodservice.Keyboard
 import android.view.KeyEvent
 
+@Suppress("unused")
 object Keycode {
     const val SELECT_ALL = 53737
     const val CUT = 53738
@@ -36,6 +37,8 @@ object Keycode {
     private const val SYMBOL_BRACKET = 40
     private const val SYMBOL_SQUARE_BRACKET = 91
     private const val SYMBOL_ANGLE_BRACKET = 123
+
+    const val SYMBOL_COMMA = 44
 
     private const val DIGIT_0 = 48
     private const val DIGIT_1 = 49
@@ -113,7 +116,8 @@ object Keycode {
         LETTER_W,
         LETTER_A,
         LETTER_S,
-        LETTER_D
+        LETTER_D,
+        SYMBOL_COMMA
     )
 
     val LONG_LETTER_TO_DPAD_KEY_CODES_MAP: Map<Int, Int> = mapOf(

@@ -5,26 +5,13 @@ import android.view.KeyEvent
 
 @Suppress("unused")
 object Keycode {
-    const val SELECT_ALL = 53737
-    const val CUT = 53738
-    const val COPY = 53739
-    const val PASTE = 53740
-    const val UNDO = 53741
-    const val REDO = 53742
-
     const val SHIFT = -1
 
     const val DELETE = Keyboard.KEYCODE_DELETE
     const val DONE = Keyboard.KEYCODE_DONE
     const val ESCAPE = 27
-    const val SYM_MODE = -15
     const val CONTROL = 17
     const val TAB = 9
-
-    const val DPAD_LEFT = KeyEvent.KEYCODE_DPAD_LEFT
-    const val DPAD_DOWN = KeyEvent.KEYCODE_DPAD_DOWN
-    const val DPAD_UP = KeyEvent.KEYCODE_DPAD_UP
-    const val DPAD_RIGHT = KeyEvent.KEYCODE_DPAD_RIGHT
 
     const val SPACE = 32
 
@@ -79,6 +66,26 @@ object Keycode {
     const val LETTER_Z = 122
 
     const val FUNCTION_SWITCH = -150
+    const val FUNCTION_ESC = -1500
+
+    const val FUNCTION_MOVE_HOME = -1501
+    const val FUNCTION_MOVE_END = -1502
+    const val FUNCTION_MOVE_TO_FIRST = -1503
+    const val FUNCTION_MOVE_TO_LAST = -1504
+
+    const val FUNCTION_DPAD_LEFT = -1505
+    const val FUNCTION_DPAD_RIGHT = -1506
+    const val FUNCTION_DPAD_UP = -1507
+    const val FUNCTION_DPAD_DOWN = -1508
+
+    const val FUNCTION_SELECT_ALL = -1509
+
+    const val FUNCTION_CUT = -1510
+    const val FUNCTION_COPY = -1511
+    const val FUNCTION_PASTE = -1512
+
+    const val FUNCTION_UNDO = -1513
+    const val FUNCTION_REDO = -1514
 
     val NO_PREVIEW_KEY_CODES: Set<Int> = setOf(
         DELETE,
@@ -110,11 +117,20 @@ object Keycode {
         DIGIT_9
     )
 
+    val FUNCTION_KEY_TO_MENU_ACTION_MAP: Map<Int, Int> = mapOf(
+        FUNCTION_UNDO to android.R.id.undo,
+        FUNCTION_REDO to android.R.id.redo,
+        FUNCTION_CUT to android.R.id.cut,
+        FUNCTION_COPY to android.R.id.copy,
+        FUNCTION_PASTE to android.R.id.paste,
+        FUNCTION_SELECT_ALL to android.R.id.selectAll
+    )
+
     val LONG_KEY_TO_KEY_EVENT_MAP: Map<Int, Int> = mapOf(
-        LETTER_A to DPAD_LEFT,
-        LETTER_D to DPAD_RIGHT,
-        LETTER_S to DPAD_DOWN,
-        LETTER_W to DPAD_UP,
+        LETTER_A to KeyEvent.KEYCODE_DPAD_LEFT,
+        LETTER_D to KeyEvent.KEYCODE_DPAD_RIGHT,
+        LETTER_S to KeyEvent.KEYCODE_DPAD_DOWN,
+        LETTER_W to KeyEvent.KEYCODE_DPAD_UP,
         LETTER_H to KeyEvent.KEYCODE_MOVE_HOME,
         LETTER_E to KeyEvent.KEYCODE_MOVE_END
     )

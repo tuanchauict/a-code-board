@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="keyboard_normal">0</integer>
-    <integer name="keyboard_sym">1</integer>
+    <integer name="keyboard_functions">1</integer>
 </resources>

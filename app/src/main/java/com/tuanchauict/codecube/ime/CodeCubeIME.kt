@@ -35,16 +35,9 @@ class CodeCubeIME : InputMethodService() {
     private val preferences: Preferences by lazy { Preferences(applicationContext) }
 
     private val mapKeyCodeToOnKeyAction: Map<Int, () -> Unit?> = mapOf(
-        Keycode.ESCAPE to {
-            currentInputConnection.sendKeyEventOnce(
-                KeyEvent.ACTION_DOWN,
-                KeyEvent.KEYCODE_ESCAPE,
-                MetaState.CONTROL_ON
-            )
-        },
-        Keycode.SYM_MODE to {
+        Keycode.FUNCTION_SWITCH to {
             val newKeyboardMode = if (currentKeyboardMode == R.integer.keyboard_normal) {
-                R.integer.keyboard_sym
+                R.integer.keyboard_functions
             } else {
                 R.integer.keyboard_normal
             }
@@ -63,10 +56,10 @@ class CodeCubeIME : InputMethodService() {
             isCtrlOn = !isCtrlOn
             controlKeyUpdateView()
         },
-        Keycode.DPAD_LEFT to {
+        Keycode.FUNCTION_DPAD_LEFT to {
             handleArrow(KeyEvent.KEYCODE_DPAD_LEFT)
         },
-        Keycode.DPAD_RIGHT to {
+        Keycode.FUNCTION_DPAD_RIGHT to {
             handleArrow(KeyEvent.KEYCODE_DPAD_RIGHT)
         }
     )
@@ -102,14 +95,10 @@ class CodeCubeIME : InputMethodService() {
     }
 
     private fun onKey(keyCode: Int) {
-        if (keyCode == Keycode.FUNCTION_SWITCH) {
-            // TODO: implement function switch
-            return
-        }
         if (shiftKeyPressHandler.onKey(keyCode)) {
             return
         }
-        KEYCODE_TO_MENU_ACTION_MAP[keyCode]?.also {
+        Keycode.FUNCTION_KEY_TO_MENU_ACTION_MAP[keyCode]?.also {
             currentInputConnection?.performContextMenuAction(it)
             return
         }
@@ -247,22 +236,13 @@ class CodeCubeIME : InputMethodService() {
     companion object {
         private const val DROID_EDIT_IME_OPTIONS = 1342177286
 
-
-        private val KEYCODE_TO_MENU_ACTION_MAP = mapOf(
-            Keycode.SELECT_ALL to android.R.id.selectAll,
-            Keycode.CUT to android.R.id.cut,
-            Keycode.COPY to android.R.id.copy,
-            Keycode.PASTE to android.R.id.paste,
-            Keycode.UNDO to android.R.id.undo,
-            Keycode.REDO to android.R.id.redo
-        )
-
-        private val KEYCODE_TO_SIMPLE_DOWN_UP_KEY_EVENT_MAP = mapOf(
+        val KEYCODE_TO_SIMPLE_DOWN_UP_KEY_EVENT_MAP = mapOf(
             Keycode.DELETE to KeyEvent.KEYCODE_DEL,
             Keycode.DONE to KeyEvent.KEYCODE_ENTER,
             Keycode.TAB to KeyEvent.KEYCODE_TAB,
-            Keycode.DPAD_DOWN to KeyEvent.KEYCODE_DPAD_DOWN,
-            Keycode.DPAD_UP to KeyEvent.KEYCODE_DPAD_UP
+            Keycode.FUNCTION_DPAD_DOWN to KeyEvent.KEYCODE_DPAD_DOWN,
+            Keycode.FUNCTION_DPAD_UP to KeyEvent.KEYCODE_DPAD_UP,
+            Keycode.FUNCTION_ESC to KeyEvent.KEYCODE_ESCAPE
         )
 
         private val DROID_EDIT_PROBLEM_KEY_CODES = mapOf(

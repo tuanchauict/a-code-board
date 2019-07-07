@@ -47,7 +47,7 @@
     <Row
         android:keyWidth="15%p"
         android:keyHeight="4%p"
-        android:keyboardMode="@integer/keyboard_sym"
+        android:keyboardMode="@integer/keyboard_functions"
         android:rowEdgeFlags="top">
         <Key
             android:codes="27"
@@ -299,7 +299,7 @@
     <Row
         android:keyWidth="10%p"
         android:keyHeight="5%p"
-        android:keyboardMode="@integer/keyboard_sym">
+        android:keyboardMode="@integer/keyboard_functions">
         <Key
             android:codes="126"
             android:keyEdgeFlags="left"
@@ -341,7 +341,7 @@
     <Row
         android:keyWidth="15%p"
         android:keyHeight="5%p"
-        android:keyboardMode="@integer/keyboard_sym">
+        android:keyboardMode="@integer/keyboard_functions">
 
         <Key
             android:codes="53737"
@@ -371,7 +371,7 @@
     <Row
         android:keyWidth="10%p"
         android:keyHeight="5%p"
-        android:keyboardMode="@integer/keyboard_sym">
+        android:keyboardMode="@integer/keyboard_functions">
         <Key
             android:codes="16"
             android:isModifier="true"

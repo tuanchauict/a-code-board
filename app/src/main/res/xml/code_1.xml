@@ -4,7 +4,10 @@
     android:keyHeight="@dimen/keyboard_letter_height"
     android:verticalGap="4dp">
 
-    <Row android:keyHeight="@dimen/keyboard_symbol_height">
+    <!-- Normal -->
+    <Row
+        android:keyHeight="@dimen/keyboard_symbol_height"
+        android:keyboardMode="@integer/keyboard_normal">
         <!-- F1 -->
         <Key
             android:codes="-150"
@@ -48,8 +51,60 @@
             android:keyIcon="@drawable/keyboard_s_angle_bracket" />
     </Row>
 
+    <!-- Functions, Home Up End MoveFirst SelectAll Copy Undo -->
+    <Row
+        android:keyHeight="@dimen/keyboard_symbol_height"
+        android:keyboardMode="@integer/keyboard_functions">
+        <!-- F1 -->
+        <Key
+            android:codes="-150"
+            android:keyIcon="@drawable/keyboard_f_function" />
+        <!-- Home -->
+        <Key
+            android:codes="-1501"
+            android:isRepeatable="true"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyLabel="Home" />
+        <!-- Up -->
+        <Key
+            android:codes="-1507"
+            android:isRepeatable="true"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyLabel="Up" />
+        <!-- End -->
+        <Key
+            android:codes="-1502"
+            android:isRepeatable="true"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyLabel="End" />
+        <!-- Move to first -->
+        <Key
+            android:codes="-1503"
+            android:isRepeatable="true"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyLabel="First" />
+        <!-- Select All -->
+        <Key
+            android:codes="-1509"
+            android:isRepeatable="true"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyLabel="Select All" />
+        <!-- Copy -->
+        <Key
+            android:codes="-1511"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyLabel="Copy" />
+        <!-- Undo -->
+        <Key
+            android:codes="-1513"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyLabel="Undo" />
+    </Row>
+
     <!-- Normal, 1234567890-->
-    <Row android:keyHeight="@dimen/keyboard_symbol_height">
+    <Row
+        android:keyHeight="@dimen/keyboard_symbol_height"
+        android:keyboardMode="@integer/keyboard_normal">
         <!-- 1 % -->
         <Key
             android:codes="49"
@@ -92,8 +147,56 @@
             android:keyIcon="@drawable/keyboard_0" />
     </Row>
 
+    <!-- Functions, ESC Left Down Right MoveLast Cut Paste Redo -->
+    <Row
+        android:keyHeight="@dimen/keyboard_symbol_height"
+        android:keyboardMode="@integer/keyboard_functions">
+        <!-- ESC -->
+        <Key
+            android:codes="-1500"
+            android:keyLabel="ESC" />
+        <!-- Left -->
+        <Key
+            android:codes="-1505"
+            android:isRepeatable="true"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyLabel="Left" />
+        <!-- Down -->
+        <Key
+            android:codes="-1508"
+            android:isRepeatable="true"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyLabel="Down" />
+        <!-- Right -->
+        <Key
+            android:codes="-1506"
+            android:isRepeatable="true"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyLabel="Right" />
+        <!-- Move to last -->
+        <Key
+            android:codes="-1504"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyLabel="Last" />
+        <!-- Cut -->
+        <Key
+            android:codes="-1510"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyLabel="Cut" />
+        <!-- Paste -->
+        <Key
+            android:codes="-1512"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyLabel="Paste" />
+        <!-- Redo -->
+        <Key
+            android:codes="-1514"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyLabel="Redo" />
+    </Row>
+
     <!-- Mode Normal, qwertyuiop-->
-    <Row android:keyboardMode="@integer/keyboard_normal">
+    <Row>
         <Key
             android:codes="113"
             android:keyLabel="q" />
@@ -127,7 +230,7 @@
     </Row>
 
     <!--Normal, asdfghjkl-->
-    <Row android:keyboardMode="@integer/keyboard_normal">
+    <Row>
         <Key
             android:codes="97"
             android:horizontalGap="5%p"
@@ -160,7 +263,7 @@
     </Row>
 
     <!--Normal, Shift zxcvbnm Delete-->
-    <Row android:keyboardMode="@integer/keyboard_normal">
+    <Row>
         <!--Shift-->
         <Key
             android:codes="-1"

@@ -77,12 +77,13 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
         nonNullKeyboardView.invalidateAllKeys()
     }
 
-    fun getKeyStringWithShiftState(keyCode: Int): String? {
+    fun getKeyStringWithShiftState(keyCode: Int, isWithReversedState: Boolean = false): String? {
         val keyChar = keyCode.toChar()
         if (keyChar !in CHARACTER_WITH_SHIFT_MAP) {
             return null
         }
-        return if (isShifted) CHARACTER_WITH_SHIFT_MAP[keyChar] else keyChar.toString()
+        val isWithShiftKey = if (isWithReversedState) !isShifted else isShifted
+        return if (isWithShiftKey) CHARACTER_WITH_SHIFT_MAP[keyChar] else keyChar.toString()
     }
 
     private fun Keyboard.updateShiftState() {

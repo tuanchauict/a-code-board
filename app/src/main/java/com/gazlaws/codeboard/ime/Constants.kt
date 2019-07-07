@@ -117,7 +117,28 @@ object Keycode {
         LETTER_A,
         LETTER_S,
         LETTER_D,
-        SYMBOL_COMMA
+
+        SYMBOL_COMMA,
+        SYMBOL_PLUS,
+        SYMBOL_MINUS,
+        SYMBOL_MULTIPLY,
+        SYMBOL_DIVIDE,
+        SYMBOL_QUOTE,
+        SYMBOL_COLON,
+        SYMBOL_BRACKET,
+        SYMBOL_SQUARE_BRACKET,
+        SYMBOL_ANGLE_BRACKET,
+
+        DIGIT_0,
+        DIGIT_1,
+        DIGIT_2,
+        DIGIT_3,
+        DIGIT_4,
+        DIGIT_5,
+        DIGIT_6,
+        DIGIT_7,
+        DIGIT_8,
+        DIGIT_9
     )
 
     val LONG_LETTER_TO_DPAD_KEY_CODES_MAP: Map<Int, Int> = mapOf(

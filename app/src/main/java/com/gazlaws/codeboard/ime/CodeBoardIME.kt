@@ -149,17 +149,19 @@ class CodeBoardIME : InputMethodService() {
     }
 
     private fun onKeyLongPress(keyCode: Int) {
-        when (keyCode) {
-            Keycode.SPACE -> {
+        val reversedShiftedStateChar =
+            shiftKeyPressHandler.getKeyStringWithShiftState(keyCode, true)
+        when {
+            keyCode == Keycode.SPACE -> {
                 switchedKeyboard = true
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.showInputMethodPicker()
             }
-            in Keycode.LONG_LETTER_TO_DPAD_KEY_CODES_MAP ->
-                sendDownUpKeyEvents(Keycode.LONG_LETTER_TO_DPAD_KEY_CODES_MAP[keyCode]!!)
-            Keycode.SYMBOL_COMMA -> {
-                currentInputConnection?.commitText(".", 1)
-            }
+            keyCode in Keycode.LONG_LETTER_TO_DPAD_KEY_CODES_MAP ->
+                Keycode.LONG_LETTER_TO_DPAD_KEY_CODES_MAP[keyCode]?.let(::sendDownUpKeyEvents)
+            reversedShiftedStateChar != null ->
+                currentInputConnection?.commitText(reversedShiftedStateChar, 1)
+            keyCode == Keycode.SYMBOL_COMMA -> currentInputConnection?.commitText(".", 1)
         }
     }
 

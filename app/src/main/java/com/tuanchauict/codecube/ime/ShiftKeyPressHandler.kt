@@ -1,14 +1,14 @@
-package com.gazlaws.codeboard.ime
+package com.tuanchauict.codecube.ime
 
 import android.inputmethodservice.Keyboard
 import android.support.v4.content.ContextCompat
 import android.view.KeyEvent
 import android.view.inputmethod.InputConnection
-import com.gazlaws.codeboard.BooleanMap
-import com.gazlaws.codeboard.R
-import com.gazlaws.codeboard.sendKeyEventOnce
+import com.tuanchauict.codecube.BooleanMap
+import com.tuanchauict.codecube.R
+import com.tuanchauict.codecube.sendKeyEventOnce
 
-class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
+class ShiftKeyPressHandler(private val inputMethodService: CodeCubeIME) {
     private val isShifted: Boolean
         get() = isShiftOn xor isCapOn
     var isShiftOn: Boolean = false
@@ -51,7 +51,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
         currentInputConnection.sendKeyEventOnce(
             shiftKeyAction,
             KeyEvent.KEYCODE_SHIFT_LEFT,
-            CodeBoardIME.MetaState.SHIFT_ON
+            CodeCubeIME.MetaState.SHIFT_ON
         )
 
         updateViewByShiftKey()
@@ -65,7 +65,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
         currentInputConnection.sendKeyEventOnce(
             KeyEvent.ACTION_UP,
             KeyEvent.KEYCODE_SHIFT_LEFT,
-            CodeBoardIME.MetaState.SHIFT_ON
+            CodeCubeIME.MetaState.SHIFT_ON
         )
 
         updateViewByShiftKey()

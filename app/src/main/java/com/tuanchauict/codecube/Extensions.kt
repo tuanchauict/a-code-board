@@ -1,13 +1,13 @@
-package com.gazlaws.codeboard
+package com.tuanchauict.codecube
 
 import android.view.KeyEvent
 import android.view.inputmethod.InputConnection
-import com.gazlaws.codeboard.ime.CodeBoardIME
+import com.tuanchauict.codecube.ime.CodeCubeIME
 
 fun InputConnection?.sendKeyEventOnce(
     action: Int,
     code: Int,
-    metaState: CodeBoardIME.MetaState,
+    metaState: CodeCubeIME.MetaState,
     sendingTimeMillis: Long = System.currentTimeMillis()
 ) {
     if (this == null) {
@@ -26,7 +26,7 @@ fun InputConnection?.sendKeyEventOnce(
 
 fun InputConnection?.sendKeyEventDownUpWithActionBetween(
     code: Int,
-    metaState: CodeBoardIME.MetaState,
+    metaState: CodeCubeIME.MetaState,
     action: () -> Unit = {}
 ) {
     sendKeyEventOnce(KeyEvent.ACTION_DOWN, code, metaState)

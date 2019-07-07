@@ -1,4 +1,4 @@
-package com.gazlaws.codeboard.ime
+package com.tuanchauict.codecube.ime
 
 import android.inputmethodservice.Keyboard
 import android.view.KeyEvent

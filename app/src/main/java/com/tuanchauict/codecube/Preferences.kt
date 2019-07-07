@@ -1,4 +1,4 @@
-package com.gazlaws.codeboard
+package com.tuanchauict.codecube
 
 import android.content.Context
 import android.content.SharedPreferences

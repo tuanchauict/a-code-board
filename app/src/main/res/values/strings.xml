@@ -1,18 +1,17 @@
 <resources>
-    <string name="app_name">CodeBoard</string>
-    <string name="codeboard_ime">CodeBoard IME</string>
-    <string name="subtype_en_US">CodeBoard-%s</string>
-    <string name="subtype_fr_FR">CodeBoard-%s</string>
+    <string name="app_name">Code Cube</string>
+    <string name="codecube_ime">Code Cube IME</string>
+    <string name="subtype_en_US">Code Cube-%s</string>
+    <string name="subtype_fr_FR">Code Cube-%s</string>
     <string name="printf">printf(\"\");</string>
     <string name="scanf">scanf(\"\");</string>
     <string name="for_">for(;;){\n\t}</string>
-    <string name="app_intro">CodeBoard - Intro</string>
+    <string name="app_intro">Code Cube - Intro</string>
     <string name="change_keyboard">Change Keyboard</string>
     <string name="re_open_keyboard_to_see_changes">Re-open keyboard to see changes</string>
-    <string name="replace_arrows_with_cut_copy_paste_shortcuts">Replace arrows with cut/copy/paste shortcuts?</string>
     <string name="popup_previews_of_characters">Popup previews of characters?</string>
-    <string name="sound_on_keypress">Sound on keypress?</string>
-    <string name="vibrate_on_keypress">Vibrate on keypress?</string>
+    <string name="sound_on_keypress">Sound on key press?</string>
+    <string name="vibrate_on_keypress">Vibrate on key press?</string>
     <string name="keyboard_size">Keyboard Size</string>
     <string name="smallest_for_tablets">Smallest (for tablets)</string>
     <string name="large">Large</string>

@@ -1,4 +1,4 @@
-package com.gazlaws.codeboard
+package com.tuanchauict.codecube
 
 /**
  * Specialized [Map], where the key type is boolean. This map guarantees that values are defined for

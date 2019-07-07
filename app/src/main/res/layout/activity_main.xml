@@ -20,15 +20,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="@string/re_open_keyboard_to_see_changes"
-            android:inputType="text" />
 
-        <CheckBox
-            android:id="@+id/check_no_arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/replace_arrows_with_cut_copy_paste_shortcuts" />
+            android:hint="@string/re_open_keyboard_to_see_changes"
+            android:lines="3"/>
 
         <CheckBox
             android:id="@+id/check_preview"
@@ -115,22 +109,7 @@
                 android:checked="false"
                 android:onClick="closeKeyboard"
                 android:text="@string/azerty" />
-
-            <!--<RadioButton-->
-                <!--android:id="@+id/dvoraklayout"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_margin="16dp"-->
-                <!--android:onClick="closeKeyboard"-->
-                <!--android:text="Dvorak" />-->
         </RadioGroup>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/pay_if_you_can"
-            android:visibility="gone" />
 
         <Button
             android:id="@+id/open_tutorial"

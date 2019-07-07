@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gazlaws.codeboard"
-    >
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.tuanchauict.codecube">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -10,10 +10,11 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-       >
+        tools:ignore="GoogleAppIndexingWarning"
+        android:fullBackupContent="true">
         <service
-            android:name=".ime.CodeBoardIME"
-            android:label="@string/codeboard_ime"
+            android:name="com.tuanchauict.codecube.ime.CodeCubeIME"
+            android:label="@string/codecube_ime"
             android:permission="android.permission.BIND_INPUT_METHOD">
             <meta-data
                 android:name="android.view.im"
@@ -23,9 +24,8 @@
             </intent-filter>
         </service>
 
-
-
-        <activity android:name=".MainActivity"
+        <activity
+            android:name="com.tuanchauict.codecube.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,10 +33,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".IntroActivity"
+        <activity
+            android:name="com.tuanchauict.codecube.IntroActivity"
             android:label="@string/app_intro" />
-
-
     </application>
 
 </manifest>

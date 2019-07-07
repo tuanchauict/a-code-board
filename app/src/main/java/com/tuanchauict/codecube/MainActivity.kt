@@ -1,4 +1,4 @@
-package com.gazlaws.codeboard
+package com.tuanchauict.codecube
 
 import android.content.Context
 import android.content.Intent
@@ -60,14 +60,6 @@ class MainActivity : AppCompatActivity() {
             isChecked = preferences.isVibrateOn
             setOnClickListener {
                 preferences.isVibrateOn = isChecked
-                closeKeyboard(it)
-            }
-        }
-
-        findViewById<CheckBox>(R.id.check_no_arrow).apply {
-            isChecked = preferences.isDpadOn
-            setOnClickListener {
-                preferences.isDpadOn = isChecked
                 closeKeyboard(it)
             }
         }
@@ -138,7 +130,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val GITHUB_URL = "https://github.com/gazlaws-dev/codeboard"
+        private const val GITHUB_URL = "https://github.com/tuanchauict/codeboard"
         private const val PLAY_STORE_URL = "market://details?id=com.gazlaws.codeboard"
     }
 }

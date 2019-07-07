@@ -1,4 +1,4 @@
-package com.gazlaws.codeboard.ime
+package com.tuanchauict.codecube.ime
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -14,17 +14,17 @@ import android.view.KeyEvent.META_SHIFT_ON
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import com.gazlaws.codeboard.BooleanMap
-import com.gazlaws.codeboard.Preferences
-import com.gazlaws.codeboard.R
-import com.gazlaws.codeboard.sendKeyEventDownUpWithActionBetween
-import com.gazlaws.codeboard.sendKeyEventOnce
+import com.tuanchauict.codecube.BooleanMap
+import com.tuanchauict.codecube.Preferences
+import com.tuanchauict.codecube.R
+import com.tuanchauict.codecube.sendKeyEventDownUpWithActionBetween
+import com.tuanchauict.codecube.sendKeyEventOnce
 
 /**
  * Created by Ruby(aka gazlaws) on 13/02/2016.
  * Kotlinized by Tuan Chau (aka tuanchauict)
  */
-class CodeBoardIME : InputMethodService() {
+class CodeCubeIME : InputMethodService() {
     var keyboardView: KeyboardView? = null
         private set
     private lateinit var sEditorInfo: EditorInfo

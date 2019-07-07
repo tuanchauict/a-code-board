@@ -7,10 +7,6 @@ import android.inputmethodservice.Keyboard
 import android.inputmethodservice.KeyboardView
 import android.support.annotation.IntegerRes
 import android.view.KeyEvent
-import android.view.KeyEvent.KEYCODE_CTRL_LEFT
-import android.view.KeyEvent.KEYCODE_SHIFT_LEFT
-import android.view.KeyEvent.META_CTRL_ON
-import android.view.KeyEvent.META_SHIFT_ON
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -61,7 +57,7 @@ class CodeCubeIME : InputMethodService() {
             val controlKeyAction = if (isCtrlOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
             currentInputConnection.sendKeyEventOnce(
                 controlKeyAction,
-                KEYCODE_CTRL_LEFT,
+                KeyEvent.KEYCODE_CTRL_LEFT,
                 MetaState.CONTROL_ON
             )
             isCtrlOn = !isCtrlOn
@@ -157,11 +153,14 @@ class CodeCubeIME : InputMethodService() {
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.showInputMethodPicker()
             }
-            keyCode in Keycode.LONG_LETTER_TO_DPAD_KEY_CODES_MAP ->
-                Keycode.LONG_LETTER_TO_DPAD_KEY_CODES_MAP[keyCode]?.let(::sendDownUpKeyEvents)
+            keyCode in Keycode.LONG_KEY_TO_KEY_EVENT_MAP ->
+                Keycode.LONG_KEY_TO_KEY_EVENT_MAP[keyCode]?.let(::sendDownUpKeyEvents)
+            keyCode in Keycode.LONG_KEY_TO_MENU_ACTION_MAP ->
+                Keycode.LONG_KEY_TO_MENU_ACTION_MAP[keyCode]
+                    ?.let { currentInputConnection?.performContextMenuAction(it) }
+            keyCode == Keycode.SYMBOL_COMMA -> currentInputConnection?.commitText(".", 1)
             reversedShiftedStateChar != null ->
                 currentInputConnection?.commitText(reversedShiftedStateChar, 1)
-            keyCode == Keycode.SYMBOL_COMMA -> currentInputConnection?.commitText(".", 1)
         }
     }
 
@@ -215,7 +214,7 @@ class CodeCubeIME : InputMethodService() {
         when {
             isCtrlOn && shiftKeyPressHandler.isShiftOn -> currentInputConnection
                 ?.sendKeyEventDownUpWithActionBetween(
-                    KEYCODE_CTRL_LEFT,
+                    KeyEvent.KEYCODE_CTRL_LEFT,
                     MetaState.SHIFT_CONTROL_ON
                 ) { moveSelection(keyCode) }
             shiftKeyPressHandler.isShiftOn -> moveSelection(keyCode)
@@ -228,9 +227,9 @@ class CodeCubeIME : InputMethodService() {
             else -> sendDownUpKeyEvents(keyCode)
         }
 
-    private fun moveSelection(keyCode: Int) =
+    private fun moveSelection(keyCode: Int): Unit? =
         currentInputConnection?.sendKeyEventDownUpWithActionBetween(
-            KEYCODE_SHIFT_LEFT,
+            KeyEvent.KEYCODE_SHIFT_LEFT,
             MetaState.SHIFT_CONTROL_ON
         ) {
             val metaState = if (isCtrlOn) MetaState.SHIFT_CONTROL_ON else MetaState.SHIFT_ON
@@ -240,9 +239,9 @@ class CodeCubeIME : InputMethodService() {
     private fun EditorInfo.isDroidEdit(): Boolean = imeOptions == DROID_EDIT_IME_OPTIONS
 
     enum class MetaState(val value: Int) {
-        SHIFT_ON(META_CTRL_ON),
-        CONTROL_ON(META_CTRL_ON),
-        SHIFT_CONTROL_ON(META_SHIFT_ON or META_CTRL_ON)
+        SHIFT_ON(KeyEvent.META_CTRL_ON),
+        CONTROL_ON(KeyEvent.META_CTRL_ON),
+        SHIFT_CONTROL_ON(KeyEvent.META_SHIFT_ON or KeyEvent.META_CTRL_ON)
     }
 
     companion object {

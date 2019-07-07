@@ -78,7 +78,6 @@ object Keycode {
     const val LETTER_Y = 121
     const val LETTER_Z = 122
 
-
     const val FUNCTION_SWITCH = -150
 
     val NO_PREVIEW_KEY_CODES: Set<Int> = setOf(
@@ -111,12 +110,24 @@ object Keycode {
         DIGIT_9
     )
 
+    val LONG_KEY_TO_KEY_EVENT_MAP: Map<Int, Int> = mapOf(
+        LETTER_A to DPAD_LEFT,
+        LETTER_D to DPAD_RIGHT,
+        LETTER_S to DPAD_DOWN,
+        LETTER_W to DPAD_UP,
+        LETTER_H to KeyEvent.KEYCODE_MOVE_HOME,
+        LETTER_E to KeyEvent.KEYCODE_MOVE_END
+    )
+
+    val LONG_KEY_TO_MENU_ACTION_MAP: Map<Int, Int> = mapOf(
+        LETTER_X to android.R.id.cut,
+        LETTER_C to android.R.id.copy,
+        LETTER_V to android.R.id.paste,
+        LETTER_Z to android.R.id.undo
+    )
+
     val LONG_PRESS_KEY_CODES: Set<Int> = setOf(
         SPACE,
-        LETTER_W,
-        LETTER_A,
-        LETTER_S,
-        LETTER_D,
 
         SYMBOL_COMMA,
         SYMBOL_PLUS,
@@ -139,12 +150,5 @@ object Keycode {
         DIGIT_7,
         DIGIT_8,
         DIGIT_9
-    )
-
-    val LONG_LETTER_TO_DPAD_KEY_CODES_MAP: Map<Int, Int> = mapOf(
-        LETTER_A to DPAD_LEFT,
-        LETTER_D to DPAD_RIGHT,
-        LETTER_S to DPAD_DOWN,
-        LETTER_W to DPAD_UP
-    )
+    ) + LONG_KEY_TO_MENU_ACTION_MAP.keys + LONG_KEY_TO_KEY_EVENT_MAP.keys
 }

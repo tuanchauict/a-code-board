@@ -1,6 +1,7 @@
 package com.tuanchauict.codecube.ime
 
 import android.inputmethodservice.Keyboard
+import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
 import android.view.KeyEvent
 import android.view.inputmethod.InputConnection
@@ -47,7 +48,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeCubeIME) {
             isShiftOn = !isShiftOn
         }
 
-        val shiftKeyAction = if (isShiftOn) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
+        val shiftKeyAction = if (!isShifted) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
         currentInputConnection.sendKeyEventOnce(
             shiftKeyAction,
             KeyEvent.KEYCODE_SHIFT_LEFT,
@@ -91,14 +92,12 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeCubeIME) {
         val characterToResMap = CHARACTER_TO_RES_MAP[isShifted]
         keys.forEach { key ->
             if (key.isShiftKey()) {
-                val iconRes = SHIFT_CAP_ICON_MAP[isCapOn][isShiftOn]
-                key.icon = ContextCompat.getDrawable(inputMethodService, iconRes)
+                SHIFT_CAP_ICON_MAP[isCapOn][isShiftOn].let { key.setIconRes(it) }
                 return@forEach
             }
-            val keyChar = key.codes.first().toChar()
-            val iconRes = characterToResMap[keyChar]
-            if (iconRes != null) {
-                key.icon = ContextCompat.getDrawable(inputMethodService, iconRes)
+            val keyChar = key.code.toChar()
+            characterToResMap[keyChar]?.also {
+                key.setIconRes(it)
                 return@forEach
             }
 
@@ -108,7 +107,13 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeCubeIME) {
         }
     }
 
-    private fun Keyboard.Key.isShiftKey(): Boolean = codes.first() == Keycode.SHIFT
+    private val Keyboard.Key.code: Int get() = codes.first()
+
+    private fun Keyboard.Key.isShiftKey(): Boolean = code == Keycode.SHIFT
+
+    private fun Keyboard.Key.setIconRes(@DrawableRes iconRes: Int) {
+        icon = ContextCompat.getDrawable(inputMethodService, iconRes)
+    }
 
     companion object {
         private const val DOUBLE_SHIFT_MAX_DURATION_MILLIS = 200L

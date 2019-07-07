@@ -165,7 +165,7 @@
         <Key
             android:codes="-1"
             android:isModifier="true"
-            android:keyWidth="15%p"
+            android:keyWidth="13%p"
             android:keyEdgeFlags="left"
             android:keyIcon="@drawable/keyboard_f_shift_off" />
         <Key
@@ -194,14 +194,14 @@
         <Key
             android:codes="-5"
             android:isRepeatable="true"
-            android:keyWidth="15%p"
+            android:keyWidth="18%p"
             android:keyEdgeFlags="right"
             android:keyIcon="@drawable/keyboard_f_delete" />
     </Row>
 
     <!--Normal, Tab != Space . Enter-->
     <Row
-        android:keyHeight="@dimen/keyboard_symbol_height"
+        android:keyHeight="@dimen/keyboard_symbol_space_height"
         android:rowEdgeFlags="bottom">
 
         <!--Tab-->

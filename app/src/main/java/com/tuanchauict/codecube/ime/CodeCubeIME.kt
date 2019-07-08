@@ -51,6 +51,37 @@ class CodeCubeIME : InputMethodService() {
         }
     )
 
+    @SuppressLint("InflateParams")
+    override fun onCreateInputView(): View? {
+        val keyboardView =
+            layoutInflater.inflate(R.layout.keyboard, null) as? KeyboardView ?: return null
+        this.keyboardView = keyboardView
+
+        shiftKeyPressHandler.reset()
+
+        currentKeyboardMode = R.integer.keyboard_normal
+
+        val keyboard = chooseKeyboard(currentKeyboardMode)
+        keyboardView.keyboard = keyboard
+
+        val keyboardActionListener = KeyboardActionListener(
+            this,
+            keyboardView,
+            Keycode.LONG_PRESS_KEY_CODES,
+            preferences,
+            ::onKey,
+            ::onKeyLongPress
+        )
+        keyboardView.setOnKeyboardActionListener(keyboardActionListener)
+
+        return keyboardView
+    }
+
+    override fun onStartInputView(attribute: EditorInfo, restarting: Boolean) {
+        super.onStartInputView(attribute, restarting)
+        setInputView(onCreateInputView())
+    }
+
     private fun onKey(keyCode: Int) {
         if (shiftKeyPressHandler.onKey(keyCode)) {
             return
@@ -101,37 +132,6 @@ class CodeCubeIME : InputMethodService() {
 
     private fun chooseKeyboard(@IntegerRes keyboardMode: Int): Keyboard =
         Keyboard(this, R.xml.code_1, keyboardMode)
-
-    @SuppressLint("InflateParams")
-    override fun onCreateInputView(): View? {
-        val keyboardView =
-            layoutInflater.inflate(R.layout.keyboard, null) as? KeyboardView ?: return null
-        this.keyboardView = keyboardView
-
-        shiftKeyPressHandler.reset()
-
-        currentKeyboardMode = R.integer.keyboard_normal
-
-        val keyboard = chooseKeyboard(currentKeyboardMode)
-        keyboardView.keyboard = keyboard
-
-        val keyboardActionListener = KeyboardActionListener(
-            this,
-            keyboardView,
-            Keycode.LONG_PRESS_KEY_CODES,
-            preferences,
-            ::onKey,
-            ::onKeyLongPress
-        )
-        keyboardView.setOnKeyboardActionListener(keyboardActionListener)
-
-        return keyboardView
-    }
-
-    override fun onStartInputView(attribute: EditorInfo, restarting: Boolean) {
-        super.onStartInputView(attribute, restarting)
-        setInputView(onCreateInputView())
-    }
 
     enum class MetaState(val value: Int) {
         SHIFT_ON(KeyEvent.META_CTRL_ON)

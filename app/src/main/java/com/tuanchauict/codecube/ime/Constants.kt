@@ -89,12 +89,10 @@ object Keycode {
     private const val FUNCTION_REDO = -1514
 
     val NO_PREVIEW_KEY_CODES: Set<Int> = setOf(
-        FUNCTION_DELETE,
         ENTER,
         TAB,
         SHIFT,
         SPACE,
-        FUNCTION_SWITCH,
 
         SYMBOL_PLUS,
         SYMBOL_MINUS,
@@ -105,6 +103,24 @@ object Keycode {
         SYMBOL_BRACKET,
         SYMBOL_SQUARE_BRACKET,
         SYMBOL_ANGLE_BRACKET,
+
+        FUNCTION_SWITCH,
+        FUNCTION_ESC,
+        FUNCTION_MOVE_HOME,
+        FUNCTION_MOVE_END,
+        FUNCTION_MOVE_TO_FIRST,
+        FUNCTION_MOVE_TO_LAST,
+        FUNCTION_DPAD_LEFT,
+        FUNCTION_DPAD_RIGHT,
+        FUNCTION_DPAD_UP,
+        FUNCTION_DPAD_DOWN,
+        FUNCTION_SELECT_ALL,
+        FUNCTION_CUT,
+        FUNCTION_COPY,
+        FUNCTION_PASTE,
+        FUNCTION_UNDO,
+        FUNCTION_REDO,
+        FUNCTION_DELETE,
 
         DIGIT_0,
         DIGIT_1,

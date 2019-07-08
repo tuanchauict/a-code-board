@@ -96,7 +96,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeCubeIME) {
                 return@forEach
             }
             val keyChar = key.code.toChar()
-            characterToResMap[keyChar]?.also {
+            characterToResMap[key.code]?.also {
                 key.setIconRes(it)
                 return@forEach
             }
@@ -174,53 +174,73 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeCubeIME) {
             'z' to "Z"
         )
 
-        private val CHARACTER_TO_RES_WITHOUT_SHIFT_MAP: Map<Char, Int> = mapOf(
-            '+' to R.drawable.keyboard_s_plus,
-            '-' to R.drawable.keyboard_s_minus,
-            '*' to R.drawable.keyboard_s_multiply,
-            '/' to R.drawable.keyboard_s_divide,
-            '"' to R.drawable.keyboard_s_quote,
-            ':' to R.drawable.keyboard_s_colon,
-            '{' to R.drawable.keyboard_s_angle_bracket,
-            '[' to R.drawable.keyboard_s_square_bracket,
-            '(' to R.drawable.keyboard_s_bracket,
+        private val CHARACTER_TO_RES_WITHOUT_SHIFT_MAP: Map<Int, Int> = mapOf(
+            Keycode.SYMBOL_PLUS to R.drawable.keyboard_s_plus,
+            Keycode.SYMBOL_MINUS to R.drawable.keyboard_s_minus,
+            Keycode.SYMBOL_MULTIPLY to R.drawable.keyboard_s_multiply,
+            Keycode.SYMBOL_DIVIDE to R.drawable.keyboard_s_divide,
+            Keycode.SYMBOL_QUOTE to R.drawable.keyboard_s_quote,
+            Keycode.SYMBOL_COLON to R.drawable.keyboard_s_colon,
+            Keycode.SYMBOL_ANGLE_BRACKET to R.drawable.keyboard_s_angle_bracket,
+            Keycode.SYMBOL_SQUARE_BRACKET to R.drawable.keyboard_s_square_bracket,
+            Keycode.SYMBOL_BRACKET to R.drawable.keyboard_s_bracket,
 
-            '1' to R.drawable.keyboard_1,
-            '2' to R.drawable.keyboard_2,
-            '3' to R.drawable.keyboard_3,
-            '4' to R.drawable.keyboard_4,
-            '5' to R.drawable.keyboard_5,
-            '6' to R.drawable.keyboard_6,
-            '7' to R.drawable.keyboard_7,
-            '8' to R.drawable.keyboard_8,
-            '9' to R.drawable.keyboard_9,
-            '0' to R.drawable.keyboard_0
+            Keycode.DIGIT_1 to R.drawable.keyboard_1,
+            Keycode.DIGIT_2 to R.drawable.keyboard_2,
+            Keycode.DIGIT_3 to R.drawable.keyboard_3,
+            Keycode.DIGIT_4 to R.drawable.keyboard_4,
+            Keycode.DIGIT_5 to R.drawable.keyboard_5,
+            Keycode.DIGIT_6 to R.drawable.keyboard_6,
+            Keycode.DIGIT_7 to R.drawable.keyboard_7,
+            Keycode.DIGIT_8 to R.drawable.keyboard_8,
+            Keycode.DIGIT_9 to R.drawable.keyboard_9,
+            Keycode.DIGIT_0 to R.drawable.keyboard_0,
+
+            Keycode.FUNCTION_DPAD_LEFT to R.drawable.keyboard_f_left,
+            Keycode.FUNCTION_DPAD_RIGHT to R.drawable.keyboard_f_right,
+            Keycode.FUNCTION_DPAD_UP to R.drawable.keyboard_f_up,
+            Keycode.FUNCTION_DPAD_DOWN to R.drawable.keyboard_f_down,
+
+            Keycode.FUNCTION_MOVE_HOME to R.drawable.keyboard_f_move_home,
+            Keycode.FUNCTION_MOVE_END to R.drawable.keyboard_f_move_end,
+            Keycode.FUNCTION_MOVE_TO_FIRST to R.drawable.keyboard_f_move_first,
+            Keycode.FUNCTION_MOVE_TO_LAST to R.drawable.keyboard_f_move_last
         )
 
-        private val CHARACTER_TO_RES_WITH_SHIFT_MAP: Map<Char, Int> = mapOf(
-            '+' to R.drawable.keyboard_s_plus_shift,
-            '-' to R.drawable.keyboard_s_minus_shift,
-            '*' to R.drawable.keyboard_s_multiply_shift,
-            '/' to R.drawable.keyboard_s_divide_shift,
-            '"' to R.drawable.keyboard_s_quote_shift,
-            ':' to R.drawable.keyboard_s_colon_shift,
-            '{' to R.drawable.keyboard_s_angle_bracket_shift,
-            '[' to R.drawable.keyboard_s_square_bracket_shift,
-            '(' to R.drawable.keyboard_s_bracket_shift,
+        private val CHARACTER_TO_RES_WITH_SHIFT_MAP: Map<Int, Int> = mapOf(
+            Keycode.SYMBOL_PLUS to R.drawable.keyboard_s_plus_shift,
+            Keycode.SYMBOL_MINUS to R.drawable.keyboard_s_minus_shift,
+            Keycode.SYMBOL_MULTIPLY to R.drawable.keyboard_s_multiply_shift,
+            Keycode.SYMBOL_DIVIDE to R.drawable.keyboard_s_divide_shift,
+            Keycode.SYMBOL_QUOTE to R.drawable.keyboard_s_quote_shift,
+            Keycode.SYMBOL_COLON to R.drawable.keyboard_s_colon_shift,
+            Keycode.SYMBOL_ANGLE_BRACKET to R.drawable.keyboard_s_angle_bracket_shift,
+            Keycode.SYMBOL_SQUARE_BRACKET to R.drawable.keyboard_s_square_bracket_shift,
+            Keycode.SYMBOL_BRACKET to R.drawable.keyboard_s_bracket_shift,
 
-            '1' to R.drawable.keyboard_1_shift,
-            '2' to R.drawable.keyboard_2_shift,
-            '3' to R.drawable.keyboard_3_shift,
-            '4' to R.drawable.keyboard_4_shift,
-            '5' to R.drawable.keyboard_5_shift,
-            '6' to R.drawable.keyboard_6_shift,
-            '7' to R.drawable.keyboard_7_shift,
-            '8' to R.drawable.keyboard_8_shift,
-            '9' to R.drawable.keyboard_9_shift,
-            '0' to R.drawable.keyboard_0_shift
+            Keycode.DIGIT_1 to R.drawable.keyboard_1_shift,
+            Keycode.DIGIT_2 to R.drawable.keyboard_2_shift,
+            Keycode.DIGIT_3 to R.drawable.keyboard_3_shift,
+            Keycode.DIGIT_4 to R.drawable.keyboard_4_shift,
+            Keycode.DIGIT_5 to R.drawable.keyboard_5_shift,
+            Keycode.DIGIT_6 to R.drawable.keyboard_6_shift,
+            Keycode.DIGIT_7 to R.drawable.keyboard_7_shift,
+            Keycode.DIGIT_8 to R.drawable.keyboard_8_shift,
+            Keycode.DIGIT_9 to R.drawable.keyboard_9_shift,
+            Keycode.DIGIT_0 to R.drawable.keyboard_0_shift,
+
+            Keycode.FUNCTION_DPAD_LEFT to R.drawable.keyboard_f_left_shift,
+            Keycode.FUNCTION_DPAD_RIGHT to R.drawable.keyboard_f_right_shift,
+            Keycode.FUNCTION_DPAD_UP to R.drawable.keyboard_f_up_shift,
+            Keycode.FUNCTION_DPAD_DOWN to R.drawable.keyboard_f_down_shift,
+
+            Keycode.FUNCTION_MOVE_HOME to R.drawable.keyboard_f_move_home_shift,
+            Keycode.FUNCTION_MOVE_END to R.drawable.keyboard_f_move_end_shift,
+            Keycode.FUNCTION_MOVE_TO_FIRST to R.drawable.keyboard_f_move_first_shift,
+            Keycode.FUNCTION_MOVE_TO_LAST to R.drawable.keyboard_f_move_last_shift
         )
 
-        private val CHARACTER_TO_RES_MAP: BooleanMap<Map<Char, Int>> =
+        private val CHARACTER_TO_RES_MAP: BooleanMap<Map<Int, Int>> =
             BooleanMap(CHARACTER_TO_RES_WITH_SHIFT_MAP, CHARACTER_TO_RES_WITHOUT_SHIFT_MAP)
     }
 }

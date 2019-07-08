@@ -14,28 +14,28 @@ object Keycode {
 
     const val SPACE = 32
 
-    private const val SYMBOL_PLUS = 43
-    private const val SYMBOL_MINUS = 45
-    private const val SYMBOL_MULTIPLY = 42
-    private const val SYMBOL_DIVIDE = 47
-    private const val SYMBOL_QUOTE = 34
-    private const val SYMBOL_COLON = 58
-    private const val SYMBOL_BRACKET = 40
-    private const val SYMBOL_SQUARE_BRACKET = 91
-    private const val SYMBOL_ANGLE_BRACKET = 123
+    const val SYMBOL_PLUS = 43
+    const val SYMBOL_MINUS = 45
+    const val SYMBOL_MULTIPLY = 42
+    const val SYMBOL_DIVIDE = 47
+    const val SYMBOL_QUOTE = 34
+    const val SYMBOL_COLON = 58
+    const val SYMBOL_BRACKET = 40
+    const val SYMBOL_SQUARE_BRACKET = 91
+    const val SYMBOL_ANGLE_BRACKET = 123
 
     const val SYMBOL_COMMA = 44
 
-    private const val DIGIT_0 = 48
-    private const val DIGIT_1 = 49
-    private const val DIGIT_2 = 50
-    private const val DIGIT_3 = 51
-    private const val DIGIT_4 = 52
-    private const val DIGIT_5 = 53
-    private const val DIGIT_6 = 54
-    private const val DIGIT_7 = 55
-    private const val DIGIT_8 = 56
-    private const val DIGIT_9 = 57
+    const val DIGIT_0 = 48
+    const val DIGIT_1 = 49
+    const val DIGIT_2 = 50
+    const val DIGIT_3 = 51
+    const val DIGIT_4 = 52
+    const val DIGIT_5 = 53
+    const val DIGIT_6 = 54
+    const val DIGIT_7 = 55
+    const val DIGIT_8 = 56
+    const val DIGIT_9 = 57
 
     const val LETTER_A = 97
     const val LETTER_B = 98
@@ -69,15 +69,15 @@ object Keycode {
 
     private const val FUNCTION_DELETE = Keyboard.KEYCODE_DELETE
 
-    private const val FUNCTION_MOVE_HOME = -1501
-    private const val FUNCTION_MOVE_END = -1502
+    const val FUNCTION_MOVE_HOME = -1501
+    const val FUNCTION_MOVE_END = -1502
     const val FUNCTION_MOVE_TO_FIRST = -1503
     const val FUNCTION_MOVE_TO_LAST = -1504
 
-    private const val FUNCTION_DPAD_LEFT = -1505
-    private const val FUNCTION_DPAD_RIGHT = -1506
-    private const val FUNCTION_DPAD_UP = -1507
-    private const val FUNCTION_DPAD_DOWN = -1508
+    const val FUNCTION_DPAD_LEFT = -1505
+    const val FUNCTION_DPAD_RIGHT = -1506
+    const val FUNCTION_DPAD_UP = -1507
+    const val FUNCTION_DPAD_DOWN = -1508
 
     private const val FUNCTION_SELECT_ALL = -1509
 

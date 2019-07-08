@@ -5,7 +5,8 @@ Currently, I (Tuan Chau) am working on this folk to improve the keyboard which f
 1. [x] Refactor the current codebase
     1. [x] Kotlinized
     2. [x] Refactor
-2. [ ] Make this keyboard easier to type on phone, yes, I'm targeting to make this awesome for phone, not tablet.
+2. [x] Make this keyboard easier to type on phone, yes, I'm targeting to make this awesome for phone, not tablet.
+    1. [ ] Publish to Play Store
 3. [ ] (Optional) Customize for specified languages (Python is the first language I think of)
 4. [ ] (Optional) Autosuggestion
 

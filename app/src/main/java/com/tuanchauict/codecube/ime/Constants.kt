@@ -7,11 +7,10 @@ import android.view.KeyEvent
 object Keycode {
     const val SHIFT = -1
 
-    const val DELETE = Keyboard.KEYCODE_DELETE
-    const val DONE = Keyboard.KEYCODE_DONE
     const val ESCAPE = 27
     const val CONTROL = 17
-    const val TAB = 9
+    private const val ENTER = Keyboard.KEYCODE_DONE
+    private const val TAB = 9
 
     const val SPACE = 32
 
@@ -68,28 +67,30 @@ object Keycode {
     const val FUNCTION_SWITCH = -150
     const val FUNCTION_ESC = -1500
 
-    const val FUNCTION_MOVE_HOME = -1501
-    const val FUNCTION_MOVE_END = -1502
+    private const val FUNCTION_DELETE = Keyboard.KEYCODE_DELETE
+
+    private const val FUNCTION_MOVE_HOME = -1501
+    private const val FUNCTION_MOVE_END = -1502
     const val FUNCTION_MOVE_TO_FIRST = -1503
     const val FUNCTION_MOVE_TO_LAST = -1504
 
-    const val FUNCTION_DPAD_LEFT = -1505
-    const val FUNCTION_DPAD_RIGHT = -1506
-    const val FUNCTION_DPAD_UP = -1507
-    const val FUNCTION_DPAD_DOWN = -1508
+    private const val FUNCTION_DPAD_LEFT = -1505
+    private const val FUNCTION_DPAD_RIGHT = -1506
+    private const val FUNCTION_DPAD_UP = -1507
+    private const val FUNCTION_DPAD_DOWN = -1508
 
-    const val FUNCTION_SELECT_ALL = -1509
+    private const val FUNCTION_SELECT_ALL = -1509
 
-    const val FUNCTION_CUT = -1510
-    const val FUNCTION_COPY = -1511
-    const val FUNCTION_PASTE = -1512
+    private const val FUNCTION_CUT = -1510
+    private const val FUNCTION_COPY = -1511
+    private const val FUNCTION_PASTE = -1512
 
-    const val FUNCTION_UNDO = -1513
-    const val FUNCTION_REDO = -1514
+    private const val FUNCTION_UNDO = -1513
+    private const val FUNCTION_REDO = -1514
 
     val NO_PREVIEW_KEY_CODES: Set<Int> = setOf(
-        DELETE,
-        DONE,
+        FUNCTION_DELETE,
+        ENTER,
         TAB,
         SHIFT,
         SPACE,
@@ -126,6 +127,18 @@ object Keycode {
         FUNCTION_SELECT_ALL to android.R.id.selectAll
     )
 
+    val KEY_TO_SIMPLE_DOWN_UP_KEY_EVENT_MAP = mapOf(
+        FUNCTION_DELETE to KeyEvent.KEYCODE_DEL,
+        ENTER to KeyEvent.KEYCODE_ENTER,
+        TAB to KeyEvent.KEYCODE_TAB,
+        FUNCTION_DPAD_LEFT to KeyEvent.KEYCODE_DPAD_LEFT,
+        FUNCTION_DPAD_RIGHT to KeyEvent.KEYCODE_DPAD_RIGHT,
+        FUNCTION_DPAD_DOWN to KeyEvent.KEYCODE_DPAD_DOWN,
+        FUNCTION_DPAD_UP to KeyEvent.KEYCODE_DPAD_UP,
+        FUNCTION_ESC to KeyEvent.KEYCODE_ESCAPE,
+        FUNCTION_MOVE_HOME to KeyEvent.KEYCODE_MOVE_HOME,
+        FUNCTION_MOVE_END to KeyEvent.KEYCODE_MOVE_END
+    )
     val LONG_KEY_TO_KEY_EVENT_MAP: Map<Int, Int> = mapOf(
         LETTER_A to KeyEvent.KEYCODE_DPAD_LEFT,
         LETTER_D to KeyEvent.KEYCODE_DPAD_RIGHT,

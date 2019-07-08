@@ -58,47 +58,46 @@
         <!-- F1 -->
         <Key
             android:codes="-150"
-            android:keyIcon="@drawable/keyboard_f_function" />
-        <!-- Home -->
-        <Key
-            android:codes="-1501"
-            android:isRepeatable="true"
-            android:keyWidth="@dimen/keyboard_function_width"
-            android:keyLabel="Home" />
-        <!-- Up -->
-        <Key
-            android:codes="-1507"
-            android:isRepeatable="true"
-            android:keyWidth="@dimen/keyboard_function_width"
-            android:keyLabel="Up" />
-        <!-- End -->
-        <Key
-            android:codes="-1502"
-            android:isRepeatable="true"
-            android:keyWidth="@dimen/keyboard_function_width"
-            android:keyLabel="End" />
+            android:keyIcon="@drawable/keyboard_f_exit_function" />
         <!-- Move to first -->
         <Key
             android:codes="-1503"
             android:isRepeatable="true"
             android:keyWidth="@dimen/keyboard_function_width"
-            android:keyLabel="First" />
-        <!-- Select All -->
+            android:keyIcon="@drawable/keyboard_f_move_first" />
+        <!-- Home -->
         <Key
-            android:codes="-1509"
+            android:codes="-1501"
             android:isRepeatable="true"
             android:keyWidth="@dimen/keyboard_function_width"
-            android:keyLabel="Select All" />
-        <!-- Copy -->
+            android:keyIcon="@drawable/keyboard_f_move_home" />
+        <!-- Up -->
         <Key
-            android:codes="-1511"
+            android:codes="-1507"
+            android:isRepeatable="true"
             android:keyWidth="@dimen/keyboard_function_width"
-            android:keyLabel="Copy" />
+            android:keyIcon="@drawable/keyboard_f_up" />
+        <!-- End -->
+        <Key
+            android:codes="-1502"
+            android:isRepeatable="true"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyIcon="@drawable/keyboard_f_move_end" />
+        <!-- Move to last -->
+        <Key
+            android:codes="-1504"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyIcon="@drawable/keyboard_f_move_last" />
         <!-- Undo -->
         <Key
             android:codes="-1513"
             android:keyWidth="@dimen/keyboard_function_width"
-            android:keyLabel="Undo" />
+            android:keyIcon="@drawable/keyboard_f_undo" />
+        <!-- Redo -->
+        <Key
+            android:codes="-1514"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyIcon="@drawable/keyboard_f_redo" />
     </Row>
 
     <!-- Normal, 1234567890-->
@@ -154,45 +153,46 @@
         <!-- ESC -->
         <Key
             android:codes="-1500"
-            android:keyLabel="ESC" />
+            android:keyIcon="@drawable/keyboard_f_esc" />
+        <!-- Select All -->
+        <Key
+            android:codes="-1509"
+            android:isRepeatable="true"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyIcon="@drawable/keyboard_f_select_all" />
         <!-- Left -->
         <Key
             android:codes="-1505"
             android:isRepeatable="true"
             android:keyWidth="@dimen/keyboard_function_width"
-            android:keyLabel="Left" />
+            android:keyIcon="@drawable/keyboard_f_left" />
         <!-- Down -->
         <Key
             android:codes="-1508"
             android:isRepeatable="true"
             android:keyWidth="@dimen/keyboard_function_width"
-            android:keyLabel="Down" />
+            android:keyIcon="@drawable/keyboard_f_down" />
         <!-- Right -->
         <Key
             android:codes="-1506"
             android:isRepeatable="true"
             android:keyWidth="@dimen/keyboard_function_width"
-            android:keyLabel="Right" />
-        <!-- Move to last -->
-        <Key
-            android:codes="-1504"
-            android:keyWidth="@dimen/keyboard_function_width"
-            android:keyLabel="Last" />
+            android:keyIcon="@drawable/keyboard_f_right" />
         <!-- Cut -->
         <Key
             android:codes="-1510"
             android:keyWidth="@dimen/keyboard_function_width"
-            android:keyLabel="Cut" />
+            android:keyIcon="@drawable/keyboard_f_cut" />
+        <!-- Copy -->
+        <Key
+            android:codes="-1511"
+            android:keyWidth="@dimen/keyboard_function_width"
+            android:keyIcon="@drawable/keyboard_f_copy" />
         <!-- Paste -->
         <Key
             android:codes="-1512"
             android:keyWidth="@dimen/keyboard_function_width"
-            android:keyLabel="Paste" />
-        <!-- Redo -->
-        <Key
-            android:codes="-1514"
-            android:keyWidth="@dimen/keyboard_function_width"
-            android:keyLabel="Redo" />
+            android:keyIcon="@drawable/keyboard_f_paste" />
     </Row>
 
     <!-- Mode Normal, qwertyuiop-->

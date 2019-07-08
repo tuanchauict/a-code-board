@@ -41,9 +41,11 @@ class CodeCubeIME : InputMethodService() {
             shiftKeyPressHandler.updateViewByShiftKey()
         },
         Keycode.FUNCTION_MOVE_TO_FIRST to {
+            // TODO: This works wrongly when shift key is on
             currentInputConnection?.setSelection(0, 0)
         },
         Keycode.FUNCTION_MOVE_TO_LAST to {
+            // TODO: This works wrongly when shift key is on
             currentInputConnection?.performContextMenuAction(android.R.id.selectAll)
             currentInputConnection?.getSelectedText(0)?.also {
                 currentInputConnection?.setSelection(it.length, it.length)

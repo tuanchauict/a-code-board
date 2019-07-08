@@ -201,10 +201,10 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeCubeIME) {
             Keycode.FUNCTION_DPAD_UP to R.drawable.keyboard_f_up,
             Keycode.FUNCTION_DPAD_DOWN to R.drawable.keyboard_f_down,
 
-            Keycode.FUNCTION_MOVE_HOME to R.drawable.keyboard_f_move_home,
+//            Keycode.FUNCTION_MOVE_TO_FIRST to R.drawable.keyboard_f_move_first,
+//            Keycode.FUNCTION_MOVE_TO_LAST to R.drawable.keyboard_f_move_last,
             Keycode.FUNCTION_MOVE_END to R.drawable.keyboard_f_move_end,
-            Keycode.FUNCTION_MOVE_TO_FIRST to R.drawable.keyboard_f_move_first,
-            Keycode.FUNCTION_MOVE_TO_LAST to R.drawable.keyboard_f_move_last
+            Keycode.FUNCTION_MOVE_HOME to R.drawable.keyboard_f_move_home
         )
 
         private val CHARACTER_TO_RES_WITH_SHIFT_MAP: Map<Int, Int> = mapOf(
@@ -234,10 +234,10 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeCubeIME) {
             Keycode.FUNCTION_DPAD_UP to R.drawable.keyboard_f_up_shift,
             Keycode.FUNCTION_DPAD_DOWN to R.drawable.keyboard_f_down_shift,
 
+//            Keycode.FUNCTION_MOVE_TO_FIRST to R.drawable.keyboard_f_move_first_shift,
+//            Keycode.FUNCTION_MOVE_TO_LAST to R.drawable.keyboard_f_move_last_shift,
             Keycode.FUNCTION_MOVE_HOME to R.drawable.keyboard_f_move_home_shift,
-            Keycode.FUNCTION_MOVE_END to R.drawable.keyboard_f_move_end_shift,
-            Keycode.FUNCTION_MOVE_TO_FIRST to R.drawable.keyboard_f_move_first_shift,
-            Keycode.FUNCTION_MOVE_TO_LAST to R.drawable.keyboard_f_move_last_shift
+            Keycode.FUNCTION_MOVE_END to R.drawable.keyboard_f_move_end_shift
         )
 
         private val CHARACTER_TO_RES_MAP: BooleanMap<Map<Int, Int>> =

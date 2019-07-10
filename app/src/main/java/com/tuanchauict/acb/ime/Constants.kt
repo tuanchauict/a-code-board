@@ -1,4 +1,4 @@
-package com.tuanchauict.acodeboard.ime
+package com.tuanchauict.acb.ime
 
 import android.inputmethodservice.Keyboard
 import android.view.KeyEvent

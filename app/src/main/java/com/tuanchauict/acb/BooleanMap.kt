@@ -1,4 +1,4 @@
-package com.tuanchauict.acodeboard
+package com.tuanchauict.acb
 
 /**
  * Specialized [Map], where the key type is boolean. This map guarantees that values are defined for

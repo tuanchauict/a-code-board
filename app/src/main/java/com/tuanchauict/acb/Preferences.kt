@@ -1,4 +1,4 @@
-package com.tuanchauict.acodeboard
+package com.tuanchauict.acb
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -1,4 +1,4 @@
-package com.tuanchauict.acodeboard;
+package com.tuanchauict.acb;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

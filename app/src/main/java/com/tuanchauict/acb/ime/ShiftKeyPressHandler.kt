@@ -1,13 +1,13 @@
-package com.tuanchauict.acodeboard.ime
+package com.tuanchauict.acb.ime
 
 import android.inputmethodservice.Keyboard
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
 import android.view.KeyEvent
 import android.view.inputmethod.InputConnection
-import com.tuanchauict.acodeboard.BooleanMap
-import com.tuanchauict.acodeboard.R
-import com.tuanchauict.acodeboard.sendKeyEventOnce
+import com.tuanchauict.acb.BooleanMap
+import com.tuanchauict.acb.R
+import com.tuanchauict.acb.sendKeyEventOnce
 
 class ShiftKeyPressHandler(private val inputMethodService: CodeboardIME) {
     private val isShifted: Boolean

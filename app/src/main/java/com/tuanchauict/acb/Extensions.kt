@@ -1,8 +1,8 @@
-package com.tuanchauict.acodeboard
+package com.tuanchauict.acb
 
 import android.view.KeyEvent
 import android.view.inputmethod.InputConnection
-import com.tuanchauict.acodeboard.ime.CodeboardIME
+import com.tuanchauict.acb.ime.CodeboardIME
 
 fun InputConnection?.sendKeyEventOnce(
     action: Int,

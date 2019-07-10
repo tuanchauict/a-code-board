@@ -1,4 +1,4 @@
-package com.tuanchauict.acodeboard.ime
+package com.tuanchauict.acb.ime
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,8 +10,8 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import com.tuanchauict.acodeboard.Preferences
-import com.tuanchauict.acodeboard.R
+import com.tuanchauict.acb.Preferences
+import com.tuanchauict.acb.R
 
 /**
  * Created by Ruby(aka gazlaws) on 13/02/2016.

@@ -1,4 +1,4 @@
-package com.tuanchauict.acb
+package com.tuanchauict.acb.ui
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

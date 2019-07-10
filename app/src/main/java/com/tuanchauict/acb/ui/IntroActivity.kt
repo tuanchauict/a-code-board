@@ -1,4 +1,4 @@
-package com.tuanchauict.acb
+package com.tuanchauict.acb.ui
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 
 import com.github.paolorotolo.appintro.AppIntro
 import com.github.paolorotolo.appintro.AppIntroFragment
+import com.tuanchauict.acb.R
 
 /**
  * Created by Ruby on 05/12/2016.

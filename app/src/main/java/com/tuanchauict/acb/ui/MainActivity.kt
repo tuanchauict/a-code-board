@@ -1,4 +1,4 @@
-package com.tuanchauict.acb
+package com.tuanchauict.acb.ui
 
 import android.content.Context
 import android.content.Intent
@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
+import com.tuanchauict.acb.Preferences
+import com.tuanchauict.acb.R
 
 /**
  * Created by Ruby on 02/06/2016.
@@ -16,7 +18,11 @@ import android.widget.CheckBox
  * TODO: Update this class doc
  */
 class MainActivity : AppCompatActivity() {
-    private val preferences: Preferences by lazy { Preferences(this) }
+    private val preferences: Preferences by lazy {
+        Preferences(
+            this
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

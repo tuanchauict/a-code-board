@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_0"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginRight="16dp"
+    android:gravity="center_vertical"
+    tools:ignore="RtlHardcoded,RtlSymmetry"
+    tools:showIn="@layout/activity_main_2">
+
+
+    <ImageView
+        android:id="@+id/step_checked"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/shape_check_bg"
+        android:visibility="gone"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/step_number"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/shape_check_bg"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/step_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="4dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:textColor="#FFF"
+        android:textSize="12sp"
+        tools:text="Enabled" />
+</LinearLayout>

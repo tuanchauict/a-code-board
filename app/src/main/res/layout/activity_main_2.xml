@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="RtlHardcoded">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/step_1"
+            layout="@layout/include_setup_step" />
+
+        <include
+            android:id="@+id/step_2"
+            layout="@layout/include_setup_step" />
+
+        <include
+            android:id="@+id/step_3"
+            layout="@layout/include_setup_step" />
+    </LinearLayout>
+</ScrollView>

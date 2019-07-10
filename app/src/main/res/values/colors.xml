@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="keyboard_bg">#fafafa</color>
+    <color name="keyboard_key_press_bg">#eee</color>
     <color name="keyboard_preview_bg">#f5f5f5</color>
     <color name="keyboard_preview_stroke">#e0e0e0</color>
     <color name="keyboard_text_color">#000000</color>

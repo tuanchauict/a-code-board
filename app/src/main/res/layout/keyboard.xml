@@ -5,11 +5,10 @@
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:background="@drawable/shape_keyboard_bg"
-    android:keyBackground="@drawable/shape_keyboard_bg"
+    android:keyBackground="@drawable/selector_keyboard_key_bg"
     android:keyPreviewLayout="@layout/keyboard_preview"
     android:keyPreviewOffset="30dp"
     android:keyTextColor="@color/keyboard_text_color"
     android:keyTextSize="@dimen/keyboard_text_size"
     android:paddingTop="4dp"
-    android:popupLayout="@layout/keyboard_popup"
     android:shadowColor="@android:color/transparent" />

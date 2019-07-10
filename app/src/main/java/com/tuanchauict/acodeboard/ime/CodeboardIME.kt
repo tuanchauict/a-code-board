@@ -1,4 +1,4 @@
-package com.tuanchauict.codecube.ime
+package com.tuanchauict.acodeboard.ime
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,14 +10,14 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import com.tuanchauict.codecube.Preferences
-import com.tuanchauict.codecube.R
+import com.tuanchauict.acodeboard.Preferences
+import com.tuanchauict.acodeboard.R
 
 /**
  * Created by Ruby(aka gazlaws) on 13/02/2016.
  * Kotlinized by Tuan Chau (aka tuanchauict)
  */
-class CodeCubeIME : InputMethodService() {
+class CodeboardIME : InputMethodService() {
     var keyboardView: KeyboardView? = null
         private set
 

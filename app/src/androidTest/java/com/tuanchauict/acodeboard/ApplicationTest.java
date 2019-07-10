@@ -1,4 +1,4 @@
-package com.tuanchauict.codecube;
+package com.tuanchauict.acodeboard;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

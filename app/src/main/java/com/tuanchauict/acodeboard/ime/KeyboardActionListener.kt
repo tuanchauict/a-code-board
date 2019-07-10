@@ -1,11 +1,11 @@
-package com.tuanchauict.codecube.ime
+package com.tuanchauict.acodeboard.ime
 
 import android.content.Context
 import android.inputmethodservice.KeyboardView
 import android.os.Handler
 import android.os.Looper
 import android.os.Vibrator
-import com.tuanchauict.codecube.Preferences
+import com.tuanchauict.acodeboard.Preferences
 
 class KeyboardActionListener(
     private val context: Context,

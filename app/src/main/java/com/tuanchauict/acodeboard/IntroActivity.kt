@@ -1,4 +1,4 @@
-package com.tuanchauict.codecube
+package com.tuanchauict.acodeboard
 
 import android.content.Context
 import android.content.Intent

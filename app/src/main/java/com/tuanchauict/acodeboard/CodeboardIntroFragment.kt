@@ -1,4 +1,4 @@
-package com.tuanchauict.codecube
+package com.tuanchauict.acodeboard
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

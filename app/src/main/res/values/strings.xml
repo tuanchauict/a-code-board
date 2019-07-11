@@ -13,4 +13,11 @@
     <string name="rate_on_google_play">Rate on Google Play</string>
     <string name="this_app_is_free_open_source_and_does_not_read_your_data">This app is free, open-source and does not read your data:</string>
     <string name="check_out_the_source_code">Check out the source code</string>
+
+    <string name="step_1_checked">Step 1 checked</string>
+    <string name="step_1_unchecked">Step 1 unchecked</string>
+    <string name="step_2_checked">Step 2 checked</string>
+    <string name="step_2_unchecked">Step 2 unchecked</string>
+    <string name="step_3_checked">Step 3 checked</string>
+    <string name="step_3_unchecked">Step 3 unchecked</string>
 </resources>

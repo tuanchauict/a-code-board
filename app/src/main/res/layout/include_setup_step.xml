@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_0"
     android:layout_width="match_parent"
-    android:layout_height="56dp"
+    android:layout_height="52dp"
     android:layout_marginLeft="16dp"
     android:layout_marginTop="16dp"
     android:layout_marginRight="16dp"
@@ -11,19 +10,20 @@
     tools:ignore="RtlHardcoded,RtlSymmetry"
     tools:showIn="@layout/activity_main_2">
 
-
     <ImageView
         android:id="@+id/step_checked"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@drawable/shape_check_bg"
+        android:padding="9dp"
         android:visibility="gone"
+        android:src="@drawable/step_check_icon"
         tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/step_number"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@drawable/shape_check_bg"
         android:gravity="center"
         android:textColor="#fff"
@@ -34,11 +34,11 @@
         android:id="@+id/step_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="4dp"
-        android:background="@color/colorPrimary"
+        android:layout_marginLeft="8dp"
+        android:background="@drawable/selector_step_bg"
         android:gravity="center_vertical"
         android:paddingLeft="8dp"
-        android:textColor="#FFF"
-        android:textSize="12sp"
+        android:textColor="@color/selector_step_text_color"
+        android:textSize="14sp"
         tools:text="Enabled" />
 </LinearLayout>

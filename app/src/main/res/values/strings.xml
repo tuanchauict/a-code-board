@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Code Board</string>
+    <string name="common_app_name">Code Board</string>
+    <string name="common_settings">Settings</string>
+
     <string name="ime_name">A Keyboard for coding</string>
 
     <string name="app_intro">Intro</string>
@@ -14,8 +16,10 @@
     <string name="this_app_is_free_open_source_and_does_not_read_your_data">This app is free, open-source and does not read your data:</string>
     <string name="check_out_the_source_code">Check out the source code</string>
 
-    <string name="step_1_checked">Enable Code Board</string>
-    <string name="step_1_unchecked">Enabled</string>
-    <string name="step_2_checked">Select Code Board</string>
-    <string name="step_2_unchecked">Selected</string>
+    <string name="step_1_unchecked">Enable Code Board</string>
+    <string name="step_1_checked">Enabled</string>
+    <string name="step_2_unchecked">Select Code Board</string>
+    <string name="step_2_checked">Selected</string>
+    <string name="step_enabled_toast">This setup step finished</string>
+    <string name="demo_text_hint">You are done. Click here to try now</string>
 </resources>

@@ -1,8 +1,11 @@
 package com.tuanchauict.acb
 
+import android.content.Context
+import android.support.annotation.StringRes
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputConnection
+import android.widget.Toast
 import com.tuanchauict.acb.ime.CodeboardIME
 
 fun InputConnection?.sendKeyEventOnce(
@@ -40,3 +43,7 @@ var View.isVisible: Boolean
     set(value) {
         visibility = if (value) View.VISIBLE else View.GONE
     }
+
+
+fun Context.toast(@StringRes textRes: Int) =
+    Toast.makeText(this, textRes, Toast.LENGTH_SHORT).show()

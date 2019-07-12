@@ -16,8 +16,8 @@
         android:layout_height="40dp"
         android:background="@drawable/shape_check_bg"
         android:padding="9dp"
-        android:visibility="gone"
         android:src="@drawable/step_check_icon"
+        android:visibility="gone"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -38,7 +38,9 @@
         android:background="@drawable/selector_step_bg"
         android:gravity="center_vertical"
         android:paddingLeft="8dp"
+        android:foreground="?android:selectableItemBackground"
         android:textColor="@color/selector_step_text_color"
         android:textSize="14sp"
+        android:textStyle="bold"
         tools:text="Enabled" />
 </LinearLayout>

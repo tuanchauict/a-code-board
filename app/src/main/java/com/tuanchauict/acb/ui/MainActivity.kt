@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Intent(this, MainActivity2::class.java).let(::startActivity)
         setContentView(R.layout.activity_main)
 
         onFirstOpenApp()

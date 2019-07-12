@@ -48,12 +48,15 @@ class KeyboardActionListener(
         if (isLongPressSuccess) {
             return
         }
+        if (preferences.isVibrateOn) {
+            vibrate(KEY_PRESS_VIBRATION_DURATION)
+        }
         onKeyAction(primaryCode)
     }
 
     private fun onKeyLongPress(keyCode: Int) {
         onKeyLongPressAction(keyCode)
-        vibrate(50L)
+        vibrate(KEY_LONG_PRESS_VIBRATION_DURATION)
     }
 
     override fun onText(text: CharSequence?) = Unit
@@ -66,5 +69,7 @@ class KeyboardActionListener(
 
     companion object {
         private const val DEFAULT_LONG_PRESS_DURATION_MILLIS = 300L
+        private const val KEY_PRESS_VIBRATION_DURATION = 20L
+        private const val KEY_LONG_PRESS_VIBRATION_DURATION = 50L
     }
 }

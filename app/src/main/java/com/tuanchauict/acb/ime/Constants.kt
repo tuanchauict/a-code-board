@@ -10,7 +10,7 @@ object Keycode {
     const val ESCAPE = 27
     const val CONTROL = 17
     private const val ENTER = Keyboard.KEYCODE_DONE
-    private const val TAB = 9
+    const val TAB = 9
 
     const val SPACE = 32
 
@@ -146,7 +146,6 @@ object Keycode {
     val KEY_TO_SIMPLE_DOWN_UP_KEY_EVENT_MAP = mapOf(
         FUNCTION_DELETE to KeyEvent.KEYCODE_DEL,
         ENTER to KeyEvent.KEYCODE_ENTER,
-        TAB to KeyEvent.KEYCODE_TAB,
         FUNCTION_DPAD_LEFT to KeyEvent.KEYCODE_DPAD_LEFT,
         FUNCTION_DPAD_RIGHT to KeyEvent.KEYCODE_DPAD_RIGHT,
         FUNCTION_DPAD_DOWN to KeyEvent.KEYCODE_DPAD_DOWN,
@@ -155,6 +154,7 @@ object Keycode {
         FUNCTION_MOVE_HOME to KeyEvent.KEYCODE_MOVE_HOME,
         FUNCTION_MOVE_END to KeyEvent.KEYCODE_MOVE_END
     )
+
     val LONG_KEY_TO_KEY_EVENT_MAP: Map<Int, Int> = mapOf(
         LETTER_A to KeyEvent.KEYCODE_DPAD_LEFT,
         LETTER_D to KeyEvent.KEYCODE_DPAD_RIGHT,

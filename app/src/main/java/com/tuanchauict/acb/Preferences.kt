@@ -2,7 +2,6 @@ package com.tuanchauict.acb
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.support.annotation.IntRange
 
 class Preferences(context: Context) {
     private val sharePreferences: SharedPreferences =
@@ -10,13 +9,7 @@ class Preferences(context: Context) {
 
     var isFirstTimeAppOpen: Boolean
         get() = sharePreferences.getBoolean(KEY_IS_FIRST_TIME_APP_OPEN, true)
-        set(value) = sharePreferences.edit().putBoolean(KEY_IS_FIRST_TIME_APP_OPEN, value).apply()
-
-    var selectedKeyboardColorIndex: Int
-        @IntRange(from = 0, to = 5L)
-        get() = sharePreferences.getInt(KEY_SELECTED_COLOR_INDEX, 0)
-        set(@IntRange(from = 0, to = 5L) value) =
-            sharePreferences.edit().putInt(KEY_SELECTED_COLOR_INDEX, value).apply()
+        set(value) = sharePreferences.edit(KEY_IS_FIRST_TIME_APP_OPEN, value)
 
     var isPreviewEnabled: Boolean
         get() = sharePreferences.getBoolean(KEY_IS_PREVIEW_ENABLED, false)
@@ -30,34 +23,40 @@ class Preferences(context: Context) {
         get() = sharePreferences.getBoolean(KEY_IS_VIBRATE_ON, true)
         set(value) = sharePreferences.edit().putBoolean(KEY_IS_VIBRATE_ON, value).apply()
 
-    var selectedKeyboardLayoutIndex: Int
-        @IntRange(from = 0L, to = 1L)
-        get() = sharePreferences.getInt(KEY_SELECTED_KEYBOARD_LAYOUT_INDEX, 0)
-        set(@IntRange(from = 0L, to = 1L)value) =
-            sharePreferences.edit().putInt(KEY_SELECTED_KEYBOARD_LAYOUT_INDEX, value).apply()
+    var tabMode: TabMode
+        get() = when (sharePreferences.getInt(KEY_TAB_MODE, 2)) {
+            0 -> TabMode.TAB
+            1 -> TabMode.SPACE_2
+            2 -> TabMode.SPACE_4
+            3 -> TabMode.SPACE_8
+            else -> TabMode.SPACE_4
+        }
+        set(tabMode) = sharePreferences.edit(KEY_TAB_MODE, tabMode.value)
 
-    var keyboardSize: Int
-        @IntRange(from = 0L, to = 3L)
-        get() = sharePreferences.getInt(KEY_KEYBOARD_SIZE, 2)
-        set(@IntRange(from = 0L, to = 3L)value) =
-            sharePreferences.edit().putInt(KEY_KEYBOARD_SIZE, value).apply()
+    private fun SharedPreferences.edit(key: String, value: Boolean) {
+        edit().putBoolean(key, value).apply()
+    }
 
-    var isDpadOn: Boolean
-        get() = sharePreferences.getBoolean(KEY_IS_DPAD_ON, true)
-        set(value) = sharePreferences.edit().putBoolean(KEY_IS_DPAD_ON, value).apply()
+    private fun SharedPreferences.edit(key: String, value: Int) {
+        edit().putInt(key, value).apply()
+    }
+
+    enum class TabMode(val value: Int, val text: String) {
+        TAB(0, "\t"),
+        SPACE_2(1, "  "),
+        SPACE_4(2, "    "),
+        SPACE_8(3, "        ")
+    }
 
     private companion object {
         const val FILE_NAME = "CodeBoard"
 
         const val KEY_IS_FIRST_TIME_APP_OPEN = "IS_FIRST_TIME_APP_OPEN"
 
-        const val KEY_SELECTED_COLOR_INDEX = "KEY_SELECTED_COLOR_INDEX"
         const val KEY_IS_PREVIEW_ENABLED = "IS_PREVIEW_ENABLED"
         const val KEY_IS_SOUND_ON = "IS_SOUND_ON"
         const val KEY_IS_VIBRATE_ON = "IS_VIBRATE_ON"
 
-        const val KEY_SELECTED_KEYBOARD_LAYOUT_INDEX = "KEYBOARD_LAYOUT_INDEX"
-        const val KEY_KEYBOARD_SIZE = "KEYBOARD_SIZE"
-        const val KEY_IS_DPAD_ON = "IS_DPAD_ON"
+        const val KEY_TAB_MODE = "tab_mode"
     }
 }

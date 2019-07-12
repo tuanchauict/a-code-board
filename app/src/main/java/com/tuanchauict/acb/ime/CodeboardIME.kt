@@ -50,6 +50,14 @@ class CodeboardIME : InputMethodService() {
             currentInputConnection?.getSelectedText(0)?.also {
                 currentInputConnection?.setSelection(it.length, it.length)
             }
+        },
+        Keycode.TAB to {
+            if (preferences.tabMode == Preferences.TabMode.TAB) {
+                sendDownUpKeyEvents(KeyEvent.KEYCODE_TAB)
+            } else {
+                val text = preferences.tabMode.text
+                currentInputConnection?.commitText(text, text.length)
+            }
         }
     )
 

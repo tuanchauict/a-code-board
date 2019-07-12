@@ -26,7 +26,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeboardIME) {
     }
 
     /**
-     * Handles onKey event for meta keys like Shift, Control, etc.
+     * Handles onKey event for shift key.
      * Returns true if this method consumes the event.
      */
     fun onKey(primaryKey: Int): Boolean {

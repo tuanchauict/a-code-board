@@ -62,13 +62,11 @@
         <!-- Move to first -->
         <Key
             android:codes="-1503"
-            android:isRepeatable="true"
             android:keyWidth="@dimen/keyboard_function_width"
             android:keyIcon="@drawable/keyboard_f_move_first" />
         <!-- Home -->
         <Key
             android:codes="-1501"
-            android:isRepeatable="true"
             android:keyWidth="@dimen/keyboard_function_width"
             android:keyIcon="@drawable/keyboard_f_move_home" />
         <!-- Up -->
@@ -80,7 +78,6 @@
         <!-- End -->
         <Key
             android:codes="-1502"
-            android:isRepeatable="true"
             android:keyWidth="@dimen/keyboard_function_width"
             android:keyIcon="@drawable/keyboard_f_move_end" />
         <!-- Move to last -->
@@ -157,7 +154,6 @@
         <!-- Select All -->
         <Key
             android:codes="-1509"
-            android:isRepeatable="true"
             android:keyWidth="@dimen/keyboard_function_width"
             android:keyIcon="@drawable/keyboard_f_select_all" />
         <!-- Left -->

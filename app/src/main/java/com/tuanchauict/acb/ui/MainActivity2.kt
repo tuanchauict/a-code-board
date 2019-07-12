@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.provider.Settings
 import android.support.annotation.StringRes
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -58,6 +60,19 @@ class MainActivity2 : AppCompatActivity() {
             return
         }
         updateStepsStates()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_setting) {
+            Intent(this, SettingsActivity::class.java).let(::startActivity)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun updateStepsStates() {

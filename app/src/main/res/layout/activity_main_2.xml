@@ -30,7 +30,8 @@
             android:hint="@string/demo_text_hint"
             android:importantForAutofill="no"
             android:inputType="textMultiLine"
-            android:lines="3"
+            android:maxLines="10"
+            android:minLines="3"
             android:padding="20dp"
             android:textSize="14sp" />
     </LinearLayout>

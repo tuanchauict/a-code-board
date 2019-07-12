@@ -13,7 +13,6 @@ class MainActivity2 : AppCompatActivity() {
 
     private lateinit var step1: StepViewController
     private lateinit var step2: StepViewController
-    private lateinit var step3: StepViewController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,18 +34,9 @@ class MainActivity2 : AppCompatActivity() {
         ) {
             println("Con heo: 2")
         }
-        step3 = StepViewController(
-            3,
-            findViewById(R.id.step_3),
-            R.string.step_3_checked,
-            R.string.step_3_unchecked
-        ) {
-            println("Con heo: 3")
-        }
 
         step1.update(true)
         step2.update(false)
-        step3.update(false)
     }
 }
 

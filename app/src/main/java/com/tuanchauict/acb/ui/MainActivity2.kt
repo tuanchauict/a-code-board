@@ -23,6 +23,7 @@ class MainActivity2 : AppCompatActivity() {
     private lateinit var step1: StepViewController
     private lateinit var step2: StepViewController
 
+    private lateinit var guideTextView: View
     private lateinit var demoTextBox: EditText
 
     private val inputMethodManager: InputMethodManager
@@ -46,6 +47,7 @@ class MainActivity2 : AppCompatActivity() {
         ) { inputMethodManager.showInputMethodPicker() }
 
         demoTextBox = findViewById(R.id.demo_text_box)
+        guideTextView = findViewById(R.id.guide_text)
     }
 
     override fun onResume() {
@@ -79,6 +81,8 @@ class MainActivity2 : AppCompatActivity() {
         step1.isChecked = isCodeBoardEnabled()
         step2.isEnabled = step1.isChecked
         step2.isChecked = isCodeBoardSelected()
+        demoTextBox.isVisible = step2.isChecked
+        guideTextView.isVisible = !step2.isChecked
     }
 
     private fun isCodeBoardEnabled(): Boolean {

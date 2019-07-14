@@ -7,11 +7,11 @@ android {
     buildToolsVersion '28.0.3'
 
     defaultConfig {
-        applicationId "com.gazlaws.codeboard"
-        minSdkVersion 23
+        applicationId "com.tuanchauict.acb"
+        minSdkVersion 21
         targetSdkVersion 28
-        versionCode 14
-        versionName "4.1.0"
+        versionCode 1
+        versionName "1.0.0"
     }
     buildTypes {
         release {
@@ -20,9 +20,7 @@ android {
         }
     }
     lintOptions {
-
         checkReleaseBuilds false
-
     }
 }
 
@@ -32,10 +30,10 @@ repositories {
 }
 
 dependencies {
-
-    api 'com.android.support:appcompat-v7:28.0.0'
-    api 'com.android.support:support-v13:28.0.0'
+    api 'androidx.appcompat:appcompat:1.0.2'
+    api 'androidx.legacy:legacy-support-v13:1.0.0'
     implementation 'com.github.apl-devs:appintro:v4.2.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    implementation 'com.google.firebase:firebase-core:17.0.1'
 }

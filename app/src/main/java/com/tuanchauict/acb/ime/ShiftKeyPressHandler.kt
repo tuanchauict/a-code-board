@@ -1,8 +1,8 @@
 package com.tuanchauict.acb.ime
 
 import android.inputmethodservice.Keyboard
-import android.support.annotation.DrawableRes
-import android.support.v4.content.ContextCompat
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import android.view.KeyEvent
 import android.view.inputmethod.InputConnection
 import com.tuanchauict.acb.BooleanMap

@@ -86,10 +86,6 @@ class CodeBoardInputMethodService : InputMethodService() {
             action.invoke()
             return
         }
-        Keycode.FUNCTION_KEY_TO_MENU_ACTION_MAP[keyCode]?.also {
-            currentInputConnection?.performContextMenuAction(it)
-            return
-        }
         Keycode.KEY_TO_SIMPLE_DOWN_UP_KEY_EVENT_MAP[keyCode]?.also {
             sendDownUpKeyEvents(it)
             return
@@ -107,6 +103,9 @@ class CodeBoardInputMethodService : InputMethodService() {
     }
 
     private fun onKeyLongPress(keyCode: Int) {
+        if (functionKeysPressHandler.onKeyLongPress(keyCode)) {
+            return
+        }
         val reversedShiftedStateChar =
             shiftKeyPressHandler.getKeyStringWithShiftState(keyCode, true)
         when {
@@ -117,9 +116,6 @@ class CodeBoardInputMethodService : InputMethodService() {
             }
             keyCode in Keycode.LONG_KEY_TO_KEY_EVENT_MAP ->
                 Keycode.LONG_KEY_TO_KEY_EVENT_MAP[keyCode]?.let(::sendDownUpKeyEvents)
-            keyCode in Keycode.LONG_KEY_TO_MENU_ACTION_MAP ->
-                Keycode.LONG_KEY_TO_MENU_ACTION_MAP[keyCode]
-                    ?.let { currentInputConnection?.performContextMenuAction(it) }
             keyCode == Keycode.SYMBOL_COMMA -> currentInputConnection?.commitText(".", 1)
             reversedShiftedStateChar != null ->
                 currentInputConnection?.commitText(reversedShiftedStateChar, 1)

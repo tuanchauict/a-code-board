@@ -83,12 +83,12 @@ object Keycode {
 
     const val FUNCTION_SELECT_ALL = -1509
 
-    private const val FUNCTION_CUT = -1510
-    private const val FUNCTION_COPY = -1511
-    private const val FUNCTION_PASTE = -1512
+    const val FUNCTION_CUT = -1510
+    const val FUNCTION_COPY = -1511
+    const val FUNCTION_PASTE = -1512
 
-    private const val FUNCTION_UNDO = -1513
-    private const val FUNCTION_REDO = -1514
+    const val FUNCTION_UNDO = -1513
+    const val FUNCTION_REDO = -1514
 
     val NO_PREVIEW_KEY_CODES: Set<Int> = setOf(
         ENTER,
@@ -138,15 +138,6 @@ object Keycode {
         DIGIT_9
     )
 
-    val FUNCTION_KEY_TO_MENU_ACTION_MAP: Map<Int, Int> = mapOf(
-        FUNCTION_UNDO to android.R.id.undo,
-        FUNCTION_REDO to android.R.id.redo,
-        FUNCTION_CUT to android.R.id.cut,
-        FUNCTION_COPY to android.R.id.copy,
-        FUNCTION_PASTE to android.R.id.paste,
-        FUNCTION_SELECT_ALL to android.R.id.selectAll
-    )
-
     val KEY_TO_SIMPLE_DOWN_UP_KEY_EVENT_MAP = mapOf(
         FUNCTION_DELETE to KeyEvent.KEYCODE_DEL,
         ENTER to KeyEvent.KEYCODE_ENTER,
@@ -166,13 +157,6 @@ object Keycode {
         LETTER_W to KeyEvent.KEYCODE_DPAD_UP,
         LETTER_H to KeyEvent.KEYCODE_MOVE_HOME,
         LETTER_E to KeyEvent.KEYCODE_MOVE_END
-    )
-
-    val LONG_KEY_TO_MENU_ACTION_MAP: Map<Int, Int> = mapOf(
-        LETTER_X to android.R.id.cut,
-        LETTER_C to android.R.id.copy,
-        LETTER_V to android.R.id.paste,
-        LETTER_Z to android.R.id.undo
     )
 
     val LONG_PRESS_KEY_CODES: Set<Int> = setOf(
@@ -198,6 +182,11 @@ object Keycode {
         DIGIT_6,
         DIGIT_7,
         DIGIT_8,
-        DIGIT_9
-    ) + LONG_KEY_TO_MENU_ACTION_MAP.keys + LONG_KEY_TO_KEY_EVENT_MAP.keys
+        DIGIT_9,
+
+        LETTER_Z, // undo
+        LETTER_X, // cut
+        LETTER_C, // copy
+        LETTER_V  // paste
+    ) + LONG_KEY_TO_KEY_EVENT_MAP.keys
 }

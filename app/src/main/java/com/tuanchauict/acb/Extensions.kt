@@ -51,5 +51,6 @@ fun Context.toast(@StringRes textRes: Int) =
 enum class MetaState(val value: Int) {
     SHIFT_ON(KeyEvent.META_CTRL_ON),
     CONTROL_ON(KeyEvent.META_CTRL_ON),
+    CONTROL_SHIFT_ON(KeyEvent.META_CTRL_ON or KeyEvent.META_SHIFT_ON),
     CONTROL_ALT_ON(KeyEvent.META_CTRL_ON or KeyEvent.META_ALT_ON)
 }

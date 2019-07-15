@@ -16,7 +16,7 @@ import com.tuanchauict.acb.R
 /**
  * An input method service which handles keyboard layout UI and key press event effect.
  */
-class CodeBoardIME : InputMethodService() {
+class CodeBoardInputMethodService : InputMethodService() {
     var keyboardView: KeyboardView? = null
         private set
 

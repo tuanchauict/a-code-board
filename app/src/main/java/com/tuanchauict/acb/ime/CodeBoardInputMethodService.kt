@@ -135,8 +135,4 @@ class CodeBoardInputMethodService : InputMethodService() {
 
     private fun chooseKeyboard(@IntegerRes keyboardMode: Int): Keyboard =
         Keyboard(this, R.xml.code_1, keyboardMode)
-
-    enum class MetaState(val value: Int) {
-        SHIFT_ON(KeyEvent.META_CTRL_ON)
-    }
 }

@@ -6,12 +6,11 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputConnection
 import android.widget.Toast
-import com.tuanchauict.acb.ime.CodeBoardInputMethodService
 
 fun InputConnection?.sendKeyEventOnce(
     action: Int,
     code: Int,
-    metaState: CodeBoardInputMethodService.MetaState,
+    metaState: MetaState,
     sendingTimeMillis: Long = System.currentTimeMillis()
 ) {
     if (this == null) {
@@ -30,7 +29,7 @@ fun InputConnection?.sendKeyEventOnce(
 
 fun InputConnection?.sendKeyEventDownUpWithActionBetween(
     code: Int,
-    metaState: CodeBoardInputMethodService.MetaState,
+    metaState: MetaState,
     action: () -> Unit = {}
 ) {
     sendKeyEventOnce(KeyEvent.ACTION_DOWN, code, metaState)
@@ -47,3 +46,8 @@ var View.isVisible: Boolean
 
 fun Context.toast(@StringRes textRes: Int) =
     Toast.makeText(this, textRes, Toast.LENGTH_SHORT).show()
+
+
+enum class MetaState(val value: Int) {
+    SHIFT_ON(KeyEvent.META_CTRL_ON)
+}

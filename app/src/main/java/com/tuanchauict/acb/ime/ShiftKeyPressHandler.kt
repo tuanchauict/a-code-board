@@ -6,9 +6,13 @@ import androidx.core.content.ContextCompat
 import android.view.KeyEvent
 import android.view.inputmethod.InputConnection
 import com.tuanchauict.acb.BooleanMap
+import com.tuanchauict.acb.MetaState
 import com.tuanchauict.acb.R
 import com.tuanchauict.acb.sendKeyEventOnce
 
+/**
+ * A handler which handlers shift key press and shift key state.
+ */
 class ShiftKeyPressHandler(private val inputMethodService: CodeBoardInputMethodService) {
     private val isShifted: Boolean
         get() = isShiftOn xor isCapOn
@@ -52,7 +56,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardInputMethodS
         currentInputConnection.sendKeyEventOnce(
             shiftKeyAction,
             KeyEvent.KEYCODE_SHIFT_LEFT,
-            CodeBoardInputMethodService.MetaState.SHIFT_ON
+            MetaState.SHIFT_ON
         )
 
         updateViewByShiftKey()
@@ -66,7 +70,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardInputMethodS
         currentInputConnection.sendKeyEventOnce(
             KeyEvent.ACTION_UP,
             KeyEvent.KEYCODE_SHIFT_LEFT,
-            CodeBoardInputMethodService.MetaState.SHIFT_ON
+            MetaState.SHIFT_ON
         )
 
         updateViewByShiftKey()

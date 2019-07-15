@@ -21,8 +21,6 @@ class CodeBoardInputMethodService : InputMethodService() {
     var keyboardView: KeyboardView? = null
         private set
 
-    private var switchedKeyboard = false
-
     private val shiftKeyPressHandler: ShiftKeyPressHandler = ShiftKeyPressHandler(this)
     private val functionKeysPressHandler: FunctionKeysPressHandler = FunctionKeysPressHandler(this)
 
@@ -98,10 +96,7 @@ class CodeBoardInputMethodService : InputMethodService() {
             return
         }
 
-        if (!switchedKeyboard) {
-            currentInputConnection?.commitText("${keyCode.toChar()}", 1)
-        }
-        switchedKeyboard = false
+        currentInputConnection?.commitText("${keyCode.toChar()}", 1)
     }
 
     private fun onKeyLongPress(keyCode: Int) {
@@ -112,7 +107,6 @@ class CodeBoardInputMethodService : InputMethodService() {
             shiftKeyPressHandler.getKeyStringWithShiftState(keyCode, true)
         when {
             keyCode == Keycode.SPACE -> {
-                switchedKeyboard = true
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.showInputMethodPicker()
             }

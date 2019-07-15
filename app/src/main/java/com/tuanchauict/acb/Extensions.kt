@@ -1,11 +1,12 @@
 package com.tuanchauict.acb
 
 import android.content.Context
-import androidx.annotation.StringRes
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputConnection
 import android.widget.Toast
+import androidx.annotation.StringRes
+import com.tuanchauict.acb.ime.MetaState
 
 fun InputConnection?.sendKeyEventOnce(
     action: Int,
@@ -43,14 +44,5 @@ var View.isVisible: Boolean
         visibility = if (value) View.VISIBLE else View.GONE
     }
 
-
 fun Context.toast(@StringRes textRes: Int) =
     Toast.makeText(this, textRes, Toast.LENGTH_SHORT).show()
-
-
-enum class MetaState(val value: Int) {
-    SHIFT_ON(KeyEvent.META_CTRL_ON),
-    CONTROL_ON(KeyEvent.META_CTRL_ON),
-    CONTROL_SHIFT_ON(KeyEvent.META_CTRL_ON or KeyEvent.META_SHIFT_ON),
-    CONTROL_ALT_ON(KeyEvent.META_CTRL_ON or KeyEvent.META_ALT_ON)
-}

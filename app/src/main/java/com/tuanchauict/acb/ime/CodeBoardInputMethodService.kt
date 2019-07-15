@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.IntegerRes
 import com.tuanchauict.acb.Preferences
 import com.tuanchauict.acb.R
+import com.tuanchauict.acb.sendKeyEventDownUpWithActionBetween
 
 /**
  * An input method service which handles keyboard layout UI and key press event effect.
@@ -87,7 +88,8 @@ class CodeBoardInputMethodService : InputMethodService() {
             return
         }
         Keycode.KEY_TO_SIMPLE_DOWN_UP_KEY_EVENT_MAP[keyCode]?.also {
-            sendDownUpKeyEvents(it)
+            val metaState = SHIFT_OR_NONE_MAP[shiftKeyPressHandler.isShifted]
+            currentInputConnection.sendKeyEventDownUpWithActionBetween(it, metaState)
             return
         }
         shiftKeyPressHandler.getKeyStringWithShiftState(keyCode)?.also {

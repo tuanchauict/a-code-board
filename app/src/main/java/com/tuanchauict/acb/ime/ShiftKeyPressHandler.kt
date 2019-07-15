@@ -6,7 +6,6 @@ import androidx.core.content.ContextCompat
 import android.view.KeyEvent
 import android.view.inputmethod.InputConnection
 import com.tuanchauict.acb.BooleanMap
-import com.tuanchauict.acb.MetaState
 import com.tuanchauict.acb.R
 import com.tuanchauict.acb.sendKeyEventOnce
 
@@ -14,7 +13,7 @@ import com.tuanchauict.acb.sendKeyEventOnce
  * A handler which handlers shift key press and shift key states including caps lock states.
  */
 class ShiftKeyPressHandler(private val inputMethodService: CodeBoardInputMethodService) {
-    private val isShifted: Boolean
+    val isShifted: Boolean
         get() = isShiftOn xor isCapOn
     private var isShiftOn: Boolean = false
     private var isCapOn: Boolean = false

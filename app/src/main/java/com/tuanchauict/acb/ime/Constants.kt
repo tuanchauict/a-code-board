@@ -2,6 +2,7 @@ package com.tuanchauict.acb.ime
 
 import android.inputmethodservice.Keyboard
 import android.view.KeyEvent
+import com.tuanchauict.acb.BooleanMap
 
 @Suppress("unused")
 object Keycode {
@@ -190,3 +191,13 @@ object Keycode {
         LETTER_V  // paste
     ) + LONG_KEY_TO_KEY_EVENT_MAP.keys
 }
+
+enum class MetaState(val value: Int) {
+    NONE(0),
+    SHIFT_ON(KeyEvent.META_SHIFT_ON),
+    CONTROL_ON(KeyEvent.META_CTRL_ON),
+    CONTROL_SHIFT_ON(KeyEvent.META_CTRL_ON or KeyEvent.META_SHIFT_ON),
+    CONTROL_ALT_ON(KeyEvent.META_CTRL_ON or KeyEvent.META_ALT_ON)
+}
+
+val SHIFT_OR_NONE_MAP: BooleanMap<MetaState> = BooleanMap(MetaState.SHIFT_ON, MetaState.NONE)

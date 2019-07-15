@@ -3,7 +3,6 @@ package com.tuanchauict.acb.ime
 import android.inputmethodservice.InputMethodService
 import android.view.KeyEvent
 import android.view.inputmethod.InputConnection
-import com.tuanchauict.acb.MetaState
 import com.tuanchauict.acb.sendKeyEventDownUpWithActionBetween
 
 class FunctionKeysPressHandler(

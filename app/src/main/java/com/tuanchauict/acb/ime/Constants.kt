@@ -81,7 +81,7 @@ object Keycode {
     const val FUNCTION_DPAD_UP = -1507
     const val FUNCTION_DPAD_DOWN = -1508
 
-    private const val FUNCTION_SELECT_ALL = -1509
+    const val FUNCTION_SELECT_ALL = -1509
 
     private const val FUNCTION_CUT = -1510
     private const val FUNCTION_COPY = -1511

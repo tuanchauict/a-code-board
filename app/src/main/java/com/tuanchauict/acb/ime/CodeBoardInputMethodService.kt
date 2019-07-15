@@ -5,11 +5,11 @@ import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.inputmethodservice.Keyboard
 import android.inputmethodservice.KeyboardView
-import androidx.annotation.IntegerRes
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.IntegerRes
 import com.tuanchauict.acb.Preferences
 import com.tuanchauict.acb.R
 
@@ -23,6 +23,7 @@ class CodeBoardInputMethodService : InputMethodService() {
     private var switchedKeyboard = false
 
     private val shiftKeyPressHandler: ShiftKeyPressHandler = ShiftKeyPressHandler(this)
+    private val functionKeysPressHandler: FunctionKeysPressHandler = FunctionKeysPressHandler(this)
 
     private val preferences: Preferences by lazy { Preferences(applicationContext) }
 
@@ -34,17 +35,6 @@ class CodeBoardInputMethodService : InputMethodService() {
         Keycode.FUNCTION_EXIT_FUNCTION_MODE to {
             keyboardView?.keyboard = chooseKeyboard(R.integer.keyboard_normal)
             shiftKeyPressHandler.updateViewByShiftKey()
-        },
-        Keycode.FUNCTION_MOVE_TO_FIRST to {
-            // TODO: This works wrongly when shift key is on
-            currentInputConnection?.setSelection(0, 0)
-        },
-        Keycode.FUNCTION_MOVE_TO_LAST to {
-            // TODO: This works wrongly when shift key is on
-            currentInputConnection?.performContextMenuAction(android.R.id.selectAll)
-            currentInputConnection?.getSelectedText(0)?.also {
-                currentInputConnection?.setSelection(it.length, it.length)
-            }
         },
         Keycode.TAB to {
             if (preferences.tabMode == Preferences.TabMode.TAB) {
@@ -89,16 +79,19 @@ class CodeBoardInputMethodService : InputMethodService() {
         if (shiftKeyPressHandler.onKey(keyCode)) {
             return
         }
+        if (functionKeysPressHandler.onKey(keyCode)) {
+            return
+        }
+        mapKeyCodeToOnKeyAction[keyCode]?.also { action ->
+            action.invoke()
+            return
+        }
         Keycode.FUNCTION_KEY_TO_MENU_ACTION_MAP[keyCode]?.also {
             currentInputConnection?.performContextMenuAction(it)
             return
         }
         Keycode.KEY_TO_SIMPLE_DOWN_UP_KEY_EVENT_MAP[keyCode]?.also {
             sendDownUpKeyEvents(it)
-            return
-        }
-        mapKeyCodeToOnKeyAction[keyCode]?.also { action ->
-            action.invoke()
             return
         }
         shiftKeyPressHandler.getKeyStringWithShiftState(keyCode)?.also {

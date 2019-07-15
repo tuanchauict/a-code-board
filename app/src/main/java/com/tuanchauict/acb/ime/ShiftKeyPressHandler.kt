@@ -9,7 +9,7 @@ import com.tuanchauict.acb.BooleanMap
 import com.tuanchauict.acb.R
 import com.tuanchauict.acb.sendKeyEventOnce
 
-class ShiftKeyPressHandler(private val inputMethodService: CodeboardIME) {
+class ShiftKeyPressHandler(private val inputMethodService: CodeBoardIME) {
     private val isShifted: Boolean
         get() = isShiftOn xor isCapOn
     var isShiftOn: Boolean = false
@@ -52,7 +52,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeboardIME) {
         currentInputConnection.sendKeyEventOnce(
             shiftKeyAction,
             KeyEvent.KEYCODE_SHIFT_LEFT,
-            CodeboardIME.MetaState.SHIFT_ON
+            CodeBoardIME.MetaState.SHIFT_ON
         )
 
         updateViewByShiftKey()
@@ -66,7 +66,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeboardIME) {
         currentInputConnection.sendKeyEventOnce(
             KeyEvent.ACTION_UP,
             KeyEvent.KEYCODE_SHIFT_LEFT,
-            CodeboardIME.MetaState.SHIFT_ON
+            CodeBoardIME.MetaState.SHIFT_ON
         )
 
         updateViewByShiftKey()

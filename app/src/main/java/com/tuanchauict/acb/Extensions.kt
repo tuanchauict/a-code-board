@@ -6,12 +6,12 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputConnection
 import android.widget.Toast
-import com.tuanchauict.acb.ime.CodeboardIME
+import com.tuanchauict.acb.ime.CodeBoardIME
 
 fun InputConnection?.sendKeyEventOnce(
     action: Int,
     code: Int,
-    metaState: CodeboardIME.MetaState,
+    metaState: CodeBoardIME.MetaState,
     sendingTimeMillis: Long = System.currentTimeMillis()
 ) {
     if (this == null) {
@@ -30,7 +30,7 @@ fun InputConnection?.sendKeyEventOnce(
 
 fun InputConnection?.sendKeyEventDownUpWithActionBetween(
     code: Int,
-    metaState: CodeboardIME.MetaState,
+    metaState: CodeBoardIME.MetaState,
     action: () -> Unit = {}
 ) {
     sendKeyEventOnce(KeyEvent.ACTION_DOWN, code, metaState)

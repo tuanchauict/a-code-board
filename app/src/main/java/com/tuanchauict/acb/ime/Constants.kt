@@ -64,7 +64,9 @@ object Keycode {
     const val LETTER_Y = 121
     const val LETTER_Z = 122
 
-    const val FUNCTION_SWITCH = -150
+    const val FUNCTION_ENTER_FUNCTION_MODE = -150
+    const val FUNCTION_EXIT_FUNCTION_MODE = -151
+
     const val FUNCTION_ESC = -1500
 
     private const val FUNCTION_DELETE = Keyboard.KEYCODE_DELETE
@@ -104,7 +106,9 @@ object Keycode {
         SYMBOL_SQUARE_BRACKET,
         SYMBOL_ANGLE_BRACKET,
 
-        FUNCTION_SWITCH,
+        FUNCTION_ENTER_FUNCTION_MODE,
+        FUNCTION_EXIT_FUNCTION_MODE,
+
         FUNCTION_ESC,
         FUNCTION_MOVE_HOME,
         FUNCTION_MOVE_END,

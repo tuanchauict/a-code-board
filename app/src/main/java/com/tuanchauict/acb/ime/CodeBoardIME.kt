@@ -14,15 +14,12 @@ import com.tuanchauict.acb.Preferences
 import com.tuanchauict.acb.R
 
 /**
- * Created by Ruby(aka gazlaws) on 13/02/2016.
- * Kotlinized by Tuan Chau (aka tuanchauict)
+ * An input method service which handles keyboard layout UI and key press event effect.
  */
-class CodeboardIME : InputMethodService() {
+class CodeBoardIME : InputMethodService() {
     var keyboardView: KeyboardView? = null
         private set
 
-    @IntegerRes
-    private var currentKeyboardMode = R.integer.keyboard_normal
     private var switchedKeyboard = false
 
     private val shiftKeyPressHandler: ShiftKeyPressHandler = ShiftKeyPressHandler(this)
@@ -30,14 +27,12 @@ class CodeboardIME : InputMethodService() {
     private val preferences: Preferences by lazy { Preferences(applicationContext) }
 
     private val mapKeyCodeToOnKeyAction: Map<Int, () -> Any?> = mapOf(
-        Keycode.FUNCTION_SWITCH to {
-            val newKeyboardMode = if (currentKeyboardMode == R.integer.keyboard_normal) {
-                R.integer.keyboard_functions
-            } else {
-                R.integer.keyboard_normal
-            }
-            currentKeyboardMode = newKeyboardMode
-            keyboardView?.keyboard = chooseKeyboard(newKeyboardMode)
+        Keycode.FUNCTION_ENTER_FUNCTION_MODE to {
+            keyboardView?.keyboard = chooseKeyboard(R.integer.keyboard_functions)
+            shiftKeyPressHandler.updateViewByShiftKey()
+        },
+        Keycode.FUNCTION_EXIT_FUNCTION_MODE to {
+            keyboardView?.keyboard = chooseKeyboard(R.integer.keyboard_normal)
             shiftKeyPressHandler.updateViewByShiftKey()
         },
         Keycode.FUNCTION_MOVE_TO_FIRST to {
@@ -69,9 +64,7 @@ class CodeboardIME : InputMethodService() {
 
         shiftKeyPressHandler.reset()
 
-        currentKeyboardMode = R.integer.keyboard_normal
-
-        val keyboard = chooseKeyboard(currentKeyboardMode)
+        val keyboard = chooseKeyboard(R.integer.keyboard_normal)
         keyboardView.keyboard = keyboard
 
         val keyboardActionListener = KeyboardActionListener(

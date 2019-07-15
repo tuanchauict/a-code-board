@@ -1,6 +1,5 @@
 package com.tuanchauict.acb.ime
 
-import android.inputmethodservice.Keyboard
 import android.view.KeyEvent
 import com.tuanchauict.acb.BooleanMap
 
@@ -10,7 +9,7 @@ object Keycode {
 
     const val ESCAPE = 27
     const val CONTROL = 17
-    private const val ENTER = Keyboard.KEYCODE_DONE
+    private const val ENTER = -4
     const val TAB = 9
 
     const val SPACE = 32
@@ -70,7 +69,7 @@ object Keycode {
 
     const val FUNCTION_ESC = -1500
 
-    private const val FUNCTION_DELETE = Keyboard.KEYCODE_DELETE
+    private const val FUNCTION_DELETE = -5
 
     const val FUNCTION_MOVE_HOME = -1501
     const val FUNCTION_MOVE_END = -1502

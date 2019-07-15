@@ -3,10 +3,12 @@ package com.tuanchauict.acb.ime
 import android.inputmethodservice.InputMethodService
 import android.view.KeyEvent
 import android.view.inputmethod.InputConnection
+import com.tuanchauict.acb.R
 import com.tuanchauict.acb.sendKeyEventDownUpWithActionBetween
 
 class FunctionKeysPressHandler(
-    private val inputMethodService: InputMethodService
+    private val inputMethodService: InputMethodService,
+    private val switchToKeyboardAction: (Int) -> Unit
 ) {
     private val inputConnection: InputConnection? get() = inputMethodService.currentInputConnection
 
@@ -28,7 +30,17 @@ class FunctionKeysPressHandler(
         Keycode.LETTER_Z to ::undo
     )
 
+    private val keycodeToKeyboardLayoutResMap: Map<Int, Int> = mapOf(
+        Keycode.FUNCTION_ENTER_FUNCTION_MODE to R.integer.keyboard_functions,
+        Keycode.FUNCTION_EXIT_FUNCTION_MODE to R.integer.keyboard_normal
+    )
+
     fun onKey(keyCode: Int): Boolean {
+        keycodeToKeyboardLayoutResMap[keyCode]?.also {
+            switchToKeyboardAction(it)
+            return true
+        }
+
         val action = functionKeyToActionMap[keyCode]
         return if (action != null) {
             action.invoke()

@@ -22,19 +22,15 @@ class CodeBoardInputMethodService : InputMethodService() {
         private set
 
     private val shiftKeyPressHandler: ShiftKeyPressHandler = ShiftKeyPressHandler(this)
-    private val functionKeysPressHandler: FunctionKeysPressHandler = FunctionKeysPressHandler(this)
+    private val functionKeysPressHandler: FunctionKeysPressHandler =
+        FunctionKeysPressHandler(this) {
+            keyboardView?.keyboard = chooseKeyboard(it)
+            shiftKeyPressHandler.updateViewByShiftKey()
+        }
 
     private val preferences: Preferences by lazy { Preferences(applicationContext) }
 
     private val mapKeyCodeToOnKeyAction: Map<Int, () -> Any?> = mapOf(
-        Keycode.FUNCTION_ENTER_FUNCTION_MODE to {
-            keyboardView?.keyboard = chooseKeyboard(R.integer.keyboard_functions)
-            shiftKeyPressHandler.updateViewByShiftKey()
-        },
-        Keycode.FUNCTION_EXIT_FUNCTION_MODE to {
-            keyboardView?.keyboard = chooseKeyboard(R.integer.keyboard_normal)
-            shiftKeyPressHandler.updateViewByShiftKey()
-        },
         Keycode.TAB to {
             if (preferences.tabMode == Preferences.TabMode.TAB) {
                 sendDownUpKeyEvents(KeyEvent.KEYCODE_TAB)

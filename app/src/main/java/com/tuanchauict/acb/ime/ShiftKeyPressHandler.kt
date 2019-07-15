@@ -11,13 +11,12 @@ import com.tuanchauict.acb.R
 import com.tuanchauict.acb.sendKeyEventOnce
 
 /**
- * A handler which handlers shift key press and shift key state.
+ * A handler which handlers shift key press and shift key states including caps lock states.
  */
 class ShiftKeyPressHandler(private val inputMethodService: CodeBoardInputMethodService) {
     private val isShifted: Boolean
         get() = isShiftOn xor isCapOn
-    var isShiftOn: Boolean = false
-        private set
+    private var isShiftOn: Boolean = false
     private var isCapOn: Boolean = false
     private var lastShiftKeyPressed: Long = 0L
 
@@ -45,11 +44,9 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardInputMethodS
 
     private fun onShiftKeyPressed() {
         val doubleShiftDurationMillis = System.currentTimeMillis() - lastShiftKeyPressed
+        isShiftOn = !isShiftOn
         if (doubleShiftDurationMillis <= DOUBLE_SHIFT_MAX_DURATION_MILLIS) {
-            isShiftOn = !isShiftOn
             isCapOn = !isCapOn
-        } else {
-            isShiftOn = !isShiftOn
         }
 
         val shiftKeyAction = if (!isShifted) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN

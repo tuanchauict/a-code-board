@@ -57,7 +57,7 @@
         android:keyboardMode="@integer/keyboard_functions">
         <!-- F1 -->
         <Key
-            android:codes="-150"
+            android:codes="-151"
             android:keyIcon="@drawable/keyboard_f_exit_function" />
         <!-- Move to first -->
         <Key

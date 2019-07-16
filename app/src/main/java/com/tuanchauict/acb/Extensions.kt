@@ -1,17 +1,17 @@
 package com.tuanchauict.acb
 
 import android.content.Context
-import androidx.annotation.StringRes
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputConnection
 import android.widget.Toast
-import com.tuanchauict.acb.ime.CodeboardIME
+import androidx.annotation.StringRes
+import com.tuanchauict.acb.ime.MetaState
 
 fun InputConnection?.sendKeyEventOnce(
     action: Int,
     code: Int,
-    metaState: CodeboardIME.MetaState,
+    metaState: MetaState,
     sendingTimeMillis: Long = System.currentTimeMillis()
 ) {
     if (this == null) {
@@ -30,7 +30,7 @@ fun InputConnection?.sendKeyEventOnce(
 
 fun InputConnection?.sendKeyEventDownUpWithActionBetween(
     code: Int,
-    metaState: CodeboardIME.MetaState,
+    metaState: MetaState,
     action: () -> Unit = {}
 ) {
     sendKeyEventOnce(KeyEvent.ACTION_DOWN, code, metaState)
@@ -43,7 +43,6 @@ var View.isVisible: Boolean
     set(value) {
         visibility = if (value) View.VISIBLE else View.GONE
     }
-
 
 fun Context.toast(@StringRes textRes: Int) =
     Toast.makeText(this, textRes, Toast.LENGTH_SHORT).show()

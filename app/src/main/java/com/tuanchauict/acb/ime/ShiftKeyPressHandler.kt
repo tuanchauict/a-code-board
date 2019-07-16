@@ -9,11 +9,13 @@ import com.tuanchauict.acb.BooleanMap
 import com.tuanchauict.acb.R
 import com.tuanchauict.acb.sendKeyEventOnce
 
-class ShiftKeyPressHandler(private val inputMethodService: CodeboardIME) {
-    private val isShifted: Boolean
+/**
+ * A handler which handlers shift key press and shift key states including caps lock states.
+ */
+class ShiftKeyPressHandler(private val inputMethodService: CodeBoardInputMethodService) {
+    val isShifted: Boolean
         get() = isShiftOn xor isCapOn
-    var isShiftOn: Boolean = false
-        private set
+    private var isShiftOn: Boolean = false
     private var isCapOn: Boolean = false
     private var lastShiftKeyPressed: Long = 0L
 
@@ -41,18 +43,16 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeboardIME) {
 
     private fun onShiftKeyPressed() {
         val doubleShiftDurationMillis = System.currentTimeMillis() - lastShiftKeyPressed
+        isShiftOn = !isShiftOn
         if (doubleShiftDurationMillis <= DOUBLE_SHIFT_MAX_DURATION_MILLIS) {
-            isShiftOn = !isShiftOn
             isCapOn = !isCapOn
-        } else {
-            isShiftOn = !isShiftOn
         }
 
         val shiftKeyAction = if (!isShifted) KeyEvent.ACTION_UP else KeyEvent.ACTION_DOWN
         currentInputConnection.sendKeyEventOnce(
             shiftKeyAction,
             KeyEvent.KEYCODE_SHIFT_LEFT,
-            CodeboardIME.MetaState.SHIFT_ON
+            MetaState.SHIFT_ON
         )
 
         updateViewByShiftKey()
@@ -66,7 +66,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeboardIME) {
         currentInputConnection.sendKeyEventOnce(
             KeyEvent.ACTION_UP,
             KeyEvent.KEYCODE_SHIFT_LEFT,
-            CodeboardIME.MetaState.SHIFT_ON
+            MetaState.SHIFT_ON
         )
 
         updateViewByShiftKey()
@@ -201,8 +201,8 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeboardIME) {
             Keycode.FUNCTION_DPAD_UP to R.drawable.keyboard_f_up,
             Keycode.FUNCTION_DPAD_DOWN to R.drawable.keyboard_f_down,
 
-//            Keycode.FUNCTION_MOVE_TO_FIRST to R.drawable.keyboard_f_move_first,
-//            Keycode.FUNCTION_MOVE_TO_LAST to R.drawable.keyboard_f_move_last,
+            Keycode.FUNCTION_MOVE_TO_FIRST to R.drawable.keyboard_f_move_first,
+            Keycode.FUNCTION_MOVE_TO_LAST to R.drawable.keyboard_f_move_last,
             Keycode.FUNCTION_MOVE_END to R.drawable.keyboard_f_move_end,
             Keycode.FUNCTION_MOVE_HOME to R.drawable.keyboard_f_move_home
         )
@@ -234,8 +234,8 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeboardIME) {
             Keycode.FUNCTION_DPAD_UP to R.drawable.keyboard_f_up_shift,
             Keycode.FUNCTION_DPAD_DOWN to R.drawable.keyboard_f_down_shift,
 
-//            Keycode.FUNCTION_MOVE_TO_FIRST to R.drawable.keyboard_f_move_first_shift,
-//            Keycode.FUNCTION_MOVE_TO_LAST to R.drawable.keyboard_f_move_last_shift,
+            Keycode.FUNCTION_MOVE_TO_FIRST to R.drawable.keyboard_f_move_first_shift,
+            Keycode.FUNCTION_MOVE_TO_LAST to R.drawable.keyboard_f_move_last_shift,
             Keycode.FUNCTION_MOVE_HOME to R.drawable.keyboard_f_move_home_shift,
             Keycode.FUNCTION_MOVE_END to R.drawable.keyboard_f_move_end_shift
         )

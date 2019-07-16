@@ -5,52 +5,32 @@ import android.content.Context
 import android.inputmethodservice.InputMethodService
 import android.inputmethodservice.Keyboard
 import android.inputmethodservice.KeyboardView
-import androidx.annotation.IntegerRes
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.IntegerRes
 import com.tuanchauict.acb.Preferences
 import com.tuanchauict.acb.R
+import com.tuanchauict.acb.sendKeyEventDownUpWithActionBetween
 
 /**
- * Created by Ruby(aka gazlaws) on 13/02/2016.
- * Kotlinized by Tuan Chau (aka tuanchauict)
+ * An input method service which handles keyboard layout UI and key press event effect.
  */
-class CodeboardIME : InputMethodService() {
+class CodeBoardInputMethodService : InputMethodService() {
     var keyboardView: KeyboardView? = null
         private set
 
-    @IntegerRes
-    private var currentKeyboardMode = R.integer.keyboard_normal
-    private var switchedKeyboard = false
-
     private val shiftKeyPressHandler: ShiftKeyPressHandler = ShiftKeyPressHandler(this)
+    private val functionKeysPressHandler: FunctionKeysPressHandler =
+        FunctionKeysPressHandler(this) {
+            keyboardView?.keyboard = chooseKeyboard(it)
+            shiftKeyPressHandler.updateViewByShiftKey()
+        }
 
     private val preferences: Preferences by lazy { Preferences(applicationContext) }
 
     private val mapKeyCodeToOnKeyAction: Map<Int, () -> Any?> = mapOf(
-        Keycode.FUNCTION_SWITCH to {
-            val newKeyboardMode = if (currentKeyboardMode == R.integer.keyboard_normal) {
-                R.integer.keyboard_functions
-            } else {
-                R.integer.keyboard_normal
-            }
-            currentKeyboardMode = newKeyboardMode
-            keyboardView?.keyboard = chooseKeyboard(newKeyboardMode)
-            shiftKeyPressHandler.updateViewByShiftKey()
-        },
-        Keycode.FUNCTION_MOVE_TO_FIRST to {
-            // TODO: This works wrongly when shift key is on
-            currentInputConnection?.setSelection(0, 0)
-        },
-        Keycode.FUNCTION_MOVE_TO_LAST to {
-            // TODO: This works wrongly when shift key is on
-            currentInputConnection?.performContextMenuAction(android.R.id.selectAll)
-            currentInputConnection?.getSelectedText(0)?.also {
-                currentInputConnection?.setSelection(it.length, it.length)
-            }
-        },
         Keycode.TAB to {
             if (preferences.tabMode == Preferences.TabMode.TAB) {
                 sendDownUpKeyEvents(KeyEvent.KEYCODE_TAB)
@@ -69,9 +49,7 @@ class CodeboardIME : InputMethodService() {
 
         shiftKeyPressHandler.reset()
 
-        currentKeyboardMode = R.integer.keyboard_normal
-
-        val keyboard = chooseKeyboard(currentKeyboardMode)
+        val keyboard = chooseKeyboard(R.integer.keyboard_normal)
         keyboardView.keyboard = keyboard
 
         val keyboardActionListener = KeyboardActionListener(
@@ -96,16 +74,16 @@ class CodeboardIME : InputMethodService() {
         if (shiftKeyPressHandler.onKey(keyCode)) {
             return
         }
-        Keycode.FUNCTION_KEY_TO_MENU_ACTION_MAP[keyCode]?.also {
-            currentInputConnection?.performContextMenuAction(it)
-            return
-        }
-        Keycode.KEY_TO_SIMPLE_DOWN_UP_KEY_EVENT_MAP[keyCode]?.also {
-            sendDownUpKeyEvents(it)
+        if (functionKeysPressHandler.onKey(keyCode)) {
             return
         }
         mapKeyCodeToOnKeyAction[keyCode]?.also { action ->
             action.invoke()
+            return
+        }
+        Keycode.KEY_TO_SIMPLE_DOWN_UP_KEY_EVENT_MAP[keyCode]?.also {
+            val metaState = SHIFT_OR_NONE_MAP[shiftKeyPressHandler.isShifted]
+            currentInputConnection.sendKeyEventDownUpWithActionBetween(it, metaState)
             return
         }
         shiftKeyPressHandler.getKeyStringWithShiftState(keyCode)?.also {
@@ -114,26 +92,22 @@ class CodeboardIME : InputMethodService() {
             return
         }
 
-        if (!switchedKeyboard) {
-            currentInputConnection?.commitText("${keyCode.toChar()}", 1)
-        }
-        switchedKeyboard = false
+        currentInputConnection?.commitText("${keyCode.toChar()}", 1)
     }
 
     private fun onKeyLongPress(keyCode: Int) {
+        if (functionKeysPressHandler.onKeyLongPress(keyCode)) {
+            return
+        }
         val reversedShiftedStateChar =
             shiftKeyPressHandler.getKeyStringWithShiftState(keyCode, true)
         when {
             keyCode == Keycode.SPACE -> {
-                switchedKeyboard = true
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.showInputMethodPicker()
             }
             keyCode in Keycode.LONG_KEY_TO_KEY_EVENT_MAP ->
                 Keycode.LONG_KEY_TO_KEY_EVENT_MAP[keyCode]?.let(::sendDownUpKeyEvents)
-            keyCode in Keycode.LONG_KEY_TO_MENU_ACTION_MAP ->
-                Keycode.LONG_KEY_TO_MENU_ACTION_MAP[keyCode]
-                    ?.let { currentInputConnection?.performContextMenuAction(it) }
             keyCode == Keycode.SYMBOL_COMMA -> currentInputConnection?.commitText(".", 1)
             reversedShiftedStateChar != null ->
                 currentInputConnection?.commitText(reversedShiftedStateChar, 1)
@@ -142,8 +116,4 @@ class CodeboardIME : InputMethodService() {
 
     private fun chooseKeyboard(@IntegerRes keyboardMode: Int): Keyboard =
         Keyboard(this, R.xml.code_1, keyboardMode)
-
-    enum class MetaState(val value: Int) {
-        SHIFT_ON(KeyEvent.META_CTRL_ON)
-    }
 }

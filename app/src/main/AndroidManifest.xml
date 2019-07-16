@@ -14,7 +14,7 @@
         tools:ignore="GoogleAppIndexingWarning"
         android:fullBackupContent="true">
         <service
-            android:name="com.tuanchauict.acb.ime.CodeboardIME"
+            android:name="com.tuanchauict.acb.ime.CodeBoardInputMethodService"
             android:label="@string/ime_name"
             android:permission="android.permission.BIND_INPUT_METHOD">
             <meta-data

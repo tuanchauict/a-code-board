@@ -1,7 +1,7 @@
 package com.tuanchauict.acb.ime
 
-import android.inputmethodservice.Keyboard
 import android.view.KeyEvent
+import com.tuanchauict.acb.BooleanMap
 
 @Suppress("unused")
 object Keycode {
@@ -9,7 +9,7 @@ object Keycode {
 
     const val ESCAPE = 27
     const val CONTROL = 17
-    private const val ENTER = Keyboard.KEYCODE_DONE
+    private const val ENTER = -4
     const val TAB = 9
 
     const val SPACE = 32
@@ -64,10 +64,12 @@ object Keycode {
     const val LETTER_Y = 121
     const val LETTER_Z = 122
 
-    const val FUNCTION_SWITCH = -150
+    const val FUNCTION_ENTER_FUNCTION_MODE = -150
+    const val FUNCTION_EXIT_FUNCTION_MODE = -151
+
     const val FUNCTION_ESC = -1500
 
-    private const val FUNCTION_DELETE = Keyboard.KEYCODE_DELETE
+    private const val FUNCTION_DELETE = -5
 
     const val FUNCTION_MOVE_HOME = -1501
     const val FUNCTION_MOVE_END = -1502
@@ -79,14 +81,14 @@ object Keycode {
     const val FUNCTION_DPAD_UP = -1507
     const val FUNCTION_DPAD_DOWN = -1508
 
-    private const val FUNCTION_SELECT_ALL = -1509
+    const val FUNCTION_SELECT_ALL = -1509
 
-    private const val FUNCTION_CUT = -1510
-    private const val FUNCTION_COPY = -1511
-    private const val FUNCTION_PASTE = -1512
+    const val FUNCTION_CUT = -1510
+    const val FUNCTION_COPY = -1511
+    const val FUNCTION_PASTE = -1512
 
-    private const val FUNCTION_UNDO = -1513
-    private const val FUNCTION_REDO = -1514
+    const val FUNCTION_UNDO = -1513
+    const val FUNCTION_REDO = -1514
 
     val NO_PREVIEW_KEY_CODES: Set<Int> = setOf(
         ENTER,
@@ -104,7 +106,9 @@ object Keycode {
         SYMBOL_SQUARE_BRACKET,
         SYMBOL_ANGLE_BRACKET,
 
-        FUNCTION_SWITCH,
+        FUNCTION_ENTER_FUNCTION_MODE,
+        FUNCTION_EXIT_FUNCTION_MODE,
+
         FUNCTION_ESC,
         FUNCTION_MOVE_HOME,
         FUNCTION_MOVE_END,
@@ -134,15 +138,6 @@ object Keycode {
         DIGIT_9
     )
 
-    val FUNCTION_KEY_TO_MENU_ACTION_MAP: Map<Int, Int> = mapOf(
-        FUNCTION_UNDO to android.R.id.undo,
-        FUNCTION_REDO to android.R.id.redo,
-        FUNCTION_CUT to android.R.id.cut,
-        FUNCTION_COPY to android.R.id.copy,
-        FUNCTION_PASTE to android.R.id.paste,
-        FUNCTION_SELECT_ALL to android.R.id.selectAll
-    )
-
     val KEY_TO_SIMPLE_DOWN_UP_KEY_EVENT_MAP = mapOf(
         FUNCTION_DELETE to KeyEvent.KEYCODE_DEL,
         ENTER to KeyEvent.KEYCODE_ENTER,
@@ -162,13 +157,6 @@ object Keycode {
         LETTER_W to KeyEvent.KEYCODE_DPAD_UP,
         LETTER_H to KeyEvent.KEYCODE_MOVE_HOME,
         LETTER_E to KeyEvent.KEYCODE_MOVE_END
-    )
-
-    val LONG_KEY_TO_MENU_ACTION_MAP: Map<Int, Int> = mapOf(
-        LETTER_X to android.R.id.cut,
-        LETTER_C to android.R.id.copy,
-        LETTER_V to android.R.id.paste,
-        LETTER_Z to android.R.id.undo
     )
 
     val LONG_PRESS_KEY_CODES: Set<Int> = setOf(
@@ -194,6 +182,21 @@ object Keycode {
         DIGIT_6,
         DIGIT_7,
         DIGIT_8,
-        DIGIT_9
-    ) + LONG_KEY_TO_MENU_ACTION_MAP.keys + LONG_KEY_TO_KEY_EVENT_MAP.keys
+        DIGIT_9,
+
+        LETTER_Z, // undo
+        LETTER_X, // cut
+        LETTER_C, // copy
+        LETTER_V  // paste
+    ) + LONG_KEY_TO_KEY_EVENT_MAP.keys
 }
+
+enum class MetaState(val value: Int) {
+    NONE(0),
+    SHIFT_ON(KeyEvent.META_SHIFT_ON),
+    CONTROL_ON(KeyEvent.META_CTRL_ON),
+    CONTROL_SHIFT_ON(KeyEvent.META_CTRL_ON or KeyEvent.META_SHIFT_ON),
+    CONTROL_ALT_ON(KeyEvent.META_CTRL_ON or KeyEvent.META_ALT_ON)
+}
+
+val SHIFT_OR_NONE_MAP: BooleanMap<MetaState> = BooleanMap(MetaState.SHIFT_ON, MetaState.NONE)

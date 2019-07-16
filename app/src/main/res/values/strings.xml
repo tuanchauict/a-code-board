@@ -23,4 +23,5 @@
     <string name="step_enabled_toast">This setup step finished</string>
     <string name="demo_text_hint">You are done. Click here to try now</string>
     <string name="setup_guide">Finish all setup steps before using the Code Board</string>
+    <string name="setting_sound_on_keypress">Sound on keypress</string>
 </resources>

@@ -17,6 +17,7 @@ import com.tuanchauict.acb.BooleanMap
 import com.tuanchauict.acb.R
 import com.tuanchauict.acb.isVisible
 import com.tuanchauict.acb.toast
+import com.tuanchauict.acb.ui.settings.SettingsActivity
 
 class MainActivity2 : AppCompatActivity() {
 

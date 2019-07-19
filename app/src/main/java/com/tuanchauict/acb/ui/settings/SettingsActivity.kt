@@ -2,6 +2,7 @@ package com.tuanchauict.acb.ui.settings
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import com.tuanchauict.acb.Preferences
 import com.tuanchauict.acb.R
@@ -16,6 +17,7 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         initLongPressMovingCursor()
+        initTabSize()
 
         initSoundOnKeypress()
         initVibrationOnKeypress()
@@ -32,6 +34,34 @@ class SettingsActivity : AppCompatActivity() {
         ) {
             preferences.isLongPressMovingCursor = !preferences.isLongPressMovingCursor
             setChecked(preferences.isLongPressMovingCursor)
+        }
+    }
+
+    private fun initTabSize() {
+        val progressInfo = SeekbarDialog.ProgressInfo(0, 3, null) {
+            @StringRes val textRes = when (it) {
+                0 -> R.string.setting_tab_size_tab
+                1 -> R.string.setting_tab_size_2_spaces
+                3 -> R.string.setting_tab_size_8_spaces
+                else -> R.string.setting_tab_size_4_spaces
+            }
+            getString(textRes)
+        }
+
+        SettingSimpleClickItem(
+            findViewById(R.id.setting_tab_size),
+            R.string.setting_tab_size_title,
+            progressInfo.toText(preferences.tabMode.value)
+        ) {
+            SeekbarDialog(
+                this@SettingsActivity,
+                R.string.setting_tab_size_title,
+                preferences.tabMode.value,
+                progressInfo
+            ) {
+                preferences.tabMode = Preferences.TabMode.fromValue(it)
+                setSubtitle(progressInfo.toText(it))
+            }
         }
     }
 

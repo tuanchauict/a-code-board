@@ -36,4 +36,9 @@
     <string name="setting_long_press_delay">Key long press delay</string>
     <string name="setting_long_press_moving_cursor_title">Long press for moving cursor</string>
     <string name="setting_long_press_moving_cursor_subtitle">Long press on a w s d and q e for moving cursor</string>
+    <string name="setting_tab_size_tab">Tab</string>
+    <string name="setting_tab_size_2_spaces">2 spaces</string>
+    <string name="setting_tab_size_4_spaces">4 spaces</string>
+    <string name="setting_tab_size_8_spaces">8 spaces</string>
+    <string name="setting_tab_size_title">Tab size</string>
 </resources>

@@ -63,7 +63,16 @@ class Preferences(context: Context) {
         TAB(0, "\t"),
         SPACE_2(1, "  "),
         SPACE_4(2, "    "),
-        SPACE_8(3, "        ")
+        SPACE_8(3, "        ");
+
+        companion object {
+            fun fromValue(value: Int): TabMode = when(value) {
+                0 -> TAB
+                1 -> SPACE_2
+                3 -> SPACE_8
+                else -> SPACE_4
+            }
+        }
     }
 
     private companion object {

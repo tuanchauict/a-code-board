@@ -29,20 +29,22 @@ class SeekbarDialog(
             progressText.text = progressInfo.toText(it + progressInfo.min)
         })
 
-        AlertDialog.Builder(activity)
+        val builder = AlertDialog.Builder(activity)
             .setTitle(titleRes)
             .setView(view)
             .setPositiveButton(R.string.common_ok) { _, _ ->
                 onSelect(seekBar.progress + progressInfo.min)
             }
             .setNegativeButton(R.string.common_cancel, null)
-            .setNeutralButton(R.string.common_default) { _, _ ->
+        if (progressInfo.default != null) {
+            builder.setNeutralButton(R.string.common_default) { _, _ ->
                 onSelect(progressInfo.default)
             }
-            .show()
+        }
+        builder.show()
     }
 
-    class ProgressInfo(val min: Int, val max: Int, val default: Int, val toText: (Int) -> String)
+    class ProgressInfo(val min: Int, val max: Int, val default: Int?, val toText: (Int) -> String)
 
     private class OnSeekBarChangeListener(private val onChanged: (Int) -> Unit) :
         SeekBar.OnSeekBarChangeListener {

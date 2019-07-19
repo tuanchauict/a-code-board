@@ -20,6 +20,11 @@
             android:id="@+id/setting_long_press_moving_cursor"
             layout="@layout/include_setting_item_switch" />
 
+        <!-- Tab size -->
+        <include
+            android:id="@+id/setting_tab_size"
+            layout="@layout/include_simple_click_item" />
+
         <include layout="@layout/include_divider" />
 
         <TextView

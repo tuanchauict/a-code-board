@@ -33,4 +33,5 @@
     <string name="setting_popup_on_keypress">Popup on keypress</string>
     <string name="setting_volume_on_keypress">Volume on keypress</string>
     <string name="setting_vibrate_strength_on_keypress">Vibration strength on keypress</string>
+    <string name="setting_long_press_delay">Key long press delay</string>
 </resources>

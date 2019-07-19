@@ -31,6 +31,10 @@ class Preferences(context: Context) {
         get() = sharePreferences.getInt(KEY_VIBRATION_STRENGTH, 20)
         set(value) = sharePreferences.edit(KEY_VIBRATION_STRENGTH, value)
 
+    var longPressDelay: Int
+        get() = sharePreferences.getInt(KEY_LONG_PRESS_DELAY, 300)
+        set(value) = sharePreferences.edit(KEY_LONG_PRESS_DELAY, value)
+
     var tabMode: TabMode
         get() = when (sharePreferences.getInt(KEY_TAB_MODE, 2)) {
             0 -> TabMode.TAB
@@ -66,6 +70,7 @@ class Preferences(context: Context) {
         const val KEY_SOUND_VOLUME = "SOUND_VOLUME"
         const val KEY_IS_VIBRATE_ON = "IS_VIBRATE_ON"
         const val KEY_VIBRATION_STRENGTH = "VIBRATION_STRENGTH"
+        const val KEY_LONG_PRESS_DELAY = "LONG_PRESS_DELAY"
 
         const val KEY_TAB_MODE = "tab_mode"
     }

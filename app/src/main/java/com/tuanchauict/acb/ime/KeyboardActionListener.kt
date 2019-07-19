@@ -37,7 +37,7 @@ class KeyboardActionListener(
             uiHandler.postDelayed({
                 isLongPressSuccess = true
                 onKeyLongPress(primaryCode)
-            }, DEFAULT_LONG_PRESS_DURATION_MILLIS)
+            }, preferences.longPressDelay.toLong())
         }
     }
 
@@ -49,14 +49,14 @@ class KeyboardActionListener(
             return
         }
         if (preferences.isVibrateOn) {
-            vibrate(KEY_PRESS_VIBRATION_DURATION)
+            vibrate(preferences.vibrationStrength.toLong())
         }
         onKeyAction(primaryCode)
     }
 
     private fun onKeyLongPress(keyCode: Int) {
         onKeyLongPressAction(keyCode)
-        vibrate(KEY_LONG_PRESS_VIBRATION_DURATION)
+        vibrate(preferences.vibrationStrength.toLong())
     }
 
     override fun onText(text: CharSequence?) = Unit
@@ -65,11 +65,5 @@ class KeyboardActionListener(
     private fun vibrate(durationMillis: Long) {
         val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         vibrator.vibrate(durationMillis)
-    }
-
-    companion object {
-        private const val DEFAULT_LONG_PRESS_DURATION_MILLIS = 300L
-        private const val KEY_PRESS_VIBRATION_DURATION = 20L
-        private const val KEY_LONG_PRESS_VIBRATION_DURATION = 50L
     }
 }

@@ -18,6 +18,7 @@ class SettingsActivity : AppCompatActivity() {
         initSoundOnKeypress()
         initVibrationOnKeypress()
         initPopupOnKeypress()
+        initLongPressDelay()
     }
 
     private fun initSoundOnKeypress() {
@@ -51,7 +52,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun initVibrationOnKeypress() {
-        val progressInfo = SeekbarDialog.ProgressInfo(0, 100, 20) { "$it ms" }
+        val progressInfo = SeekbarDialog.ProgressInfo(10, 100, 20) { "$it ms" }
 
         val vibrationStrength = SettingSimpleClickItem(
             findViewById(R.id.vibrate_strength_on_keypress),
@@ -89,6 +90,26 @@ class SettingsActivity : AppCompatActivity() {
         ) {
             preferences.isPreviewEnabled = !preferences.isPreviewEnabled
             setChecked(preferences.isPreviewEnabled)
+        }
+    }
+
+    private fun initLongPressDelay() {
+        val progressInfo = SeekbarDialog.ProgressInfo(150, 1000, 300) { "$it ms" }
+
+        SettingSimpleClickItem(
+            findViewById(R.id.key_long_press_delay),
+            R.string.setting_long_press_delay,
+            progressInfo.toText(preferences.longPressDelay)
+        ) {
+            SeekbarDialog(
+                this@SettingsActivity,
+                R.string.setting_long_press_delay,
+                preferences.longPressDelay,
+                progressInfo
+            ) {
+                preferences.longPressDelay = it
+                setSubtitle(progressInfo.toText(it))
+            }
         }
     }
 

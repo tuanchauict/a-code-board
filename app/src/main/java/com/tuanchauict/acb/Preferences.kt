@@ -11,6 +11,7 @@ class Preferences(context: Context) {
         get() = sharePreferences.getBoolean(KEY_IS_FIRST_TIME_APP_OPEN, true)
         set(value) = sharePreferences.edit(KEY_IS_FIRST_TIME_APP_OPEN, value)
 
+    //region Keypress
     var isPreviewEnabled: Boolean
         get() = sharePreferences.getBoolean(KEY_IS_PREVIEW_ENABLED, false)
         set(value) = sharePreferences.edit(KEY_IS_PREVIEW_ENABLED, value)
@@ -34,6 +35,11 @@ class Preferences(context: Context) {
     var longPressDelay: Int
         get() = sharePreferences.getInt(KEY_LONG_PRESS_DELAY, 300)
         set(value) = sharePreferences.edit(KEY_LONG_PRESS_DELAY, value)
+    //endregion
+
+    var isLongPressMovingCursor: Boolean
+        get() = sharePreferences.getBoolean(KEY_IS_LONG_PRESS_MOVING_CURSOR, true)
+        set(value) = sharePreferences.edit(KEY_IS_LONG_PRESS_MOVING_CURSOR, value)
 
     var tabMode: TabMode
         get() = when (sharePreferences.getInt(KEY_TAB_MODE, 2)) {
@@ -63,14 +69,16 @@ class Preferences(context: Context) {
     private companion object {
         const val FILE_NAME = "CodeBoard"
 
-        const val KEY_IS_FIRST_TIME_APP_OPEN = "IS_FIRST_TIME_APP_OPEN"
+        const val KEY_IS_FIRST_TIME_APP_OPEN = "isFirstTimeAppOpen"
 
-        const val KEY_IS_PREVIEW_ENABLED = "IS_PREVIEW_ENABLED"
-        const val KEY_IS_SOUND_ON = "IS_SOUND_ON"
-        const val KEY_SOUND_VOLUME = "SOUND_VOLUME"
-        const val KEY_IS_VIBRATE_ON = "IS_VIBRATE_ON"
-        const val KEY_VIBRATION_STRENGTH = "VIBRATION_STRENGTH"
-        const val KEY_LONG_PRESS_DELAY = "LONG_PRESS_DELAY"
+        const val KEY_IS_LONG_PRESS_MOVING_CURSOR = "isLongPressMovingCursor"
+
+        const val KEY_IS_PREVIEW_ENABLED = "isPreviewEnabled"
+        const val KEY_IS_SOUND_ON = "isSoundOn"
+        const val KEY_SOUND_VOLUME = "soundVolume"
+        const val KEY_IS_VIBRATE_ON = "isVibrateOn"
+        const val KEY_VIBRATION_STRENGTH = "vibrationStrength"
+        const val KEY_LONG_PRESS_DELAY = "longPressDelay"
 
         const val KEY_TAB_MODE = "tab_mode"
     }

@@ -15,10 +15,24 @@ class SettingsActivity : AppCompatActivity() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        initLongPressMovingCursor()
+
         initSoundOnKeypress()
         initVibrationOnKeypress()
         initPopupOnKeypress()
         initLongPressDelay()
+    }
+
+    private fun initLongPressMovingCursor() {
+        SettingSwitchItemController(
+            findViewById(R.id.setting_long_press_moving_cursor),
+            R.string.setting_long_press_moving_cursor_title,
+            R.string.setting_long_press_moving_cursor_subtitle,
+            preferences.isLongPressMovingCursor
+        ) {
+            preferences.isLongPressMovingCursor = !preferences.isLongPressMovingCursor
+            setChecked(preferences.isLongPressMovingCursor)
+        }
     }
 
     private fun initSoundOnKeypress() {

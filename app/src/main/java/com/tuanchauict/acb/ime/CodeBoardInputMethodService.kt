@@ -52,10 +52,19 @@ class CodeBoardInputMethodService : InputMethodService() {
         val keyboard = chooseKeyboard(R.integer.keyboard_normal)
         keyboardView.keyboard = keyboard
 
+        val longPressMovingCursorKeys =
+            if (preferences.isLongPressMovingCursor) {
+                Keycode.LONG_KEY_TO_KEY_EVENT_MAP.keys
+            } else {
+                emptySet()
+            }
+
+        val longPressKeys = Keycode.LONG_PRESS_KEY_CODES + longPressMovingCursorKeys
+
         val keyboardActionListener = KeyboardActionListener(
             this,
             keyboardView,
-            Keycode.LONG_PRESS_KEY_CODES,
+            longPressKeys,
             preferences,
             ::onKey,
             ::onKeyLongPress

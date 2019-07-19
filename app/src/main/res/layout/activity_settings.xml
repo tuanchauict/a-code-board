@@ -15,11 +15,16 @@
             style="@style/SettingHeaderText"
             android:text="@string/keys" />
 
+        <!-- Long press for moving cursor -->
+        <include
+            android:id="@+id/setting_long_press_moving_cursor"
+            layout="@layout/include_setting_item_switch" />
+
         <include layout="@layout/include_divider" />
 
         <TextView
             style="@style/SettingHeaderText"
-            android:layout_marginTop="16dp"
+
             android:text="@string/keypress" />
 
         <!-- Sound on key press -->

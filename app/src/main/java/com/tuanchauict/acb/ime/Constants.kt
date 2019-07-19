@@ -155,7 +155,7 @@ object Keycode {
         LETTER_D to KeyEvent.KEYCODE_DPAD_RIGHT,
         LETTER_S to KeyEvent.KEYCODE_DPAD_DOWN,
         LETTER_W to KeyEvent.KEYCODE_DPAD_UP,
-        LETTER_H to KeyEvent.KEYCODE_MOVE_HOME,
+        LETTER_Q to KeyEvent.KEYCODE_MOVE_HOME,
         LETTER_E to KeyEvent.KEYCODE_MOVE_END
     )
 
@@ -188,15 +188,14 @@ object Keycode {
         LETTER_X, // cut
         LETTER_C, // copy
         LETTER_V  // paste
-    ) + LONG_KEY_TO_KEY_EVENT_MAP.keys
+    )
 }
 
 enum class MetaState(val value: Int) {
     NONE(0),
     SHIFT_ON(KeyEvent.META_SHIFT_ON),
     CONTROL_ON(KeyEvent.META_CTRL_ON),
-    CONTROL_SHIFT_ON(KeyEvent.META_CTRL_ON or KeyEvent.META_SHIFT_ON),
-    CONTROL_ALT_ON(KeyEvent.META_CTRL_ON or KeyEvent.META_ALT_ON)
+    CONTROL_SHIFT_ON(KeyEvent.META_CTRL_ON or KeyEvent.META_SHIFT_ON)
 }
 
 val SHIFT_OR_NONE_MAP: BooleanMap<MetaState> = BooleanMap(MetaState.SHIFT_ON, MetaState.NONE)

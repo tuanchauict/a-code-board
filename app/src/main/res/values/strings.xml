@@ -43,4 +43,5 @@
     <string name="setting_tab_size_title">Tab size</string>
     <string name="setting_auto_close_pair_title">Auto close pair</string>
     <string name="setting_auto_close_pair_subtitle">Auto add close for pairs () [] {} \"\" \' \'</string>
+    <string name="screen_settings">Settings</string>
 </resources>

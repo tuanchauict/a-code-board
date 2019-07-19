@@ -102,7 +102,7 @@ class CodeBoardInputMethodService : InputMethodService() {
             currentInputConnection?.commitText(text, 1)
             shiftKeyPressHandler.releaseShiftKeyWhenNotLocked()
             if (autoClosePair != null) {
-                onKey(Keycode.FUNCTION_DPAD_LEFT)
+                sendDownUpKeyEvents(KeyEvent.KEYCODE_DPAD_LEFT)
             }
             return
         }

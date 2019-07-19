@@ -13,7 +13,8 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         SettingSwitchItemController(findViewById(R.id.sound_on_keypress)) {
-            preferences.isSoundOn = it
+            preferences.isSoundOn = !preferences.isSoundOn
+            update(R.string.setting_sound_on_keypress, 0, preferences.isSoundOn)
         }.apply {
             update(R.string.setting_sound_on_keypress, 0, preferences.isSoundOn)
         }

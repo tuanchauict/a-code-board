@@ -9,22 +9,22 @@ import com.tuanchauict.acb.isVisible
 
 class SettingSwitchItemController(
     rootView: View,
-    onCheckedChangeAction: (Boolean) -> Unit
+    onItemClickListener: SettingSwitchItemController.() -> Unit
 ) {
     private val titleTextView: TextView = rootView.findViewById(R.id.item_title)
     private val subtitleTextView: TextView = rootView.findViewById(R.id.item_subtitle)
     private val switchView: Switch = rootView.findViewById(R.id.item_switch)
 
     init {
-        switchView.setOnCheckedChangeListener { _, isChecked ->
-            onCheckedChangeAction(isChecked)
-        }
+        rootView.setOnClickListener { onItemClickListener() }
     }
 
     fun update(@StringRes titleRes: Int, @StringRes subtitleRes: Int, isChecked: Boolean) {
         titleTextView.setText(titleRes)
+        if (subtitleRes != 0) {
+            subtitleTextView.setText(subtitleRes)
+        }
         subtitleTextView.isVisible = subtitleRes != 0
-        subtitleTextView.setText(subtitleRes)
         switchView.isChecked = isChecked
     }
 }

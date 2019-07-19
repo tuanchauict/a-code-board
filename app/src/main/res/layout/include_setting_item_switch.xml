@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
+    android:padding="16dp"
+    android:background="?android:selectableItemBackground"
     tools:showIn="@layout/activity_settings">
 
     <Switch
@@ -11,7 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        tools:ignore="RtlHardcoded" />
 
     <TextView
         android:id="@+id/item_title"
@@ -19,7 +21,8 @@
         android:layout_height="wrap_content"
         android:textColor="#212121"
         android:textSize="16sp"
-        tools:text="@string/setting_sound_on_keypress" />
+        tools:text="@string/setting_sound_on_keypress"
+        tools:ignore="RelativeOverlap" />
 
     <TextView
         android:id="@+id/item_subtitle"

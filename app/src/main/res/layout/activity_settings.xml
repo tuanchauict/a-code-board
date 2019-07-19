@@ -14,6 +14,10 @@
             android:id="@+id/sound_on_keypress"
             layout="@layout/include_setting_item_switch" />
 
+        <include
+            android:id="@+id/vibrate_on_keypress"
+            layout="@layout/include_setting_item_switch" />
+
 
         <include layout="@layout/include_divider" />
     </LinearLayout>

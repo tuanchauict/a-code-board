@@ -18,5 +18,12 @@ class SettingsActivity : AppCompatActivity() {
         }.apply {
             update(R.string.setting_sound_on_keypress, 0, preferences.isSoundOn)
         }
+
+        SettingSwitchItemController(findViewById(R.id.vibrate_on_keypress)) {
+            preferences.isVibrateOn = !preferences.isVibrateOn
+            update(R.string.setting_vibrate_on_keypress, 0, preferences.isVibrateOn)
+        }.apply {
+            update(R.string.setting_vibrate_on_keypress, 0, preferences.isVibrateOn)
+        }
     }
 }

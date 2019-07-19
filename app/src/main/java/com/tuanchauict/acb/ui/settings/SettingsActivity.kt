@@ -18,6 +18,7 @@ class SettingsActivity : AppCompatActivity() {
 
         initLongPressMovingCursor()
         initTabSize()
+        initAutoClosePair()
 
         initSoundOnKeypress()
         initVibrationOnKeypress()
@@ -62,6 +63,18 @@ class SettingsActivity : AppCompatActivity() {
                 preferences.tabMode = Preferences.TabMode.fromValue(it)
                 setSubtitle(progressInfo.toText(it))
             }
+        }
+    }
+
+    private fun initAutoClosePair() {
+        SettingSwitchItemController(
+            findViewById(R.id.setting_auto_close_pair),
+            R.string.setting_auto_close_pair_title,
+            R.string.setting_auto_close_pair_subtitle,
+            preferences.isAutoClosePair
+        ) {
+            preferences.isAutoClosePair = !preferences.isAutoClosePair
+            setChecked(preferences.isAutoClosePair)
         }
     }
 

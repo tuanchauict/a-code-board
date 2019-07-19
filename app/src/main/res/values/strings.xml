@@ -41,4 +41,6 @@
     <string name="setting_tab_size_4_spaces">4 spaces</string>
     <string name="setting_tab_size_8_spaces">8 spaces</string>
     <string name="setting_tab_size_title">Tab size</string>
+    <string name="setting_auto_close_pair_title">Auto close pair</string>
+    <string name="setting_auto_close_pair_subtitle">Auto add close for pairs () [] {} \"\" \' \'</string>
 </resources>

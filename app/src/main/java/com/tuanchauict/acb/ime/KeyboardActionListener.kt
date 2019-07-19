@@ -43,7 +43,6 @@ class KeyboardActionListener(
 
     override fun onRelease(primaryCode: Int) = uiHandler.removeCallbacksAndMessages(null)
 
-
     override fun onKey(primaryCode: Int, keyCodes: IntArray?) {
         if (isLongPressSuccess) {
             return

@@ -51,6 +51,10 @@ class Preferences(context: Context) {
         }
         set(tabMode) = sharePreferences.edit(KEY_TAB_MODE, tabMode.value)
 
+    var isAutoClosePair: Boolean
+        get() = sharePreferences.getBoolean(KEY_IS_AUTO_CLOSE_PAIR, false)
+        set(value) = sharePreferences.edit(KEY_IS_AUTO_CLOSE_PAIR, value)
+
     private fun SharedPreferences.edit(key: String, value: Boolean) {
         edit().putBoolean(key, value).apply()
     }
@@ -90,5 +94,6 @@ class Preferences(context: Context) {
         const val KEY_LONG_PRESS_DELAY = "longPressDelay"
 
         const val KEY_TAB_MODE = "tab_mode"
+        const val KEY_IS_AUTO_CLOSE_PAIR = "isAutoClosePair"
     }
 }

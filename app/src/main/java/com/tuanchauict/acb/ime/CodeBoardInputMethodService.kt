@@ -96,8 +96,14 @@ class CodeBoardInputMethodService : InputMethodService() {
             return
         }
         shiftKeyPressHandler.getKeyStringWithShiftState(keyCode)?.also {
-            currentInputConnection?.commitText(it, 1)
+            val autoClosePair =
+                if (preferences.isAutoClosePair) AUTO_CLOSE_PAIR_CHARACTER_MAP[it] else null
+            val text = autoClosePair ?: it
+            currentInputConnection?.commitText(text, 1)
             shiftKeyPressHandler.releaseShiftKeyWhenNotLocked()
+            if (autoClosePair != null) {
+                onKey(Keycode.FUNCTION_DPAD_LEFT)
+            }
             return
         }
 
@@ -125,4 +131,14 @@ class CodeBoardInputMethodService : InputMethodService() {
 
     private fun chooseKeyboard(@IntegerRes keyboardMode: Int): Keyboard =
         Keyboard(this, R.xml.code_1, keyboardMode)
+
+    companion object {
+        private val AUTO_CLOSE_PAIR_CHARACTER_MAP = mapOf(
+            "(" to "()",
+            "[" to "[]",
+            "{" to "{}",
+            "\"" to "\"\"",
+            "'" to "''"
+        )
+    }
 }

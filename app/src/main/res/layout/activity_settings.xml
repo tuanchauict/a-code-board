@@ -25,6 +25,11 @@
             android:id="@+id/setting_tab_size"
             layout="@layout/include_simple_click_item" />
 
+        <!-- Auto close pair -->
+        <include
+            android:id="@+id/setting_auto_close_pair"
+            layout="@layout/include_setting_item_switch" />
+
         <include layout="@layout/include_divider" />
 
         <TextView

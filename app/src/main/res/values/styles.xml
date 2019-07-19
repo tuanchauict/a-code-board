@@ -5,13 +5,39 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">#009688</item>
+        <item name="colorAccent">#1e88e5</item>
     </style>
 
-    <style name="MyTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:textColor">#000</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:layout_weight">1</item>
+    <style name="SettingHeaderText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="SettingItemTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/selector_setting_title_text_color</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="SettingItemSubtitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_below">@id/item_title</item>
+        <item name="android:textColor">@color/selector_setting_subtitle_text_color</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="SettingItemContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
     </style>
 </resources>

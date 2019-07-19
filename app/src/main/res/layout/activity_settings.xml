@@ -8,17 +8,46 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/sound_on_keypress"
-            layout="@layout/include_setting_item_switch" />
-
-        <include
-            android:id="@+id/vibrate_on_keypress"
-            layout="@layout/include_setting_item_switch" />
-
+        <TextView
+            style="@style/SettingHeaderText"
+            android:text="@string/keys" />
 
         <include layout="@layout/include_divider" />
+
+        <TextView
+            style="@style/SettingHeaderText"
+            android:layout_marginTop="16dp"
+            android:text="@string/keypress" />
+
+        <!-- Sound on key press -->
+        <include
+            android:id="@+id/setting_sound_on_keypress"
+            layout="@layout/include_setting_item_switch" />
+        <!-- Sound level -->
+        <include
+            android:id="@+id/volume_on_keypress"
+            layout="@layout/include_simple_click_item" />
+
+        <!-- Vibrate on keypress -->
+        <include
+            android:id="@+id/setting_vibrate_on_keypress"
+            layout="@layout/include_setting_item_switch" />
+        <!-- Vibrate strength -->
+        <include
+            android:id="@+id/vibrate_strength_on_keypress"
+            layout="@layout/include_simple_click_item" />
+
+        <!-- Popup on key press -->
+        <include
+            android:id="@+id/setting_popup_on_keypress"
+            layout="@layout/include_setting_item_switch" />
+
+        <!-- Long press delay -->
+        <include
+            android:id="@+id/key_long_press_delay"
+            layout="@layout/include_simple_click_item" />
     </LinearLayout>
 </ScrollView>

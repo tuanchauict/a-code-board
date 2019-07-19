@@ -25,4 +25,12 @@
     <string name="setup_guide">Finish all setup steps before using the Code Board</string>
     <string name="setting_sound_on_keypress">Sound on keypress</string>
     <string name="setting_vibrate_on_keypress">Vibrate on keypress</string>
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_default">Default</string>
+    <string name="keypress">Keypress</string>
+    <string name="keys">Keys</string>
+    <string name="setting_popup_on_keypress">Popup on keypress</string>
+    <string name="setting_volume_on_keypress">Volume on keypress</string>
+    <string name="setting_vibrate_strength_on_keypress">Vibration strength on keypress</string>
 </resources>

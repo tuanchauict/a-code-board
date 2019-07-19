@@ -13,15 +13,23 @@ class Preferences(context: Context) {
 
     var isPreviewEnabled: Boolean
         get() = sharePreferences.getBoolean(KEY_IS_PREVIEW_ENABLED, false)
-        set(value) = sharePreferences.edit().putBoolean(KEY_IS_PREVIEW_ENABLED, value).apply()
+        set(value) = sharePreferences.edit(KEY_IS_PREVIEW_ENABLED, value)
 
     var isSoundOn: Boolean
         get() = sharePreferences.getBoolean(KEY_IS_SOUND_ON, true)
-        set(value) = sharePreferences.edit().putBoolean(KEY_IS_SOUND_ON, value).apply()
+        set(value) = sharePreferences.edit(KEY_IS_SOUND_ON, value)
+
+    var soundVolume: Int
+        get() = sharePreferences.getInt(KEY_SOUND_VOLUME, 50)
+        set(value) = sharePreferences.edit(KEY_SOUND_VOLUME, value)
 
     var isVibrateOn: Boolean
         get() = sharePreferences.getBoolean(KEY_IS_VIBRATE_ON, true)
-        set(value) = sharePreferences.edit().putBoolean(KEY_IS_VIBRATE_ON, value).apply()
+        set(value) = sharePreferences.edit(KEY_IS_VIBRATE_ON, value)
+
+    var vibrationStrength: Int
+        get() = sharePreferences.getInt(KEY_VIBRATION_STRENGTH, 20)
+        set(value) = sharePreferences.edit(KEY_VIBRATION_STRENGTH, value)
 
     var tabMode: TabMode
         get() = when (sharePreferences.getInt(KEY_TAB_MODE, 2)) {
@@ -55,7 +63,9 @@ class Preferences(context: Context) {
 
         const val KEY_IS_PREVIEW_ENABLED = "IS_PREVIEW_ENABLED"
         const val KEY_IS_SOUND_ON = "IS_SOUND_ON"
+        const val KEY_SOUND_VOLUME = "SOUND_VOLUME"
         const val KEY_IS_VIBRATE_ON = "IS_VIBRATE_ON"
+        const val KEY_VIBRATION_STRENGTH = "VIBRATION_STRENGTH"
 
         const val KEY_TAB_MODE = "tab_mode"
     }

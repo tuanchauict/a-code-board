@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:background="?android:selectableItemBackground"
-    tools:showIn="@layout/activity_settings">
+    tools:showIn="@layout/activity_settings"
+    style="@style/SettingItemContainer">
 
     <Switch
         android:id="@+id/item_switch"
@@ -17,19 +14,12 @@
 
     <TextView
         android:id="@+id/item_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#212121"
-        android:textSize="16sp"
-        tools:text="@string/setting_sound_on_keypress"
-        tools:ignore="RelativeOverlap" />
+        style="@style/SettingItemTitle"
+        tools:ignore="RelativeOverlap"
+        tools:text="@string/setting_sound_on_keypress" />
 
     <TextView
         android:id="@+id/item_subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/item_title"
-        android:textColor="#757575"
-        android:textSize="12sp"
+        style="@style/SettingItemSubtitle"
         tools:text="Play sound when pressing keys" />
 </RelativeLayout>

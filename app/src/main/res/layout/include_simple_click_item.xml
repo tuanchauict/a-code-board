@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/SettingItemContainer"
+    android:orientation="vertical"
+    tools:showIn="@layout/activity_settings">
+
+    <TextView
+        android:id="@+id/item_title"
+        style="@style/SettingItemTitle"
+        android:duplicateParentState="true"
+        tools:text="Volume on keypress" />
+
+    <TextView
+        android:id="@+id/item_subtitle"
+        style="@style/SettingItemSubtitle"
+        android:duplicateParentState="true"
+        tools:text="50%" />
+</LinearLayout>

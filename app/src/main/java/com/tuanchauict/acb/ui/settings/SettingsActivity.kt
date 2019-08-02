@@ -79,7 +79,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun initSoundOnKeypress() {
-        val progressInfo = SeekbarDialog.ProgressInfo(0, 100, 50) { "$it %" }
+        val progressInfo = SeekbarDialog.ProgressInfo(0, 100, 30) { "$it %" }
         val volumeOnKeypress = SettingSimpleClickItem(
             findViewById(R.id.volume_on_keypress),
             R.string.setting_volume_on_keypress,

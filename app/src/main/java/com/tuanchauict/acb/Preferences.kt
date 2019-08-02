@@ -21,7 +21,7 @@ class Preferences(context: Context) {
         set(value) = sharePreferences.edit(KEY_IS_SOUND_ON, value)
 
     var soundVolume: Int
-        get() = sharePreferences.getInt(KEY_SOUND_VOLUME, 50)
+        get() = sharePreferences.getInt(KEY_SOUND_VOLUME, 30)
         set(value) = sharePreferences.edit(KEY_SOUND_VOLUME, value)
 
     var isVibrateOn: Boolean

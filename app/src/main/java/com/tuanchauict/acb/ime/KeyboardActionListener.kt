@@ -2,10 +2,12 @@ package com.tuanchauict.acb.ime
 
 import android.content.Context
 import android.inputmethodservice.KeyboardView
+import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import android.os.Vibrator
 import com.tuanchauict.acb.Preferences
+import com.tuanchauict.acb.R
 
 class KeyboardActionListener(
     private val context: Context,
@@ -50,6 +52,10 @@ class KeyboardActionListener(
         if (preferences.isVibrateOn) {
             vibrate(preferences.vibrationStrength.toLong())
         }
+        if (preferences.isSoundOn) {
+
+        }
+        playSound()
         onKeyAction(primaryCode)
     }
 
@@ -64,5 +70,13 @@ class KeyboardActionListener(
     private fun vibrate(durationMillis: Long) {
         val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         vibrator.vibrate(durationMillis)
+    }
+
+    private fun playSound() {
+        val soundPlayer = MediaPlayer.create(context, R.raw.keypress_sound)
+        val soundVolume = preferences.soundVolume / 100F
+        soundPlayer.setVolume(soundVolume, soundVolume)
+        soundPlayer.start()
+        soundPlayer.setOnCompletionListener { mp -> mp.release() }
     }
 }

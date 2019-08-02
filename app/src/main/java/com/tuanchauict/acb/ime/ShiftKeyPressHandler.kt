@@ -123,7 +123,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardInputMethodS
             BooleanMap(R.drawable.keyboard_f_cap_off, R.drawable.keyboard_f_cap_on)
         private val SHIFT_CAP_ICON_MAP = BooleanMap(CAP_ICON_RES, SHIFT_ICON_RES)
         private val CHARACTER_WITH_SHIFT_MAP: Map<Char, String> = mapOf(
-            '+' to ".",
+            '+' to "#",
             '-' to "_",
             '*' to "^",
             '/' to "\\",
@@ -133,7 +133,7 @@ class ShiftKeyPressHandler(private val inputMethodService: CodeBoardInputMethodS
             '[' to "]",
             '(' to ")",
 
-            '!' to "#",
+            '!' to ".",
 
             '1' to "%",
             '2' to "<",

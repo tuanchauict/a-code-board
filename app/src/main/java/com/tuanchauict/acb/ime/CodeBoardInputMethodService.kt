@@ -2,6 +2,8 @@ package com.tuanchauict.acb.ime
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.inputmethodservice.InputMethodService
 import android.inputmethodservice.Keyboard
 import android.inputmethodservice.KeyboardView
@@ -13,6 +15,7 @@ import androidx.annotation.IntegerRes
 import com.tuanchauict.acb.Preferences
 import com.tuanchauict.acb.R
 import com.tuanchauict.acb.sendKeyEventDownUpWithActionBetween
+import com.tuanchauict.acb.ui.settings.SettingsActivity
 
 /**
  * An input method service which handles keyboard layout UI and key press event effect.
@@ -120,6 +123,11 @@ class CodeBoardInputMethodService : InputMethodService() {
             keyCode == Keycode.SPACE -> {
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.showInputMethodPicker()
+            }
+            keyCode == Keycode.SYMBOL_EQUAL -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
             }
             keyCode in Keycode.LONG_KEY_TO_KEY_EVENT_MAP ->
                 Keycode.LONG_KEY_TO_KEY_EVENT_MAP[keyCode]?.let(::sendDownUpKeyEvents)

@@ -24,6 +24,7 @@ object Keycode {
     const val SYMBOL_SQUARE_BRACKET = 91
     const val SYMBOL_ANGLE_BRACKET = 123
 
+    const val SYMBOL_EQUAL = 61
     const val SYMBOL_COMMA = 44
 
     const val DIGIT_0 = 48
@@ -172,6 +173,7 @@ object Keycode {
         SYMBOL_BRACKET,
         SYMBOL_SQUARE_BRACKET,
         SYMBOL_ANGLE_BRACKET,
+        SYMBOL_EQUAL,
 
         DIGIT_0,
         DIGIT_1,
